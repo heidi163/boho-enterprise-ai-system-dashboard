@@ -1,34 +1,45 @@
 import { useState, useEffect } from "react";
 import { api } from "../lib/api";
-import { Activity, AlertCircle, CheckCircle, Clock, BrainCircuit, Mic, Zap, TrendingUp, MessageSquare, Bell, Radio, ChevronRight } from "lucide-react";
+import { 
+  AlertCircle, CheckCircle, BrainCircuit, Mic, Zap, TrendingUp, 
+  Bell, RefreshCw, ArrowUpRight, ArrowDownRight, Check
+} from "lucide-react";
 
 export default function MissionControlPage() {
-  const [time, setTime] = useState("");
-  const [briefing, setBriefing] = useState("جارٍ تحميل البريفنج الصباحي...");
+  const [briefing, setBriefing] = useState("جاهز للعمل. اضغط على الزر لبدء البريفنج...");
   const [generatingBrief, setGeneratingBrief] = useState(false);
   const [metorikData, setMetorikData] = useState<any>(null);
   const [windsorData, setWindsorData] = useState<any>(null);
   const [tasks, setTasks] = useState<any[]>([]);
+  const [lastRefresh, setLastRefresh] = useState<Date>(new Date());
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  
   const [alerts, setAlerts] = useState([
     { id: 1, type: "danger", text: "حملة Sealy سناب ROAS تحت 2.0 - تدخل فوري مطلوب", time: "منذ 12 دقيقة" },
-    { id: 2, type: "warning", text: "تراجع بسيط في CTR إعلانات iFilter Google", time: "منذ 45 دقيقة" },
-    { id: 3, type: "success", text: "مبيعات iFilter تجاوزت هدف اليوم بـ 18%", time: "منذ ساعتين" },
+    { id: 2, type: "warning", text: "تراجع بسيط في CTR إعلانات iFilter Google", time: "منذ 45 دقيقة" }
   ]);
 
-  useEffect(() => {
-    const tick = () => {
-      const opts: Intl.DateTimeFormatOptions = { timeZone: "Africa/Cairo", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true };
-      setTime(new Intl.DateTimeFormat("en-US", opts).format(new Date()));
-    };
-    tick();
-    const id = setInterval(tick, 1000);
-    return () => clearInterval(id);
-  }, []);
+  const fetchData = async () => {
+    setIsRefreshing(true);
+    try {
+      const [salesRes, adsRes, tasksRes] = await Promise.allSettled([
+        api.get("/api/sales"),
+        api.get("/api/ads"),
+        api.get("/api/tasks")
+      ]);
+      
+      if (salesRes.status === "fulfilled") setMetorikData({ totalRevenue: salesRes.value.sales?.[0]?.value || 48320 });
+      if (adsRes.status === "fulfilled") setWindsorData({ campaigns: [{ roas: adsRes.value.ads?.[0]?.roas || 3.4 }] });
+      if (tasksRes.status === "fulfilled") setTasks(tasksRes.value.tasks || []);
+      
+      setLastRefresh(new Date());
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
 
   useEffect(() => {
-    api.get("/api/sales").then(d => setMetorikData({ totalRevenue: d.sales?.[0]?.value || 48320 })).catch(() => {});
-    api.get("/api/ads").then(d => setWindsorData({ campaigns: [{ roas: d.ads?.[0]?.roas || 3.4 }] })).catch(() => {});
-    api.get("/api/tasks").then(d => setTasks(d.tasks || [])).catch(() => {});
+    fetchData();
   }, []);
 
   const handleBriefing = async () => {
@@ -47,66 +58,66 @@ export default function MissionControlPage() {
         window.speechSynthesis.speak(u);
       }
     } catch {
-      setBriefing("تعذر الاتصال بـ Boho Deep Brain. تحقق من الـ Server.");
+      setBriefing("تعذر الاتصال بـ Boho Deep Brain. تحقق من اتصال الخادم.");
     } finally {
       setGeneratingBrief(false);
     }
   };
 
-  const systemNodes = [
-    { label: "Voice Layer", status: "online", color: "#10b981" },
-    { label: "Deep Brain", status: "online", color: "#3b82f6" },
-    { label: "Metorik MCP", status: "online", color: "#3b82f6" },
-    { label: "Windsor MCP", status: "online", color: "#f59e0b" },
-    { label: "Telegram Push", status: "online", color: "#0ea5e9" },
-    { label: "n8n Cron", status: "standby", color: "#94a3b8" },
-  ];
+  const handleCompleteTask = (taskId: string) => {
+    setTasks(prev => prev.map(t => t.id === taskId ? { ...t, status: "Done" } : t));
+    // In a real scenario, we'd also call api.put to update the task on the server.
+  };
+
+  const dismissAlert = (id: number) => {
+    setAlerts(prev => prev.filter(a => a.id !== id));
+  };
 
   const todayRevenue = metorikData?.totalRevenue || 48320;
   const bestRoas = windsorData?.campaigns?.[0]?.roas || 3.4;
-  const openTasks = tasks.filter(t => t.status === "To Do").length || 3;
+  const openTasksCount = tasks.filter(t => t.status !== "Done").length || 3;
+  const activeAlertsCount = alerts.filter(a => a.type === "danger").length;
 
   return (
     <div className="flex flex-col gap-6 w-full" dir="rtl">
+      
+      {/* HEADER CONTROLS */}
+      <div className="flex items-center justify-between mb-[-10px]">
+        <h2 className="text-xl font-black text-slate-800 font-tajawal">مركز القيادة</h2>
+        <div className="flex items-center gap-3">
+          <span className="text-[10px] text-gray-400 font-mono">
+            آخر تحديث: {lastRefresh.toLocaleTimeString("en-US", { hour: '2-digit', minute: '2-digit', hour12: true })}
+          </span>
+          <button 
+            onClick={fetchData}
+            disabled={isRefreshing}
+            className="p-2 bg-white/60 border border-gray-200 rounded-xl hover:bg-white transition-all shadow-sm"
+          >
+            <RefreshCw className={`w-4 h-4 text-blue-500 ${isRefreshing ? "animate-spin" : ""}`} />
+          </button>
+        </div>
+      </div>
 
       {/* TOP COMMAND STRIP */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { label: "إجمالي المبيعات اليوم", value: `${todayRevenue.toLocaleString()} EGP`, icon: TrendingUp, color: "#3b82f6", bg: "from-blue-50 to-blue-100" },
-          { label: "أعلى ROAS", value: `${bestRoas}x`, icon: Zap, color: "#10b981", bg: "from-emerald-50 to-emerald-100" },
-          { label: "مهام مفتوحة", value: openTasks, icon: CheckCircle, color: "#f59e0b", bg: "from-amber-50 to-amber-100" },
-          { label: "التنبيهات النشطة", value: alerts.filter(a => a.type === "danger").length, icon: AlertCircle, color: "#ef4444", bg: "from-rose-50 to-rose-100" },
+          { label: "إجمالي المبيعات اليوم", value: `${todayRevenue.toLocaleString()} EGP`, icon: TrendingUp, color: "#3b82f6", bg: "from-blue-50 to-blue-100", trend: "+12%", trendUp: true },
+          { label: "أعلى ROAS", value: `${bestRoas}x`, icon: Zap, color: "#10b981", bg: "from-emerald-50 to-emerald-100", trend: "+0.4", trendUp: true },
+          { label: "مهام مفتوحة", value: openTasksCount, icon: CheckCircle, color: "#f59e0b", bg: "from-amber-50 to-amber-100", trend: "-2", trendUp: true },
+          { label: "التنبيهات النشطة", value: activeAlertsCount, icon: AlertCircle, color: "#ef4444", bg: "from-rose-50 to-rose-100", trend: "+1", trendUp: false },
         ].map((s, i) => (
-          <div key={i} className={`glass-panel rounded-[20px] p-4 bg-gradient-to-br ${s.bg} border-none`}>
-            <div className="flex items-center justify-between mb-2">
+          <div key={i} className={`glass-panel rounded-[20px] p-4 bg-gradient-to-br ${s.bg} border-none relative overflow-hidden group`}>
+            <div className="flex items-center justify-between mb-2 relative z-10">
               <s.icon className="w-5 h-5" style={{ color: s.color }} />
-              <span className="text-[9px] text-gray-400 font-mono uppercase">Live</span>
+              <div className={`flex items-center gap-0.5 text-[10px] font-bold font-mono px-1.5 py-0.5 rounded-full ${s.trendUp ? "bg-emerald-100 text-emerald-700" : "bg-rose-100 text-rose-700"}`}>
+                {s.trendUp ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
+                {s.trend}
+              </div>
             </div>
-            <p className="text-2xl font-black font-mono" style={{ color: s.color }}>{s.value}</p>
-            <p className="text-[11px] text-gray-500 font-tajawal mt-1">{s.label}</p>
+            <p className="text-2xl font-black font-mono relative z-10" style={{ color: s.color }}>{s.value}</p>
+            <p className="text-[11px] text-gray-500 font-tajawal mt-1 relative z-10">{s.label}</p>
           </div>
         ))}
-      </div>
-
-      {/* SYSTEM NODES STATUS */}
-      <div className="glass-panel rounded-[24px] p-5">
-        <div className="flex items-center justify-between mb-4">
-          <span className="text-[10px] font-mono uppercase text-gray-400 tracking-widest">System Status</span>
-          <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">حالة النظام المباشرة <Radio className="w-4 h-4 text-emerald-500 animate-pulse" /></h3>
-        </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-          {systemNodes.map((n, i) => (
-            <div key={i} className="flex items-center justify-between bg-white/50 rounded-2xl px-4 py-3 border border-white/70">
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-medium text-slate-600 font-mono">{n.label}</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <div className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: n.color }} />
-                <span className="text-[9px] font-mono uppercase" style={{ color: n.color }}>{n.status}</span>
-              </div>
-            </div>
-          ))}
-        </div>
       </div>
 
       {/* MORNING BRIEFING CARD */}
@@ -115,21 +126,21 @@ export default function MissionControlPage() {
           <button
             onClick={handleBriefing}
             disabled={generatingBrief}
-            className="px-4 py-2 bg-gradient-to-l from-blue-500 to-blue-600 text-white text-xs font-bold rounded-full hover:opacity-90 transition-opacity flex items-center gap-2 disabled:opacity-50"
+            className="px-5 py-2.5 bg-gradient-to-l from-blue-500 to-blue-600 text-white text-xs font-bold rounded-full hover:shadow-[0_8px_20px_rgba(59,130,246,0.3)] hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-2 disabled:opacity-50 disabled:hover:scale-100"
           >
-            <Mic className="w-3.5 h-3.5" />
+            <Mic className="w-4 h-4" />
             {generatingBrief ? "بوهو بيفكر..." : "صحّيني بوهو"}
           </button>
           <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">البريفنج الصباحي <BrainCircuit className="w-4 h-4 text-blue-500" /></h3>
         </div>
-        <div className="bg-gradient-to-br from-blue-50 to-blue-50 rounded-2xl p-4 border border-blue-100 min-h-[80px] flex items-center">
+        <div className="bg-gradient-to-br from-blue-50 to-blue-50/30 rounded-2xl p-5 border border-blue-100 min-h-[90px] flex items-center shadow-inner">
           <p className="text-sm text-slate-700 font-tajawal leading-relaxed text-right">
             {generatingBrief ? (
-              <span className="flex items-center gap-2 text-blue-500">
+              <span className="flex items-center gap-2 text-blue-500 font-bold">
                 <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" />
                 <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: "0.15s" }} />
                 <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: "0.3s" }} />
-                بوهو بيجمع البيانات...
+                جاري تجميع البيانات وتوليد البريفنج...
               </span>
             ) : briefing}
           </p>
@@ -143,11 +154,12 @@ export default function MissionControlPage() {
         <div className="glass-panel rounded-[24px] p-5">
           <div className="flex items-center justify-between mb-4">
             <span className="text-[10px] font-mono text-gray-400 uppercase">War Room</span>
-            <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">تنبيهات اليوم <Bell className="w-4 h-4 text-rose-500" /></h3>
+            <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">تنبيهات اليوم <Bell className={`w-4 h-4 ${alerts.length > 0 ? "text-rose-500 animate-pulse" : "text-gray-400"}`} /></h3>
           </div>
+          
           <div className="flex flex-col gap-3">
-            {alerts.map(a => (
-              <div key={a.id} className={`flex items-start gap-3 rounded-2xl p-3 border ${
+            {alerts.length > 0 ? alerts.map(a => (
+              <div key={a.id} className={`group flex items-start gap-3 rounded-2xl p-3 border relative overflow-hidden transition-all hover:shadow-md ${
                 a.type === "danger" ? "bg-red-50 border-red-200" :
                 a.type === "warning" ? "bg-amber-50 border-amber-200" :
                 "bg-emerald-50 border-emerald-200"
@@ -157,12 +169,24 @@ export default function MissionControlPage() {
                   a.type === "warning" ? "bg-amber-500" :
                   "bg-emerald-500"
                 }`} />
-                <div className="flex-1 text-right">
-                  <p className="text-xs text-slate-700 font-tajawal leading-snug">{a.text}</p>
+                <div className="flex-1 text-right pr-1">
+                  <p className="text-xs text-slate-800 font-bold font-tajawal leading-snug">{a.text}</p>
                   <p className="text-[10px] text-gray-400 font-mono mt-1">{a.time}</p>
                 </div>
+                {/* Dismiss Button */}
+                <button 
+                  onClick={() => dismissAlert(a.id)}
+                  className="opacity-0 group-hover:opacity-100 absolute left-2 top-2 p-1.5 bg-white rounded-lg shadow-sm border border-gray-100 hover:bg-gray-50 transition-all text-[9px] font-bold text-gray-500"
+                >
+                  تجاهل
+                </button>
               </div>
-            ))}
+            )) : (
+              <div className="flex flex-col items-center justify-center py-6 text-emerald-500 bg-emerald-50/50 rounded-2xl border border-emerald-100">
+                <CheckCircle className="w-8 h-8 mb-2 opacity-50" />
+                <p className="text-xs font-bold font-tajawal">الأمور مستقرة، لا توجد تنبيهات عاجلة.</p>
+              </div>
+            )}
           </div>
         </div>
 
@@ -173,17 +197,37 @@ export default function MissionControlPage() {
             <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">مهام اليوم <CheckCircle className="w-4 h-4 text-blue-500" /></h3>
           </div>
           <div className="flex flex-col gap-2">
-            {tasks.slice(0, 4).map((t, i) => (
-              <div key={i} className="flex items-center justify-between bg-white/60 rounded-xl px-4 py-2.5 border border-white/80">
-                <div className={`text-[10px] px-2 py-0.5 rounded-full font-mono font-bold ${
-                  t.status === "Done" ? "bg-emerald-100 text-emerald-700" :
+            {tasks.filter(t => t.status !== "Done").slice(0, 4).map((t, i) => (
+              <div key={t.id || i} className="group flex items-center justify-between bg-white/60 hover:bg-white rounded-xl px-4 py-3 border border-white/80 transition-all shadow-sm hover:shadow">
+                
+                {/* Quick Complete Button */}
+                <button 
+                  onClick={() => handleCompleteTask(t.id)}
+                  className="w-6 h-6 rounded-full border border-gray-300 flex items-center justify-center hover:bg-emerald-500 hover:border-emerald-500 transition-colors group-hover:shadow-inner"
+                  title="تحديد كمكتمل"
+                >
+                  <Check className="w-3 h-3 text-white opacity-0 hover:opacity-100 transition-opacity" />
+                </button>
+
+                <div className="flex-1 text-right px-3">
+                  <span className="text-xs text-slate-800 font-tajawal font-bold truncate block">{t.name}</span>
+                </div>
+                
+                <div className={`text-[9px] px-2 py-1 rounded-full font-mono font-bold shrink-0 ${
                   t.status === "In Progress" ? "bg-blue-100 text-blue-700" :
                   "bg-amber-100 text-amber-700"
-                }`}>{t.status}</div>
-                <span className="text-xs text-slate-700 font-tajawal font-medium truncate max-w-[70%] text-right">{t.name}</span>
+                }`}>
+                  {t.status === "To Do" ? "جديد" : "جاري"}
+                </div>
               </div>
             ))}
-            {tasks.length === 0 && <p className="text-xs text-gray-400 font-tajawal text-center py-4">لا توجد مهام. إضافة من صفحة مدير المهام</p>}
+            
+            {tasks.filter(t => t.status !== "Done").length === 0 && (
+              <div className="flex flex-col items-center justify-center py-6 text-gray-400">
+                <CheckCircle className="w-8 h-8 mb-2 opacity-30" />
+                <p className="text-xs font-bold font-tajawal">مفيش مهام مفتوحة ليك النهارده. عاش! 🎉</p>
+              </div>
+            )}
           </div>
         </div>
 
