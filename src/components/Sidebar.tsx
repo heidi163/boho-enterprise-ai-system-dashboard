@@ -13,7 +13,6 @@ interface SidebarProps {
 const COMPANIES = [
   { id: "bgk", name: "Bohemian Geeks" },
   { id: "o2nation", name: "O2Nation" },
-  { id: "ifilter", name: "iFilter Water" },
 ];
 
 const PAGES = [
