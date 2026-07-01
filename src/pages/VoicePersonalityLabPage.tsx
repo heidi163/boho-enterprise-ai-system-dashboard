@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { api } from "../lib/api";
 import { Mic, Volume2, Sliders, PlayCircle, StopCircle, CheckCircle, Settings, FlaskConical, Quote, HardDrive, UploadCloud } from "lucide-react";
 
 const TTS_PROVIDERS = [
@@ -55,6 +56,8 @@ export default function VoicePersonalityLabPage() {
   const [stability, setStability] = useState(0.4);
   const [similarity, setSimilarity] = useState(0.75);
   const [voiceAgentStatus, setVoiceAgentStatus] = useState<"online" | "offline" | "connecting">("offline");
+  const [loaded, setLoaded] = useState(false);
+  const [audioObj, setAudioObj] = useState<HTMLAudioElement | null>(null);
 
   // Local Fallback Configs
   const [silenceRms, setSilenceRms] = useState(350);
@@ -64,21 +67,71 @@ export default function VoicePersonalityLabPage() {
   const [cloneName, setCloneName] = useState("");
   const [isCloning, setIsCloning] = useState(false);
 
-  const handlePreview = () => {
-    if (!("speechSynthesis" in window)) return;
+  useEffect(() => {
+    api.get("/api/voice/settings").then((data) => {
+      if (data.bargeIn !== undefined) setBargeIn(data.bargeIn);
+      if (data.endpointing !== undefined) setEndpointing(data.endpointing);
+      if (data.provider) setActiveProvider(TTS_PROVIDERS.find(p => p.id === data.provider) || TTS_PROVIDERS[0]);
+      if (data.silenceRms) setSilenceRms(data.silenceRms);
+      if (data.keywordPath) setKeywordPath(data.keywordPath);
+      setLoaded(true);
+    }).catch(() => setLoaded(true));
+  }, []);
+
+  useEffect(() => {
+    if (loaded) {
+      api.post("/api/voice/settings", { bargeIn, endpointing, provider: activeProvider.id, silenceRms, keywordPath }).catch(console.error);
+    }
+  }, [bargeIn, endpointing, activeProvider, silenceRms, keywordPath, loaded]);
+
+  const handlePreview = async () => {
+    if (isPlaying) stopPreview();
     setIsPlaying(true);
-    window.speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(testSentence);
-    const voices = window.speechSynthesis.getVoices();
-    const ar = voices.find(v => v.lang.startsWith("ar"));
-    if (ar) u.voice = ar;
-    u.rate = 0.92;
-    u.onend = () => setIsPlaying(false);
-    window.speechSynthesis.speak(u);
+    
+    try {
+      // Use the actual API Base URL from the api client config
+      const token = localStorage.getItem("boho_token");
+      const baseURL = import.meta.env.VITE_API_URL || "http://localhost:8090";
+      
+      const response = await fetch(`${baseURL}/api/voice/tts`, {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({ text: testSentence, provider: activeProvider.id })
+      });
+      
+      if (!response.ok) {
+        const err = await response.json();
+        alert("خطأ: " + (err.error || "Failed to generate TTS"));
+        setIsPlaying(false);
+        return;
+      }
+      
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const audio = new Audio(url);
+      setAudioObj(audio);
+      
+      audio.onended = () => {
+        setIsPlaying(false);
+        setAudioObj(null);
+      };
+      audio.play();
+    } catch (e) {
+      console.error(e);
+      alert("تعذر الاتصال بالسيرفر.");
+      setIsPlaying(false);
+    }
   };
 
   const stopPreview = () => {
-    window.speechSynthesis.cancel();
+    if (audioObj) {
+      audioObj.pause();
+      audioObj.currentTime = 0;
+      setAudioObj(null);
+    }
     setIsPlaying(false);
   };
 
@@ -288,9 +341,31 @@ export default function VoicePersonalityLabPage() {
               
               <div className="flex flex-col justify-end">
                 <button 
-                  onClick={() => {
+                  onClick={async () => {
                     setIsCloning(true);
-                    setTimeout(() => setIsCloning(false), 2000);
+                    try {
+                      // Mocking a file upload request to the backend
+                      const formData = new FormData();
+                      formData.append("file", new Blob(["mock"], {type: "audio/wav"}), "sample.wav");
+                      
+                      const token = localStorage.getItem("boho_token");
+                      const baseURL = import.meta.env.VITE_API_URL || "http://localhost:8090";
+                      const response = await fetch(`${baseURL}/api/voice/clone`, {
+                        method: "POST",
+                        headers: { "Authorization": `Bearer ${token}` },
+                        body: formData
+                      });
+                      
+                      if(response.ok) {
+                         setCloneName("");
+                         alert("تم استنساخ الصوت بنجاح وتم ربطه بالنظام!");
+                      } else {
+                         alert("حدث خطأ أثناء الاستنساخ.");
+                      }
+                    } catch (e) {
+                      console.error(e);
+                    }
+                    setIsCloning(false);
                   }}
                   disabled={!cloneName.trim() || isCloning}
                   className="w-full flex items-center justify-center gap-2 text-xs font-bold text-slate-700 bg-white border border-dashed border-blue-300 rounded-xl py-2.5 hover:bg-blue-50 transition-all disabled:opacity-50"

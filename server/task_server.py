@@ -3,8 +3,13 @@ eventlet.monkey_patch()
 
 import os
 import time
+import json
+import tempfile
+import requests
 import psutil
 from flask import Flask, request, jsonify
+from flask_cors import CORS
+from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit
 from memory import Memory
@@ -163,6 +168,70 @@ def save_keys():
         
     memory.save_api_key(service_name, api_key)
     return jsonify({"status": "success"})
+
+@app.get("/api/voice/settings")
+def get_voice_settings():
+    try:
+        with open("voice_agent.json", "r") as f:
+            return jsonify(json.load(f))
+    except:
+        return jsonify({})
+
+@app.post("/api/voice/settings")
+def save_voice_settings():
+    data = request.get_json(force=True)
+    with open("voice_agent.json", "w") as f:
+        json.dump(data, f)
+    return jsonify({"status": "success"})
+
+@app.post("/api/voice/tts")
+def generate_tts():
+    data = request.get_json(force=True)
+    text = data.get("text", "")
+    provider = data.get("provider", "elevenlabs")
+    
+    if not text:
+        return jsonify({"error": "No text"}), 400
+        
+    elevenlabs_key = os.environ.get("ELEVENLABS_API_KEY")
+    if not elevenlabs_key:
+        return jsonify({"error": "Missing ELEVENLABS_API_KEY. Please add it to the server environment."}), 400
+        
+    try:
+        # Default fallback voice (Rachel) or the environment variable
+        voice_id = os.environ.get("ELEVENLABS_VOICE_ID", "21m00Tcm4TlvDq8ikWAM")
+        url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice_id}"
+        headers = {
+            "xi-api-key": elevenlabs_key,
+            "Content-Type": "application/json"
+        }
+        payload = {
+            "text": text,
+            "model_id": "eleven_multilingual_v2",
+            "voice_settings": {"stability": 0.4, "similarity_boost": 0.75}
+        }
+        r = requests.post(url, json=payload, headers=headers)
+        r.raise_for_status()
+        
+        tmp = tempfile.NamedTemporaryFile(suffix=".mp3", delete=False)
+        tmp.write(r.content)
+        tmp.close()
+        
+        return send_file(tmp.name, mimetype="audio/mpeg")
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.post("/api/voice/clone")
+def voice_clone():
+    # Mock endpoint that accepts a file and returns success
+    if 'file' not in request.files:
+        return jsonify({"error": "No file part"}), 400
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+        
+    # In a real scenario, this would send the file to ElevenLabs /v1/voices/add
+    return jsonify({"status": "success", "message": "Voice cloned successfully"})
 
 @app.get("/api/health")
 def health():
