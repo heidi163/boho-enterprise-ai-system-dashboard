@@ -1,0 +1,161 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Space Grotesk", "Tajawal", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+/* Base style resets and customizations */
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+.animate-breathe {
+  animation: breathe 3s ease-in-out infinite;
+}
+
+body {
+  font-family: 'Space Grotesk', 'Tajawal', sans-serif;
+  background-color: #F4F5F8; /* Cool ultra-light-gray backdrop */
+  color: #1A1C20;
+  overflow-x: hidden;
+}
+
+/* Glassmorphism Classes for Apple Vision Pro Spatial Computing */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(32px) saturate(145%);
+  -webkit-backdrop-filter: blur(32px) saturate(145%);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.03),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+}
+
+.glass-panel-active {
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(28px) saturate(160%);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 
+    0 25px 50px rgba(0, 0, 0, 0.04),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+}
+
+.glass-pill {
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+}
+
+/* Orb Pulsing Radial Gradients */
+.orb-glow {
+  background: radial-gradient(circle, rgba(180, 198, 252, 0.8) 0%, rgba(212, 196, 250, 0.7) 40%, rgba(244, 212, 240, 0.5) 75%, rgba(255, 255, 255, 0) 100%);
+  filter: blur(8px);
+}
+
+/* Keyframe animations for nested rotating rings of the 3D Orb */
+@keyframes spin-cw {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.03); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+@keyframes spin-ccw {
+  0% { transform: rotate(360deg) scale(1.02); }
+  50% { transform: rotate(180deg) scale(0.97); }
+  100% { transform: rotate(0deg) scale(1.02); }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { transform: scale(1); opacity: 0.85; filter: drop-shadow(0 0 15px rgba(180, 198, 252, 0.4)); }
+  50% { transform: scale(1.05); opacity: 1; filter: drop-shadow(0 0 35px rgba(212, 196, 250, 0.7)); }
+}
+
+@keyframes voice-wave {
+  0%, 100% { height: 6px; }
+  50% { height: 28px; }
+}
+
+.animate-spin-cw {
+  animation: spin-cw 12s linear infinite;
+}
+
+.animate-spin-ccw {
+  animation: spin-ccw 16s linear infinite;
+}
+
+.animate-orb-pulse {
+  animation: pulse-soft 6s ease-in-out infinite;
+}
+
+.voice-wave-bar {
+  animation: voice-wave 1.2s ease-in-out infinite;
+}
+
+/* Soft blur shadows for Vision Pro look */
+.soft-depth-shadow {
+  box-shadow: 0 20px 48px -10px rgba(0, 0, 0, 0.05);
+}
+
+/* Sleek custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.16);
+}
+
+/* Sidebar Specific Custom Scrollbar (Invisible by default, subtle gray on hover) */
+.sidebar-scroll {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  transition: scrollbar-color 0.3s ease;
+}
+.sidebar-scroll:hover {
+  scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
+}
+.sidebar-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.sidebar-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 99px;
+  transition: background 0.3s ease;
+}
+.sidebar-scroll:hover::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+/* Scroll Fade Effect (Mask) */
+.scroll-fade-y {
+  /* Fades out the top and bottom 20px so items smoothly disappear into the glass panel */
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    black 24px,
+    black calc(100% - 24px),
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    black 24px,
+    black calc(100% - 24px),
+    transparent 100%
+  );
+}

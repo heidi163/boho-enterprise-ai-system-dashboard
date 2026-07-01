@@ -1,0 +1,59 @@
+{
+  "name": "Boho Daily Briefing",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 8 * * *"
+            }
+          ]
+        }
+      },
+      "name": "Cron (8 AM)",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:8091/webhook/n8n/daily-briefing",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Boho-Secret",
+              "value": "task-server-secret-key-1234"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Trigger Boho Server",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [460, 300]
+    }
+  ],
+  "connections": {
+    "Cron (8 AM)": {
+      "main": [
+        [
+          {
+            "node": "Trigger Boho Server",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f7d398d2-4467-4a7f-ab1c-a9b0c2a524e4"
+}

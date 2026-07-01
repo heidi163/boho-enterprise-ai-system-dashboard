@@ -1,0 +1,6 @@
+{
+  "name": "Boho Enterprise AI System Dashboard",
+  "description": "A next-generation spatial computing dashboard inspired by Apple Vision Pro, featuring translucent glassmorphic components, an interactive 3D Voice AI Orb, and live integration with Boho Arabic AI.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
