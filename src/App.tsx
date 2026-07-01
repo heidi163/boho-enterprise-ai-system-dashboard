@@ -22,11 +22,9 @@ import { Message } from "./types";
 export default function App() {
   const [activeTab, setActiveTab] = useState<string>("mission");
   const [refreshTrigger, setRefreshTrigger] = useState<number>(0);
-  const [sysTimeStr, setSysTimeStr] = useState<string>("");
   const [aiLogs, setAiLogs] = useState<Message[]>([
     { role: "model", content: "يا غالي، بوهو هنا! جاهز للتحليلات اليومية وإدارة مشاريع BGK." }
   ]);
-  const [serverOnline, setServerOnline] = useState<boolean | null>(null);
 
   // Auth State
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(!!localStorage.getItem("boho_token"));
@@ -34,27 +32,6 @@ export default function App() {
   const [loginError, setLoginError] = useState("");
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
-  // Cairo Clock
-  useEffect(() => {
-    const updateTime = () => {
-      const opts: Intl.DateTimeFormatOptions = {
-        timeZone: "Africa/Cairo",
-        hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true,
-      };
-      setSysTimeStr(new Intl.DateTimeFormat("en-US", opts).format(new Date()));
-    };
-    updateTime();
-    const id = setInterval(updateTime, 1000);
-    return () => clearInterval(id);
-  }, []);
-
-  // Health check
-  useEffect(() => {
-    fetch("/api/health")
-      .then(r => r.json())
-      .then(() => setServerOnline(true))
-      .catch(() => setServerOnline(false));
-  }, []);
 
   const handleRefreshAll = () => setRefreshTrigger(prev => prev + 1);
   const handleAILog = (msg: Message) => setAiLogs(prev => [...prev, msg]);
@@ -183,22 +160,6 @@ export default function App() {
         {/* Status Pills */}
         <div className="flex flex-wrap items-center gap-3 justify-end order-1 md:order-2">
 
-          {/* Cairo Clock */}
-          <div className="px-4 py-2 rounded-2xl glass-panel flex items-center gap-2 text-slate-600 font-mono text-xs shadow-sm">
-            <Clock className="w-3.5 h-3.5 text-indigo-400" />
-            <span className="font-bold">{sysTimeStr || "توقيت القاهرة"}</span>
-            <span className="text-slate-400 text-[9px] uppercase border-r border-slate-300 pr-1 mr-0.5">القاهرة</span>
-          </div>
-
-          {/* Server Status */}
-          <div className={`px-4 py-2 rounded-2xl flex items-center gap-2 text-xs font-mono border ${
-            serverOnline === true ? "bg-emerald-50 border-emerald-200 text-emerald-700" :
-            serverOnline === false ? "bg-rose-50 border-rose-200 text-rose-700" :
-            "bg-slate-50 border-slate-200 text-slate-500"
-          }`}>
-            <Wifi className={`w-3.5 h-3.5 ${serverOnline === true ? "text-emerald-500" : "text-rose-500"}`} />
-            <span className="font-bold">{serverOnline === true ? "السيرفر متصل" : serverOnline === false ? "السيرفر مفصول" : "جارٍ التحقق..."}</span>
-          </div>
 
           {/* ROAS Alert Siren */}
           <div className="px-4 py-2 bg-red-500/10 border border-red-500/25 rounded-full flex items-center gap-2.5 shadow-sm">
