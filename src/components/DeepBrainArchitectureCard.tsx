@@ -6,10 +6,10 @@ export default function DeepBrainArchitectureCard() {
       {/* Top Header Section */}
       <div className="bg-white/40 backdrop-blur-xl border border-white/60 rounded-[32px] p-6 shadow-[0_20px_40px_rgba(0,0,0,0.03)] text-right dir-rtl shrink-0">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-[10px] bg-indigo-100 text-indigo-800 font-mono font-bold px-2 py-0.5 rounded uppercase tracking-wider border border-indigo-200">Hybrid AI Architecture</span>
+          <span className="text-[10px] bg-blue-100 text-blue-800 font-mono font-bold px-2 py-0.5 rounded uppercase tracking-wider border border-blue-200">Hybrid AI Architecture</span>
           <h3 className="font-bold text-slate-800 text-lg font-tajawal flex items-center gap-2">
             عقل النظام المتقدم (Deep Brain Task Server)
-            <BrainCircuit className="w-5 h-5 text-indigo-500" />
+            <BrainCircuit className="w-5 h-5 text-blue-500" />
           </h3>
         </div>
         <p className="text-xs text-slate-500 font-tajawal max-w-2xl">

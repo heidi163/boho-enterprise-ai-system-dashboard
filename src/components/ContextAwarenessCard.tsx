@@ -60,7 +60,7 @@ export default function ContextAwarenessCard() {
             <div className="flex justify-between items-start mb-4">
                <div>
                   <h4 className="font-bold text-slate-800 font-tajawal flex items-center gap-2 mb-1">
-                     <Building2 className="w-4 h-4 text-indigo-500"/> الوعي المؤسسي والاجتماعي
+                     <Building2 className="w-4 h-4 text-blue-500"/> الوعي المؤسسي والاجتماعي
                   </h4>
                </div>
             </div>
@@ -68,7 +68,7 @@ export default function ContextAwarenessCard() {
             <div className="space-y-3 mt-2">
               <div className="p-3 rounded-2xl bg-white/50 border border-slate-200/50 flex flex-col">
                  <div className="flex items-center gap-2 mb-1 text-slate-700">
-                    <Building2 className="w-4 h-4 text-indigo-500" />
+                    <Building2 className="w-4 h-4 text-blue-500" />
                     <span className="text-xs font-tajawal font-bold">سياق الشركة (Company Context)</span>
                  </div>
                  <p className="text-[10px] text-slate-400 font-tajawal">استيعاب توجه وطريقة تعامل O2Nation أو BGK واستخدام لغتهم وأسلوبهم الفريد.</p>

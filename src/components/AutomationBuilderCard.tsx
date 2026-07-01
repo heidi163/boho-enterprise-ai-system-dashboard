@@ -6,10 +6,10 @@ export default function AutomationBuilderCard() {
       {/* Top Header Section */}
       <div className="bg-white/40 backdrop-blur-xl border border-white/60 rounded-[32px] p-6 shadow-[0_20px_40px_rgba(0,0,0,0.03)] text-right dir-rtl shrink-0">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-[10px] bg-purple-100 text-purple-800 font-mono font-bold px-2 py-0.5 rounded uppercase tracking-wider border border-purple-200">Workflow Engine</span>
+          <span className="text-[10px] bg-sky-100 text-sky-800 font-mono font-bold px-2 py-0.5 rounded uppercase tracking-wider border border-sky-200">Workflow Engine</span>
           <h3 className="font-bold text-slate-800 text-lg font-tajawal flex items-center gap-2">
             منشئ الأتمتة البصري (Automation Builder)
-            <Workflow className="w-5 h-5 text-purple-600" />
+            <Workflow className="w-5 h-5 text-sky-600" />
           </h3>
         </div>
         <p className="text-xs text-slate-500 font-tajawal max-w-2xl">
@@ -70,7 +70,7 @@ export default function AutomationBuilderCard() {
 
                <div className="p-3 rounded-2xl bg-slate-800 border border-slate-700 text-white">
                  <div className="flex items-center gap-2 mb-1.5">
-                    <BrainCircuit className="w-4 h-4 text-purple-400" />
+                    <BrainCircuit className="w-4 h-4 text-sky-400" />
                     <span className="text-xs font-tajawal font-bold">إنشاء بالذكاء الاصطناعي (AI Workflow Creation)</span>
                  </div>
                  <p className="text-[10px] text-slate-300 font-tajawal">بناء خطط الأتمتة بشكل كامل وتلقائي بمجرد وصف ما تريده بشكل نصي (Prompt-to-Workflow).</p>

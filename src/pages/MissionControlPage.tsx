@@ -55,10 +55,10 @@ export default function MissionControlPage() {
 
   const systemNodes = [
     { label: "Voice Layer", status: "online", color: "#10b981" },
-    { label: "Deep Brain", status: "online", color: "#6366f1" },
+    { label: "Deep Brain", status: "online", color: "#3b82f6" },
     { label: "Metorik MCP", status: "online", color: "#3b82f6" },
     { label: "Windsor MCP", status: "online", color: "#f59e0b" },
-    { label: "Telegram Push", status: "online", color: "#8b5cf6" },
+    { label: "Telegram Push", status: "online", color: "#0ea5e9" },
     { label: "n8n Cron", status: "standby", color: "#94a3b8" },
   ];
 
@@ -72,7 +72,7 @@ export default function MissionControlPage() {
       {/* TOP COMMAND STRIP */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { label: "إجمالي المبيعات اليوم", value: `${todayRevenue.toLocaleString()} EGP`, icon: TrendingUp, color: "#6366f1", bg: "from-indigo-50 to-indigo-100" },
+          { label: "إجمالي المبيعات اليوم", value: `${todayRevenue.toLocaleString()} EGP`, icon: TrendingUp, color: "#3b82f6", bg: "from-blue-50 to-blue-100" },
           { label: "أعلى ROAS", value: `${bestRoas}x`, icon: Zap, color: "#10b981", bg: "from-emerald-50 to-emerald-100" },
           { label: "مهام مفتوحة", value: openTasks, icon: CheckCircle, color: "#f59e0b", bg: "from-amber-50 to-amber-100" },
           { label: "التنبيهات النشطة", value: alerts.filter(a => a.type === "danger").length, icon: AlertCircle, color: "#ef4444", bg: "from-rose-50 to-rose-100" },
@@ -115,20 +115,20 @@ export default function MissionControlPage() {
           <button
             onClick={handleBriefing}
             disabled={generatingBrief}
-            className="px-4 py-2 bg-gradient-to-l from-indigo-500 to-blue-600 text-white text-xs font-bold rounded-full hover:opacity-90 transition-opacity flex items-center gap-2 disabled:opacity-50"
+            className="px-4 py-2 bg-gradient-to-l from-blue-500 to-blue-600 text-white text-xs font-bold rounded-full hover:opacity-90 transition-opacity flex items-center gap-2 disabled:opacity-50"
           >
             <Mic className="w-3.5 h-3.5" />
             {generatingBrief ? "بوهو بيفكر..." : "صحّيني بوهو"}
           </button>
-          <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">البريفنج الصباحي <BrainCircuit className="w-4 h-4 text-indigo-500" /></h3>
+          <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">البريفنج الصباحي <BrainCircuit className="w-4 h-4 text-blue-500" /></h3>
         </div>
-        <div className="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-2xl p-4 border border-indigo-100 min-h-[80px] flex items-center">
+        <div className="bg-gradient-to-br from-blue-50 to-blue-50 rounded-2xl p-4 border border-blue-100 min-h-[80px] flex items-center">
           <p className="text-sm text-slate-700 font-tajawal leading-relaxed text-right">
             {generatingBrief ? (
-              <span className="flex items-center gap-2 text-indigo-500">
-                <span className="w-2 h-2 bg-indigo-500 rounded-full animate-bounce" />
-                <span className="w-2 h-2 bg-indigo-500 rounded-full animate-bounce" style={{ animationDelay: "0.15s" }} />
-                <span className="w-2 h-2 bg-indigo-500 rounded-full animate-bounce" style={{ animationDelay: "0.3s" }} />
+              <span className="flex items-center gap-2 text-blue-500">
+                <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" />
+                <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: "0.15s" }} />
+                <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: "0.3s" }} />
                 بوهو بيجمع البيانات...
               </span>
             ) : briefing}
@@ -170,7 +170,7 @@ export default function MissionControlPage() {
         <div className="glass-panel rounded-[24px] p-5">
           <div className="flex items-center justify-between mb-4">
             <span className="text-[10px] font-mono text-gray-400 uppercase">ClickUp Sync</span>
-            <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">مهام اليوم <CheckCircle className="w-4 h-4 text-indigo-500" /></h3>
+            <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">مهام اليوم <CheckCircle className="w-4 h-4 text-blue-500" /></h3>
           </div>
           <div className="flex flex-col gap-2">
             {tasks.slice(0, 4).map((t, i) => (

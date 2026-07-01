@@ -6,10 +6,10 @@ export default function VoiceFeaturesCard() {
       {/* Top Header Section */}
       <div className="bg-white/40 backdrop-blur-xl border border-white/60 rounded-[32px] p-6 shadow-[0_20px_40px_rgba(0,0,0,0.03)] text-right dir-rtl shrink-0">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-[10px] bg-purple-100 text-purple-800 font-mono font-bold px-2 py-0.5 rounded uppercase tracking-wider border border-purple-200">Advanced Audio AI</span>
+          <span className="text-[10px] bg-sky-100 text-sky-800 font-mono font-bold px-2 py-0.5 rounded uppercase tracking-wider border border-sky-200">Advanced Audio AI</span>
           <h3 className="font-bold text-slate-800 text-lg font-tajawal flex items-center gap-2">
             ميزات الصوت المتقدمة (Advanced Voice)
-            <Mic className="w-5 h-5 text-purple-600" />
+            <Mic className="w-5 h-5 text-sky-600" />
           </h3>
         </div>
         <p className="text-xs text-slate-500 font-tajawal max-w-2xl">
@@ -74,9 +74,9 @@ export default function VoiceFeaturesCard() {
                  <p className="text-[10px] text-slate-300 font-tajawal">القدرة على إنشاء عينات صوتية مطابقة لأشخاص معينين واستخدامها في مقاطع توليدية.</p>
               </div>
 
-               <div className="p-3 rounded-2xl bg-white/50 border border-indigo-100/50 flex flex-col">
+               <div className="p-3 rounded-2xl bg-white/50 border border-blue-100/50 flex flex-col">
                  <div className="flex items-center gap-2 mb-1 text-slate-700">
-                    <Mic className="w-4 h-4 text-indigo-500" />
+                    <Mic className="w-4 h-4 text-blue-500" />
                     <span className="text-xs font-tajawal font-bold">أصوات متعددة (Multiple Voices)</span>
                  </div>
                  <p className="text-[10px] text-slate-400 font-tajawal">استخدام معلقين صوتيين آليين للإعلانات والنصوص القصيرة باختلاف طبيعتهم.</p>

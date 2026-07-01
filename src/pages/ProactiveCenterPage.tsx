@@ -70,11 +70,11 @@ export default function ProactiveCenterPage() {
           <button onClick={triggerRoasCheck} disabled={manualRoasLoading} className="flex items-center gap-1.5 text-xs text-white bg-gradient-to-l from-rose-500 to-red-600 rounded-full px-4 py-1.5 font-bold hover:opacity-90 disabled:opacity-50 transition-opacity shadow-sm">
             <Zap className="w-3.5 h-3.5" /> {manualRoasLoading ? "جارٍ الفحص..." : "فحص ROAS الآن"}
           </button>
-          <button onClick={triggerBriefing} disabled={manualBriefLoading} className="flex items-center gap-1.5 text-xs text-white bg-gradient-to-l from-indigo-500 to-blue-600 rounded-full px-4 py-1.5 font-bold hover:opacity-90 disabled:opacity-50 transition-opacity shadow-sm">
+          <button onClick={triggerBriefing} disabled={manualBriefLoading} className="flex items-center gap-1.5 text-xs text-white bg-gradient-to-l from-blue-500 to-blue-600 rounded-full px-4 py-1.5 font-bold hover:opacity-90 disabled:opacity-50 transition-opacity shadow-sm">
             <MessageSquare className="w-3.5 h-3.5" /> {manualBriefLoading ? "بوهو بيجهز..." : "بريفنج الآن"}
           </button>
         </div>
-        <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">مركز المبادرة <Radio className="w-4 h-4 text-indigo-500 animate-pulse" /></h3>
+        <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">مركز المبادرة <Radio className="w-4 h-4 text-blue-500 animate-pulse" /></h3>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
@@ -83,10 +83,10 @@ export default function ProactiveCenterPage() {
         <div className="lg:col-span-5 flex flex-col gap-5">
           
           {/* SMART TIMING PANEL */}
-          <div className={`glass-panel rounded-[24px] p-5 transition-all duration-500 ${isSmartTiming ? "bg-gradient-to-br from-violet-50/80 to-purple-50/30 border-violet-200" : ""}`}>
+          <div className={`glass-panel rounded-[24px] p-5 transition-all duration-500 ${isSmartTiming ? "bg-gradient-to-br from-sky-50/80 to-sky-50/30 border-sky-200" : ""}`}>
             <div className="flex items-center justify-between mb-4">
               <span className="text-[10px] font-mono text-gray-400 uppercase">Boho AI Engine</span>
-              <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">توقيت البريفنج الذكي <Sparkles className={`w-4 h-4 ${isSmartTiming ? "text-violet-500" : "text-gray-400"}`} /></h3>
+              <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">توقيت البريفنج الذكي <Sparkles className={`w-4 h-4 ${isSmartTiming ? "text-sky-500" : "text-gray-400"}`} /></h3>
             </div>
 
             <div className="flex items-center justify-between bg-white/60 rounded-xl p-3 border border-white/80 mb-4 shadow-sm">
@@ -94,24 +94,24 @@ export default function ProactiveCenterPage() {
                 <p className="text-xs font-bold text-slate-700 font-tajawal">توقيت ذكي (AI)</p>
                 <p className="text-[9px] text-gray-500 font-tajawal">بوهو بيحلل الكالندر ونشاطك عشان يبعت البريفنج في الوقت الصح</p>
               </div>
-              <button onClick={() => setIsSmartTiming(!isSmartTiming)} className={`w-10 h-5 rounded-full transition-colors relative shrink-0 ${isSmartTiming ? "bg-violet-500" : "bg-slate-200"}`}>
+              <button onClick={() => setIsSmartTiming(!isSmartTiming)} className={`w-10 h-5 rounded-full transition-colors relative shrink-0 ${isSmartTiming ? "bg-sky-500" : "bg-slate-200"}`}>
                 <div className={`w-3.5 h-3.5 bg-white rounded-full absolute top-0.5 transition-all shadow-sm ${isSmartTiming ? "right-0.5" : "left-0.5"}`} />
               </button>
             </div>
 
             {isSmartTiming ? (
-              <div className="bg-white/40 border border-violet-100 rounded-xl p-4 flex flex-col gap-3">
+              <div className="bg-white/40 border border-sky-100 rounded-xl p-4 flex flex-col gap-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-xl font-black font-mono text-violet-700">09:15 AM</span>
-                  <span className="text-[10px] bg-violet-100 text-violet-700 px-2 py-0.5 rounded-full font-bold">موعد اليوم المقترح</span>
+                  <span className="text-xl font-black font-mono text-sky-700">09:15 AM</span>
+                  <span className="text-[10px] bg-sky-100 text-sky-700 px-2 py-0.5 rounded-full font-bold">موعد اليوم المقترح</span>
                 </div>
                 <div className="text-[10px] text-slate-600 font-tajawal leading-relaxed bg-white/50 p-2 rounded-lg border border-white/60">
-                  <span className="font-bold text-violet-600">تحليل بوهو:</span> لاحظت إنك عندك اجتماع الساعة 9:30، ودايماً بتفتح الداشبورد 9:10. البريفنج هيوصلك 9:15 عشان يكون معاك وقت تقرأ براحتك قبل الاجتماع وتلحق تشرب القهوة.
+                  <span className="font-bold text-sky-600">تحليل بوهو:</span> لاحظت إنك عندك اجتماع الساعة 9:30، ودايماً بتفتح الداشبورد 9:10. البريفنج هيوصلك 9:15 عشان يكون معاك وقت تقرأ براحتك قبل الاجتماع وتلحق تشرب القهوة.
                 </div>
               </div>
             ) : (
               <div className="bg-white/40 border border-slate-100 rounded-xl p-4 flex items-center justify-between">
-                <input type="time" value={briefingTime} onChange={e => setBriefingTime(e.target.value)} className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-sm font-mono text-slate-700 outline-none focus:border-indigo-300" />
+                <input type="time" value={briefingTime} onChange={e => setBriefingTime(e.target.value)} className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-sm font-mono text-slate-700 outline-none focus:border-blue-300" />
                 <span className="text-xs text-slate-600 font-tajawal font-bold">وقت ثابت يومياً</span>
               </div>
             )}
@@ -184,19 +184,19 @@ export default function ProactiveCenterPage() {
           <div className="glass-panel rounded-[24px] p-5 flex-1 flex flex-col">
             <div className="flex items-center justify-between mb-4">
               <span className="text-[10px] font-mono text-gray-400 uppercase">سجل تليجرام</span>
-              <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">سجل الرسائل المرسلة <Clock className="w-4 h-4 text-indigo-500" /></h3>
+              <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">سجل الرسائل المرسلة <Clock className="w-4 h-4 text-blue-500" /></h3>
             </div>
             <div className="flex-1 overflow-y-auto sidebar-scroll pr-1 flex flex-col gap-3">
               {briefingHistory.map((b, i) => (
                 <div key={i} className="border border-white/80 rounded-2xl p-4 bg-white/50 shadow-sm relative overflow-hidden">
-                  {b.isSmart && <div className="absolute top-0 right-0 w-8 h-8 bg-violet-500/10 rounded-bl-full flex items-start justify-end p-1.5"><Sparkles className="w-3 h-3 text-violet-500" /></div>}
+                  {b.isSmart && <div className="absolute top-0 right-0 w-8 h-8 bg-sky-500/10 rounded-bl-full flex items-start justify-end p-1.5"><Sparkles className="w-3 h-3 text-sky-500" /></div>}
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
                       <CheckCircle className="w-3.5 h-3.5 text-emerald-500" />
                       <span className="text-[9px] font-mono text-emerald-600 font-bold">مُرسل</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      {b.isSmart && <span className="text-[8px] bg-violet-100 text-violet-700 px-1.5 py-0.5 rounded font-mono font-bold">توقيت ذكي</span>}
+                      {b.isSmart && <span className="text-[8px] bg-sky-100 text-sky-700 px-1.5 py-0.5 rounded font-mono font-bold">توقيت ذكي</span>}
                       <span className="text-[10px] font-mono text-gray-400">{b.date}</span>
                     </div>
                   </div>

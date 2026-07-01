@@ -31,7 +31,7 @@ export default function MobileCompanionCard() {
             <div className="space-y-3 mt-2">
               <div className="p-3 rounded-2xl bg-slate-800 border border-slate-700 text-white flex flex-col">
                  <div className="flex items-center gap-2 mb-1">
-                    <Smartphone className="w-4 h-4 text-indigo-400" />
+                    <Smartphone className="w-4 h-4 text-blue-400" />
                     <span className="text-xs font-tajawal font-bold">تطبيق الآيفون (iOS App)</span>
                  </div>
                  <p className="text-[10px] text-slate-300 font-tajawal">إصدار مخصص ونظيف يعمل بانسيابية عالية لأجهزة أبل والعمل الإداري السريع.</p>
@@ -60,7 +60,7 @@ export default function MobileCompanionCard() {
             <div className="flex justify-between items-start mb-4">
                <div>
                   <h4 className="font-bold text-slate-800 font-tajawal flex items-center gap-2 mb-1">
-                     <Settings className="w-4 h-4 text-indigo-500"/> تكامل أنظمة الهاتف
+                     <Settings className="w-4 h-4 text-blue-500"/> تكامل أنظمة الهاتف
                   </h4>
                </div>
             </div>

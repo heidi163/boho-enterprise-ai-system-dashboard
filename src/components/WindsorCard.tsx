@@ -53,7 +53,7 @@ export default function WindsorCard({ refreshTrigger }: WindsorCardProps) {
         </button>
 
         <div className="flex items-center gap-1">
-          <span className="text-[10px] px-2 py-0.5 rounded-full bg-violet-100 text-violet-800 font-medium font-mono">Windsor.ai</span>
+          <span className="text-[10px] px-2 py-0.5 rounded-full bg-sky-100 text-sky-800 font-medium font-mono">Windsor.ai</span>
           <h3 className="font-bold text-slate-800 text-sm font-tajawal text-right">أداء الحملات الإعلانية</h3>
         </div>
       </div>

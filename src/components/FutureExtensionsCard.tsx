@@ -35,7 +35,7 @@ export default function FutureExtensionsCard() {
             <div className="space-y-3 mt-2">
               <div className="p-3 rounded-2xl bg-white/50 border border-slate-200/50">
                  <div className="flex items-center gap-2 mb-1.5 text-slate-700">
-                    <CheckCircle2 className="w-4 h-4 text-indigo-500" />
+                    <CheckCircle2 className="w-4 h-4 text-blue-500" />
                     <span className="text-xs font-tajawal font-bold">دعم مهام ClickUp المتقدم (ClickUp Integration)</span>
                  </div>
                  <p className="text-[10px] text-slate-400 font-tajawal">أتمتة صناعة التذاكر وتحديث المهام تلقائيًا.</p>
@@ -92,7 +92,7 @@ export default function FutureExtensionsCard() {
 
               <div className="p-3 rounded-2xl bg-white/50 border border-rose-100/50">
                  <div className="flex items-center gap-2 mb-1.5 text-slate-700">
-                    <Rocket className="w-4 h-4 text-violet-500" />
+                    <Rocket className="w-4 h-4 text-sky-500" />
                     <span className="text-xs font-tajawal font-bold">تطوير المحادثة المباشرة (Enhanced Realtime Voice)</span>
                  </div>
                  <p className="text-[10px] text-slate-400 font-tajawal">استجابة فائقة السرعة مع قدرة أكبر على تفسير المعاني المعقدة من خلال الصوت.</p>

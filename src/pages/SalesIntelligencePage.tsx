@@ -152,13 +152,13 @@ export default function SalesIntelligencePage() {
                 formatter={(value: number) => [`${value.toLocaleString()} ${currency}`, '']}
               />
               <Line type="monotone" dataKey="ifilter" name="iFilter" stroke="#10b981" strokeWidth={3} dot={false} activeDot={{ r: 6, fill: "#10b981", stroke: "#fff", strokeWidth: 2 }} />
-              <Line type="monotone" dataKey="sealy" name="Sealy" stroke="#6366f1" strokeWidth={3} dot={false} activeDot={{ r: 6, fill: "#6366f1", stroke: "#fff", strokeWidth: 2 }} />
+              <Line type="monotone" dataKey="sealy" name="Sealy" stroke="#3b82f6" strokeWidth={3} dot={false} activeDot={{ r: 6, fill: "#3b82f6", stroke: "#fff", strokeWidth: 2 }} />
             </LineChart>
           </ResponsiveContainer>
         </div>
         <div className="flex items-center justify-center gap-6 mt-4 pt-4 border-t border-slate-100">
           <div className="flex items-center gap-2"><div className="w-3 h-1 rounded-full bg-[#10b981]" /><span className="text-[11px] font-mono text-slate-600">iFilter</span></div>
-          <div className="flex items-center gap-2"><div className="w-3 h-1 rounded-full bg-[#6366f1]" /><span className="text-[11px] font-mono text-slate-600">Sealy</span></div>
+          <div className="flex items-center gap-2"><div className="w-3 h-1 rounded-full bg-[#3b82f6]" /><span className="text-[11px] font-mono text-slate-600">Sealy</span></div>
         </div>
       </div>
 
@@ -191,7 +191,7 @@ export default function SalesIntelligencePage() {
         <div className="glass-panel rounded-[24px] p-5 bg-gradient-to-br from-white/60 to-emerald-50/30">
           <div className="flex items-center justify-between mb-4">
             <span className="text-[10px] font-mono text-gray-400 uppercase">استعلام ذكي</span>
-            <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">اسأل بوهو عن المبيعات <Search className="w-4 h-4 text-indigo-500" /></h3>
+            <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">اسأل بوهو عن المبيعات <Search className="w-4 h-4 text-blue-500" /></h3>
           </div>
           
           <div className="flex flex-col gap-3 h-full justify-center pb-4">
@@ -203,15 +203,15 @@ export default function SalesIntelligencePage() {
                 placeholder="إيه أكتر منتج اتباع من iFilter؟"
                 className="w-full bg-white border border-emerald-100 rounded-2xl px-5 py-4 pl-24 text-sm font-tajawal text-slate-800 outline-none shadow-sm focus:border-emerald-300 transition-colors"
               />
-              <button className="absolute left-2 top-2 bottom-2 px-4 bg-indigo-500 text-white rounded-xl text-xs font-bold font-tajawal hover:bg-indigo-600 transition-colors">
+              <button className="absolute left-2 top-2 bottom-2 px-4 bg-blue-500 text-white rounded-xl text-xs font-bold font-tajawal hover:bg-blue-600 transition-colors">
                 اسأل
               </button>
             </div>
             
             <div className="flex flex-wrap gap-2 justify-end mt-2">
-              <button onClick={() => setQuery("مبيعات امبارح؟")} className="text-[10px] px-3 py-1.5 rounded-full bg-indigo-50 text-indigo-600 font-tajawal hover:bg-indigo-100 border border-indigo-100">مبيعات امبارح؟</button>
-              <button onClick={() => setQuery("أعلى يوم الأسبوع؟")} className="text-[10px] px-3 py-1.5 rounded-full bg-indigo-50 text-indigo-600 font-tajawal hover:bg-indigo-100 border border-indigo-100">أعلى يوم الأسبوع؟</button>
-              <button onClick={() => setQuery("تقرير الشهر؟")} className="text-[10px] px-3 py-1.5 rounded-full bg-indigo-50 text-indigo-600 font-tajawal hover:bg-indigo-100 border border-indigo-100">تقرير الشهر؟</button>
+              <button onClick={() => setQuery("مبيعات امبارح؟")} className="text-[10px] px-3 py-1.5 rounded-full bg-blue-50 text-blue-600 font-tajawal hover:bg-blue-100 border border-blue-100">مبيعات امبارح؟</button>
+              <button onClick={() => setQuery("أعلى يوم الأسبوع؟")} className="text-[10px] px-3 py-1.5 rounded-full bg-blue-50 text-blue-600 font-tajawal hover:bg-blue-100 border border-blue-100">أعلى يوم الأسبوع؟</button>
+              <button onClick={() => setQuery("تقرير الشهر؟")} className="text-[10px] px-3 py-1.5 rounded-full bg-blue-50 text-blue-600 font-tajawal hover:bg-blue-100 border border-blue-100">تقرير الشهر؟</button>
             </div>
           </div>
         </div>

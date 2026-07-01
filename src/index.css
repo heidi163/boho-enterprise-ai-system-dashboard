@@ -52,7 +52,7 @@ body {
 
 /* Orb Pulsing Radial Gradients */
 .orb-glow {
-  background: radial-gradient(circle, rgba(180, 198, 252, 0.8) 0%, rgba(212, 196, 250, 0.7) 40%, rgba(244, 212, 240, 0.5) 75%, rgba(255, 255, 255, 0) 100%);
+  background: radial-gradient(circle, rgba(147, 197, 253, 0.8) 0%, rgba(125, 211, 252, 0.7) 40%, rgba(186, 230, 253, 0.5) 75%, rgba(255, 255, 255, 0) 100%);
   filter: blur(8px);
 }
 
@@ -70,8 +70,8 @@ body {
 }
 
 @keyframes pulse-soft {
-  0%, 100% { transform: scale(1); opacity: 0.85; filter: drop-shadow(0 0 15px rgba(180, 198, 252, 0.4)); }
-  50% { transform: scale(1.05); opacity: 1; filter: drop-shadow(0 0 35px rgba(212, 196, 250, 0.7)); }
+  0%, 100% { transform: scale(1); opacity: 0.85; filter: drop-shadow(0 0 15px rgba(147, 197, 253, 0.4)); }
+  50% { transform: scale(1.05); opacity: 1; filter: drop-shadow(0 0 35px rgba(125, 211, 252, 0.7)); }
 }
 
 @keyframes voice-wave {

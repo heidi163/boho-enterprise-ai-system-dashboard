@@ -45,7 +45,7 @@ export default function McpIntegrationsCard() {
               <div className="p-3 rounded-2xl bg-white/50 border border-emerald-100/50">
                  <div className="flex justify-between text-xs text-slate-600 font-mono mb-1">
                     <span>predict_revenue_trends</span>
-                    <span className="text-purple-500">AI Deep Reason</span>
+                    <span className="text-sky-500">AI Deep Reason</span>
                  </div>
                  <p className="text-[10px] text-slate-400 font-tajawal">تحليل مسار المبيعات بناءً على التاريخ المحفوظ لتوقع نهاية الشهر.</p>
               </div>
@@ -57,7 +57,7 @@ export default function McpIntegrationsCard() {
             <div className="flex justify-between items-start mb-4">
                <div>
                   <h4 className="font-bold text-slate-800 font-tajawal flex items-center gap-2 mb-1">
-                     <Activity className="w-4 h-4 text-violet-500"/> منصة Windsor AI (Ads Data)
+                     <Activity className="w-4 h-4 text-sky-500"/> منصة Windsor AI (Ads Data)
                   </h4>
                   <p className="text-xs text-slate-500 font-tajawal">تحليلات حملات التسويق، الـ ROAS، وبيانات Meta / Google</p>
                </div>
@@ -67,7 +67,7 @@ export default function McpIntegrationsCard() {
             </div>
 
             <div className="space-y-3 mt-2">
-              <div className="p-3 rounded-2xl bg-white/50 border border-violet-100/50">
+              <div className="p-3 rounded-2xl bg-white/50 border border-sky-100/50">
                  <div className="flex justify-between text-xs text-slate-600 font-mono mb-1">
                     <span>fetch_roas_campaigns</span>
                     <span className="text-blue-500">MCP Tool</span>
@@ -75,10 +75,10 @@ export default function McpIntegrationsCard() {
                  <p className="text-[10px] text-slate-400 font-tajawal">سحب بيانات العائد الاستثماري الحي والمصروفات الإعلانية لحظياً.</p>
               </div>
 
-               <div className="p-3 rounded-2xl bg-white/50 border border-violet-100/50">
+               <div className="p-3 rounded-2xl bg-white/50 border border-sky-100/50">
                  <div className="flex justify-between text-xs text-slate-600 font-mono mb-1">
                     <span>anomaly_detection_alerts</span>
-                    <span className="text-purple-500">AI Deep Reason</span>
+                    <span className="text-sky-500">AI Deep Reason</span>
                  </div>
                  <p className="text-[10px] text-slate-400 font-tajawal">المراقبة المستمرة لانخفاض الأداء (ROAS) تحت المعايير.</p>
               </div>
@@ -111,7 +111,7 @@ export default function McpIntegrationsCard() {
               <div className="p-3 rounded-2xl bg-white/50 border border-emerald-100/50">
                  <div className="flex justify-between text-xs text-slate-600 font-mono mb-1">
                     <span>multi_step_operations</span>
-                    <span className="text-purple-500">Task Execution</span>
+                    <span className="text-sky-500">Task Execution</span>
                  </div>
                  <p className="text-[10px] text-slate-400 font-tajawal">القيام بعمليات مركبة كالاستعلام عن عدة أنظمة في وقت واحد (Query Multiple Systems).</p>
               </div>
@@ -144,7 +144,7 @@ export default function McpIntegrationsCard() {
                <div className="p-3 rounded-2xl bg-white/50 border border-blue-100/50">
                  <div className="flex justify-between text-xs text-slate-600 font-mono mb-1">
                     <span>business_tasks</span>
-                    <span className="text-purple-500">Task Execution</span>
+                    <span className="text-sky-500">Task Execution</span>
                  </div>
                  <p className="text-[10px] text-slate-400 font-tajawal">توليد تقارير الأداء المجمعة وإدارة المهام التنفيذية الحقيقية (Execute Real Tool Actions).</p>
               </div>
@@ -185,7 +185,7 @@ export default function McpIntegrationsCard() {
                     <span className="text-[10px] text-white font-mono uppercase tracking-widest text-center leading-tight">Multi-Tool<br/>Orchestration</span>
                  </div>
                  <div className="bg-white/10 rounded-xl border border-white/10 p-3 flex flex-col justify-center items-center gap-2 backdrop-blur-sm">
-                    <Activity className="w-5 h-5 text-purple-400" />
+                    <Activity className="w-5 h-5 text-sky-400" />
                     <span className="text-[10px] text-white font-mono uppercase tracking-widest text-center leading-tight">Remote Tool<br/>Access</span>
                  </div>
               </div>

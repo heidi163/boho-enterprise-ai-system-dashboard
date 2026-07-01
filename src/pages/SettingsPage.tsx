@@ -63,11 +63,11 @@ export default function SettingsPage() {
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-3 px-4 py-3 rounded-2xl transition-all font-tajawal font-bold text-sm text-right ${
                 activeTab === tab.id 
-                  ? "bg-white shadow-[0_4px_20px_rgba(0,0,0,0.03)] text-indigo-600 border border-white" 
+                  ? "bg-white shadow-[0_4px_20px_rgba(0,0,0,0.03)] text-blue-600 border border-white" 
                   : "text-slate-600 hover:bg-white/50 border border-transparent"
               }`}
             >
-              <tab.icon className={`w-4 h-4 ${activeTab === tab.id ? "text-indigo-500" : "text-slate-400"}`} />
+              <tab.icon className={`w-4 h-4 ${activeTab === tab.id ? "text-blue-500" : "text-slate-400"}`} />
               {tab.label}
             </button>
           ))}
@@ -84,7 +84,7 @@ export default function SettingsPage() {
               </div>
 
               <div className="flex items-center gap-6">
-                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-indigo-100 to-blue-200 border-4 border-white shadow-sm flex items-center justify-center text-indigo-500 font-black text-2xl font-mono">
+                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 border-4 border-white shadow-sm flex items-center justify-center text-blue-500 font-black text-2xl font-mono">
                   A
                 </div>
                 <div>
@@ -97,15 +97,15 @@ export default function SettingsPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-4">
                 <div>
                   <label className="block text-xs font-bold text-slate-700 font-tajawal mb-1.5">الاسم الكامل</label>
-                  <input type="text" defaultValue="أحمد صلاح" className="w-full bg-white/60 border border-gray-200 rounded-xl px-4 py-2.5 text-sm font-tajawal text-slate-800 focus:outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100" />
+                  <input type="text" defaultValue="أحمد صلاح" className="w-full bg-white/60 border border-gray-200 rounded-xl px-4 py-2.5 text-sm font-tajawal text-slate-800 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100" />
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-slate-700 font-tajawal mb-1.5">البريد الإلكتروني</label>
-                  <input type="email" defaultValue="ahmed@bohemiangeeks.com" className="w-full bg-white/60 border border-gray-200 rounded-xl px-4 py-2.5 text-sm font-tajawal text-slate-800 focus:outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100" />
+                  <input type="email" defaultValue="ahmed@bohemiangeeks.com" className="w-full bg-white/60 border border-gray-200 rounded-xl px-4 py-2.5 text-sm font-tajawal text-slate-800 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100" />
                 </div>
                 <div className="md:col-span-2">
                   <label className="block text-xs font-bold text-slate-700 font-tajawal mb-1.5">الشركة / الوكالة</label>
-                  <input type="text" defaultValue="BGK / O2Nation" className="w-full bg-white/60 border border-gray-200 rounded-xl px-4 py-2.5 text-sm font-tajawal text-slate-800 focus:outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100" />
+                  <input type="text" defaultValue="BGK / O2Nation" className="w-full bg-white/60 border border-gray-200 rounded-xl px-4 py-2.5 text-sm font-tajawal text-slate-800 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100" />
                 </div>
               </div>
             </div>
@@ -137,8 +137,8 @@ export default function SettingsPage() {
                     <span className="text-[10px] bg-amber-100 text-amber-700 px-2 py-0.5 rounded font-mono font-bold">Missing</span>
                   </div>
                   <div className="flex gap-2">
-                    <input type="text" value={elevenLabsKey} onChange={e => setElevenLabsKey(e.target.value)} placeholder="أدخل مفتاح ElevenLabs لتفعيل الصوت الاحترافي" className="flex-1 bg-white border border-gray-200 rounded-xl px-4 py-2 text-sm font-mono text-slate-800 focus:outline-none focus:border-indigo-400" />
-                    <button onClick={handleSaveElevenLabs} disabled={savingKey} className="bg-indigo-50 border border-indigo-100 text-indigo-700 px-4 py-2 rounded-xl font-bold font-tajawal text-xs hover:bg-indigo-100 transition-all">{savingKey ? "جاري الحفظ..." : "حفظ"}</button>
+                    <input type="text" value={elevenLabsKey} onChange={e => setElevenLabsKey(e.target.value)} placeholder="أدخل مفتاح ElevenLabs لتفعيل الصوت الاحترافي" className="flex-1 bg-white border border-gray-200 rounded-xl px-4 py-2 text-sm font-mono text-slate-800 focus:outline-none focus:border-blue-400" />
+                    <button onClick={handleSaveElevenLabs} disabled={savingKey} className="bg-blue-50 border border-blue-100 text-blue-700 px-4 py-2 rounded-xl font-bold font-tajawal text-xs hover:bg-blue-100 transition-all">{savingKey ? "جاري الحفظ..." : "حفظ"}</button>
                   </div>
                 </div>
                 <div className="bg-slate-50 border border-slate-100 rounded-2xl p-5">
@@ -164,7 +164,7 @@ export default function SettingsPage() {
               </div>
 
               {/* Google Workspace */}
-              <div className="bg-white/60 border border-indigo-100 rounded-2xl p-6">
+              <div className="bg-white/60 border border-blue-100 rounded-2xl p-6">
                 <div className="flex items-start justify-between mb-6">
                   <div className="flex items-center gap-4">
                     <div className="w-12 h-12 bg-white shadow-sm border border-gray-100 rounded-xl flex items-center justify-center p-2">
@@ -181,17 +181,17 @@ export default function SettingsPage() {
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
                     <span className="text-xs font-bold text-slate-700 font-tajawal">Gmail Access (Read/Send)</span>
-                    <input type="checkbox" defaultChecked className="w-4 h-4 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500" />
+                    <input type="checkbox" defaultChecked className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" />
                   </div>
                   <div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
                     <span className="text-xs font-bold text-slate-700 font-tajawal">Google Calendar (Manage)</span>
-                    <input type="checkbox" defaultChecked className="w-4 h-4 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500" />
+                    <input type="checkbox" defaultChecked className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" />
                   </div>
                 </div>
 
                 <div className="flex items-center justify-end gap-3 mt-6 pt-4 border-t border-gray-100">
                   <button className="text-xs font-bold text-rose-500 hover:text-rose-600 font-tajawal px-4 py-2 transition-colors">إلغاء الربط (Revoke)</button>
-                  <button className="bg-indigo-50 text-indigo-600 text-xs font-bold font-tajawal px-4 py-2 rounded-xl hover:bg-indigo-100 border border-indigo-200 transition-all">تجديد الـ Token</button>
+                  <button className="bg-blue-50 text-blue-600 text-xs font-bold font-tajawal px-4 py-2 rounded-xl hover:bg-blue-100 border border-blue-200 transition-all">تجديد الـ Token</button>
                 </div>
               </div>
 

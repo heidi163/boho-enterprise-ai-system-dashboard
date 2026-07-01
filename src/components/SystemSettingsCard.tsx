@@ -10,7 +10,7 @@ export default function SystemSettingsCard() {
               <p className="text-[10px] text-gray-400 font-mono mb-1 uppercase tracking-wider">Main AI Engine</p>
               <p className="font-bold text-slate-800 text-sm font-sans tracking-tight">Claude 3.5 Sonnet / Opus</p>
             </div>
-            <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 shadow-inner">
+            <div className="w-10 h-10 rounded-full bg-sky-100 flex items-center justify-center text-sky-600 shadow-inner">
               <Cpu className="w-5 h-5"/>
             </div>
         </div>
@@ -69,7 +69,7 @@ export default function SystemSettingsCard() {
             {/* Memory Matrix SQLite */}
             <div className="p-4 rounded-2xl border border-white/80 bg-white/40 hover:bg-white/60 transition-colors flex flex-col gap-2">
               <h4 className="font-bold text-sm text-slate-800 flex items-center gap-2 font-tajawal">
-                  <Database className="w-4 h-4 text-purple-500"/> الذاكرة الطويلة والقصيرة
+                  <Database className="w-4 h-4 text-sky-500"/> الذاكرة الطويلة والقصيرة
               </h4>
               <p className="text-xs text-slate-500 leading-relaxed font-tajawal">
                   تخزين مستمر للحقائق والملخصات عن العملاء والمشاريع في قاعدة <span className="font-mono text-zinc-700">SQLite</span> للوصول الاستراتيجي، مع الاحتفاظ بسياق المحادثة قصيرة المدى لدعم خاصية الـ Barge-in بـ Low Latency (~300ms).

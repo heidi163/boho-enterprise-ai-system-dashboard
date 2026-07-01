@@ -74,7 +74,7 @@ export default function AdsCommandCenterPage() {
           <button onClick={() => setManualCheckLoading(true)} disabled={manualCheckLoading} className="flex items-center gap-1.5 text-xs text-white bg-gradient-to-l from-rose-500 to-red-600 rounded-full px-4 py-1.5 hover:opacity-90 disabled:opacity-50 font-bold">
             <Zap className="w-3.5 h-3.5" /> {manualCheckLoading ? "جارٍ الفحص..." : "افحص ROAS الآن"}
           </button>
-          <button onClick={fetchData} className="flex items-center gap-1.5 text-xs text-gray-500 border border-gray-200 rounded-full px-3 py-1.5 hover:text-indigo-500 font-mono">
+          <button onClick={fetchData} className="flex items-center gap-1.5 text-xs text-gray-500 border border-gray-200 rounded-full px-3 py-1.5 hover:text-blue-500 font-mono">
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} /> تحديث
           </button>
         </div>
@@ -84,7 +84,7 @@ export default function AdsCommandCenterPage() {
       {/* SUMMARY STRIP */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { label: "إجمالي الإنفاق", value: `${totalSpend.toLocaleString()}`, icon: DollarSign, color: "#6366f1" },
+          { label: "إجمالي الإنفاق", value: `${totalSpend.toLocaleString()}`, icon: DollarSign, color: "#3b82f6" },
           { label: "إجمالي العائد", value: `${totalRevenue.toLocaleString()}`, icon: TrendingUp, color: "#10b981" },
           { label: "متوسط ROAS", value: `${avgRoas}x`, icon: Target, color: "#f59e0b" },
           { label: "تحت العتبة", value: criticalCount, icon: AlertCircle, color: "#ef4444" },
@@ -196,7 +196,7 @@ export default function AdsCommandCenterPage() {
                   <XAxis type="number" tick={{ fontSize: 9, fill: "#9ca3af" }} axisLine={false} tickLine={false} />
                   <YAxis type="category" dataKey="name" tick={{ fontSize: 9, fill: "#9ca3af", fontFamily: "JetBrains Mono" }} axisLine={false} tickLine={false} width={80} />
                   <Tooltip contentStyle={{ background: "rgba(255,255,255,0.95)", border: "none", borderRadius: 12, fontSize: 11 }} />
-                  <Bar dataKey="spend" fill="#6366f1" radius={[0, 4, 4, 0]} name="الإنفاق" />
+                  <Bar dataKey="spend" fill="#3b82f6" radius={[0, 4, 4, 0]} name="الإنفاق" />
                   <Bar dataKey="revenue" fill="#10b981" radius={[0, 4, 4, 0]} name="العائد" />
                 </BarChart>
               </ResponsiveContainer>

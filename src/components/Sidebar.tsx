@@ -22,7 +22,7 @@ const PAGES = [
     label: "مركز القيادة",
     sublabel: "مركز القيادة",
     badge: null,
-    gradient: "from-indigo-500 to-blue-600",
+    gradient: "from-blue-500 to-blue-600",
   },
   {
     id: "deepbrain",
@@ -30,7 +30,7 @@ const PAGES = [
     label: "العقل العميق",
     sublabel: "العقل العميق + الذاكرة",
     badge: "AI",
-    gradient: "from-violet-500 to-purple-600",
+    gradient: "from-sky-500 to-sky-600",
   },
   {
     id: "sales",
@@ -70,7 +70,7 @@ const PAGES = [
     label: "مركز المبادرة",
     sublabel: "n8n • Telegram • بريفنجات",
     badge: "New",
-    gradient: "from-fuchsia-500 to-pink-600",
+    gradient: "from-blue-500 to-pink-600",
   },
   {
     id: "health",
@@ -85,7 +85,7 @@ const PAGES = [
     label: "قاعدة المعرفة",
     sublabel: "SOPs • عقود • Search",
     badge: null,
-    gradient: "from-blue-500 to-indigo-600",
+    gradient: "from-blue-500 to-blue-600",
   },
   {
     id: "calendar",
@@ -118,14 +118,14 @@ export default function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
       {/* Branding */}
       <div className="flex items-center gap-3 shrink-0 mb-8 mt-2 px-2">
         <div className="relative">
-          <div className="absolute inset-0 bg-indigo-400 rounded-full blur-md opacity-70 animate-pulse" />
-          <div className="relative w-9 h-9 rounded-full bg-gradient-to-br from-indigo-400 via-blue-500 to-violet-600 shadow-[0_0_20px_rgba(99,102,241,0.6)] border-2 border-white/60 flex items-center justify-center">
+          <div className="absolute inset-0 bg-blue-400 rounded-full blur-md opacity-70 animate-pulse" />
+          <div className="relative w-9 h-9 rounded-full bg-gradient-to-br from-blue-400 via-blue-500 to-sky-600 shadow-[0_0_20px_rgba(59,130,246,0.6)] border-2 border-white/60 flex items-center justify-center">
             <span className="text-white text-[10px] font-black font-mono">B</span>
           </div>
         </div>
         <div className="flex flex-col items-start">
           <span className="text-[15px] text-slate-800 font-black tracking-widest font-sans leading-none">BOHO</span>
-          <span className="text-[9px] text-indigo-500 font-mono tracking-wider font-bold mt-0.5">ENTERPRISE OS v2</span>
+          <span className="text-[9px] text-blue-500 font-mono tracking-wider font-bold mt-0.5">ENTERPRISE OS v2</span>
         </div>
       </div>
 
@@ -136,7 +136,7 @@ export default function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
           className="w-full flex items-center justify-between bg-white/50 hover:bg-white/80 border border-slate-200 rounded-xl p-2 transition-all"
         >
           <div className="flex items-center gap-2">
-            <Building2 className="w-3.5 h-3.5 text-indigo-500" />
+            <Building2 className="w-3.5 h-3.5 text-blue-500" />
             <span className="text-[11px] font-bold text-slate-700 font-tajawal">{activeCompany.name}</span>
           </div>
           <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform ${showCompanies ? "rotate-180" : ""}`} />
@@ -152,7 +152,7 @@ export default function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
                   setShowCompanies(false);
                 }}
                 className={`w-full text-right px-3 py-2 text-[11px] font-bold font-tajawal transition-colors ${
-                  activeCompany.id === c.id ? "bg-indigo-50 text-indigo-700" : "text-slate-600 hover:bg-slate-50"
+                  activeCompany.id === c.id ? "bg-blue-50 text-blue-700" : "text-slate-600 hover:bg-slate-50"
                 }`}
               >
                 {c.name}
@@ -180,8 +180,8 @@ export default function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
                   className="absolute inset-0 rounded-2xl pointer-events-none"
                   style={{
                     background: `linear-gradient(135deg, var(--tw-gradient-stops))`,
-                    backgroundImage: `linear-gradient(135deg, #6366f1, #4f46e5)`,
-                    boxShadow: "0 8px 24px rgba(99,102,241,0.35), inset 0 1px 0 rgba(255,255,255,0.2)",
+                    backgroundImage: `linear-gradient(135deg, #3b82f6, #2563eb)`,
+                    boxShadow: "0 8px 24px rgba(59,130,246,0.35), inset 0 1px 0 rgba(255,255,255,0.2)",
                   }}
                 />
               )}
@@ -196,13 +196,13 @@ export default function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
                 className={`relative z-10 w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-all ${
                   isActive
                     ? "bg-white/20 shadow-sm"
-                    : "bg-white/60 border border-white/80 group-hover:bg-indigo-50 group-hover:border-indigo-200"
+                    : "bg-white/60 border border-white/80 group-hover:bg-blue-50 group-hover:border-blue-200"
                 }`}
               >
                 <Icon
                   strokeWidth={1.8}
                   className={`w-4 h-4 transition-colors ${
-                    isActive ? "text-white" : "text-slate-500 group-hover:text-indigo-500"
+                    isActive ? "text-white" : "text-slate-500 group-hover:text-blue-500"
                   }`}
                 />
               </div>
@@ -223,7 +223,7 @@ export default function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
                   className={`relative z-10 text-[8px] px-2 py-0.5 rounded-full font-mono font-black shrink-0 ${
                     isActive
                       ? "bg-white/25 text-white"
-                      : "bg-indigo-100 text-indigo-700 border border-indigo-200"
+                      : "bg-blue-100 text-blue-700 border border-blue-200"
                   }`}
                 >
                   {page.badge}

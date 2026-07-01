@@ -162,31 +162,31 @@ export default function TaskManagerPage() {
       {/* HEADER */}
       <div className="glass-panel rounded-[24px] p-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <button onClick={fetchTasks} className="flex items-center gap-1.5 text-xs text-gray-500 border border-gray-200 rounded-full px-3 py-1.5 hover:text-indigo-500 font-mono">
+          <button onClick={fetchTasks} className="flex items-center gap-1.5 text-xs text-gray-500 border border-gray-200 rounded-full px-3 py-1.5 hover:text-blue-500 font-mono">
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} /> تحديث
           </button>
-          <button onClick={() => setShowForm(!showForm)} className="flex items-center gap-1.5 text-xs text-white bg-gradient-to-l from-indigo-500 to-blue-600 rounded-full px-4 py-1.5 font-bold hover:opacity-90">
+          <button onClick={() => setShowForm(!showForm)} className="flex items-center gap-1.5 text-xs text-white bg-gradient-to-l from-blue-500 to-blue-600 rounded-full px-4 py-1.5 font-bold hover:opacity-90">
             <Plus className="w-3.5 h-3.5" /> مهمة جديدة
           </button>
         </div>
-        <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">مدير المهام <CheckSquare className="w-4 h-4 text-indigo-500" /></h3>
+        <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">مدير المهام <CheckSquare className="w-4 h-4 text-blue-500" /></h3>
       </div>
 
       {/* ADD FORM */}
       {showForm && (
         <div className="glass-panel rounded-[24px] p-5 animate-in slide-in-from-top-4">
-          <h4 className="text-sm font-bold text-slate-800 font-tajawal mb-4 text-right flex items-center justify-end gap-2"><Plus className="w-4 h-4 text-indigo-500" /> إضافة مهمة جديدة</h4>
+          <h4 className="text-sm font-bold text-slate-800 font-tajawal mb-4 text-right flex items-center justify-end gap-2"><Plus className="w-4 h-4 text-blue-500" /> إضافة مهمة جديدة</h4>
           <div className="flex flex-col gap-3">
-            <input value={newName} onChange={e => setNewName(e.target.value)} placeholder="اسم المهمة..." className="bg-white/70 border border-white/80 rounded-xl px-4 py-3 text-sm font-tajawal text-slate-800 outline-none text-right placeholder-gray-400 focus:border-indigo-300" />
-            <input value={newDesc} onChange={e => setNewDesc(e.target.value)} placeholder="تفاصيل (اختياري)..." className="bg-white/70 border border-white/80 rounded-xl px-4 py-3 text-sm font-tajawal text-slate-800 outline-none text-right placeholder-gray-400 focus:border-indigo-300" />
+            <input value={newName} onChange={e => setNewName(e.target.value)} placeholder="اسم المهمة..." className="bg-white/70 border border-white/80 rounded-xl px-4 py-3 text-sm font-tajawal text-slate-800 outline-none text-right placeholder-gray-400 focus:border-blue-300" />
+            <input value={newDesc} onChange={e => setNewDesc(e.target.value)} placeholder="تفاصيل (اختياري)..." className="bg-white/70 border border-white/80 rounded-xl px-4 py-3 text-sm font-tajawal text-slate-800 outline-none text-right placeholder-gray-400 focus:border-blue-300" />
             <div className="flex items-center gap-3">
               <select value={newPriority} onChange={e => setNewPriority(e.target.value as any)} className="flex-1 bg-white/70 border border-white/80 rounded-xl px-4 py-3 text-sm font-tajawal text-slate-800 outline-none">
                 <option value="high">🔴 أولوية عالية</option>
                 <option value="medium">🟡 أولوية متوسطة</option>
                 <option value="low">⚪ أولوية منخفضة</option>
               </select>
-              <input value={newDue} onChange={e => setNewDue(e.target.value)} placeholder="الموعد النهائي..." className="flex-1 bg-white/70 border border-white/80 rounded-xl px-4 py-3 text-sm font-tajawal text-slate-800 outline-none text-right placeholder-gray-400 focus:border-indigo-300" />
-              <button onClick={addTask} disabled={!newName.trim()} className="px-6 py-3 bg-gradient-to-l from-indigo-500 to-blue-600 text-white text-sm font-bold rounded-xl hover:opacity-90 disabled:opacity-40 transition-opacity">
+              <input value={newDue} onChange={e => setNewDue(e.target.value)} placeholder="الموعد النهائي..." className="flex-1 bg-white/70 border border-white/80 rounded-xl px-4 py-3 text-sm font-tajawal text-slate-800 outline-none text-right placeholder-gray-400 focus:border-blue-300" />
+              <button onClick={addTask} disabled={!newName.trim()} className="px-6 py-3 bg-gradient-to-l from-blue-500 to-blue-600 text-white text-sm font-bold rounded-xl hover:opacity-90 disabled:opacity-40 transition-opacity">
                 إضافة
               </button>
             </div>
@@ -223,12 +223,12 @@ export default function TaskManagerPage() {
       )}
 
       {/* BOHO AUTO-PRIORITY BANNER */}
-      <div className={`glass-panel rounded-[24px] p-5 flex flex-col md:flex-row items-center gap-5 transition-all duration-500 ${isAnalyzing ? "bg-indigo-50/50 border-indigo-200 ring-2 ring-indigo-500/20" : ""}`}>
+      <div className={`glass-panel rounded-[24px] p-5 flex flex-col md:flex-row items-center gap-5 transition-all duration-500 ${isAnalyzing ? "bg-blue-50/50 border-blue-200 ring-2 ring-blue-500/20" : ""}`}>
         
         <div className="flex-1 text-right flex flex-col items-end">
           <div className="flex items-center gap-2 mb-1">
             <h4 className="text-sm font-bold text-slate-800 font-tajawal">ترتيب بوهو التلقائي</h4>
-            <BrainCircuit className={`w-5 h-5 ${isAnalyzing ? "text-indigo-500 animate-pulse" : "text-violet-400"}`} />
+            <BrainCircuit className={`w-5 h-5 ${isAnalyzing ? "text-blue-500 animate-pulse" : "text-sky-400"}`} />
           </div>
           <p className="text-xs text-gray-500 font-tajawal max-w-md">
             بوهو بيسحب داتا المبيعات من Metorik وتكلفة الإعلانات من Windsor عشان يعيد ترتيب مهامك بناءً على اللي بيأثر على الفلوس بجد.
@@ -239,7 +239,7 @@ export default function TaskManagerPage() {
           <button 
             onClick={runAutoPriority} 
             disabled={isAnalyzing || tasks.length === 0} 
-            className="w-full md:w-auto flex items-center justify-center gap-2 text-sm text-white bg-gradient-to-l from-violet-500 to-purple-600 rounded-xl px-6 py-3 font-bold hover:opacity-90 disabled:opacity-50 transition-all shadow-md hover:shadow-lg"
+            className="w-full md:w-auto flex items-center justify-center gap-2 text-sm text-white bg-gradient-to-l from-sky-500 to-sky-600 rounded-xl px-6 py-3 font-bold hover:opacity-90 disabled:opacity-50 transition-all shadow-md hover:shadow-lg"
           >
             {isAnalyzing ? (
               <><RefreshCw className="w-4 h-4 animate-spin" /> جاري التحليل...</>
@@ -250,7 +250,7 @@ export default function TaskManagerPage() {
           
           {/* Analysis Steps Indicator */}
           {isAnalyzing && (
-            <div className="flex items-center gap-2 text-[10px] font-mono text-indigo-600 font-bold mt-1">
+            <div className="flex items-center gap-2 text-[10px] font-mono text-blue-600 font-bold mt-1">
               <span className={analysisStep >= 1 ? "opacity-100" : "opacity-30"}><CheckSquare className="w-3 h-3 inline mr-1" />مهام</span>
               <span>→</span>
               <span className={analysisStep >= 2 ? "opacity-100" : "opacity-30"}><BarChart2 className="w-3 h-3 inline mr-1" />إعلانات</span>
@@ -295,9 +295,9 @@ export default function TaskManagerPage() {
                     
                     {/* Boho Reason Banner */}
                     {t.bohoReason && (
-                      <div className="mt-2 mb-3 bg-violet-50 border border-violet-100 rounded-lg p-2 text-right">
-                        <p className="text-[9px] font-bold text-violet-700 font-mono mb-0.5 flex items-center justify-end gap-1"><BrainCircuit className="w-3 h-3" /> تحليلات بوهو</p>
-                        <p className="text-[10px] text-violet-600 font-tajawal leading-tight">{t.bohoReason}</p>
+                      <div className="mt-2 mb-3 bg-sky-50 border border-sky-100 rounded-lg p-2 text-right">
+                        <p className="text-[9px] font-bold text-sky-700 font-mono mb-0.5 flex items-center justify-end gap-1"><BrainCircuit className="w-3 h-3" /> تحليلات بوهو</p>
+                        <p className="text-[10px] text-sky-600 font-tajawal leading-tight">{t.bohoReason}</p>
                       </div>
                     )}
 

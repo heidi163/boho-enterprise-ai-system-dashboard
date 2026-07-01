@@ -6,10 +6,10 @@ export default function AdvancedMemoryCard() {
       {/* Top Header Section */}
       <div className="bg-white/40 backdrop-blur-xl border border-white/60 rounded-[32px] p-6 shadow-[0_20px_40px_rgba(0,0,0,0.03)] text-right dir-rtl shrink-0">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-[10px] bg-purple-100 text-purple-800 font-mono font-bold px-2 py-0.5 rounded uppercase tracking-wider border border-purple-200">Advanced Memory</span>
+          <span className="text-[10px] bg-sky-100 text-sky-800 font-mono font-bold px-2 py-0.5 rounded uppercase tracking-wider border border-sky-200">Advanced Memory</span>
           <h3 className="font-bold text-slate-800 text-lg font-tajawal flex items-center gap-2">
             الذاكرة المتقدمة والسياق المعرفي
-            <Brain className="w-5 h-5 text-purple-500" />
+            <Brain className="w-5 h-5 text-sky-500" />
           </h3>
         </div>
         <p className="text-xs text-slate-500 font-tajawal max-w-2xl">
@@ -76,7 +76,7 @@ export default function AdvancedMemoryCard() {
             <div className="space-y-3 mt-2">
               <div className="p-3 rounded-2xl bg-white/50 border border-slate-200/50">
                  <div className="flex items-center gap-2 mb-1.5 text-slate-700">
-                    <Users className="w-4 h-4 text-indigo-500" />
+                    <Users className="w-4 h-4 text-blue-500" />
                     <span className="text-xs font-tajawal font-bold">ذاكرة الأشخاص والعملاء</span>
                  </div>
                  <p className="text-[10px] text-slate-400 font-tajawal">الاحتفاظ ببيانات العملاء وتفضيلاتهم وتفاصيل التواصل (People & Client Relationship Memory).</p>

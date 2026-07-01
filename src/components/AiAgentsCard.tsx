@@ -53,7 +53,7 @@ export default function AiAgentsCard() {
             <div className="flex justify-between items-start mb-4">
                <div>
                   <h4 className="font-bold text-slate-800 font-tajawal flex items-center gap-2 mb-1">
-                     <Briefcase className="w-4 h-4 text-indigo-500"/> وكلاء الأقسام الأساسية
+                     <Briefcase className="w-4 h-4 text-blue-500"/> وكلاء الأقسام الأساسية
                   </h4>
                   <p className="text-[11px] text-slate-500 font-tajawal">التسويق والمبيعات والإدارة المالية</p>
                </div>
@@ -101,7 +101,7 @@ export default function AiAgentsCard() {
                     <span className="font-bold text-xs text-slate-700 font-tajawal">وكيل العمليات (Operations)</span>
                     <span className="text-[9px] text-slate-400 font-tajawal">إدارة مشاريع ClickUp ومهام الوكالة</span>
                  </div>
-                 <Zap className="w-4 h-4 text-violet-500" />
+                 <Zap className="w-4 h-4 text-sky-500" />
               </div>
               <div className="flex items-center justify-between p-2.5 rounded-xl bg-white/50 border border-slate-200">
                  <div className="flex flex-col text-right">

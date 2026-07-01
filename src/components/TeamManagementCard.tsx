@@ -52,15 +52,15 @@ export default function TeamManagementCard() {
             <div className="flex justify-between items-start mb-4">
                <div>
                   <h4 className="font-bold text-slate-800 font-tajawal flex items-center gap-2 mb-1">
-                     <Users className="w-4 h-4 text-indigo-500"/> الهيكلة ومتابعة الأداء
+                     <Users className="w-4 h-4 text-blue-500"/> الهيكلة ومتابعة الأداء
                   </h4>
                </div>
             </div>
 
             <div className="space-y-3 mt-2">
-              <div className="p-3 rounded-2xl bg-white/50 border border-indigo-100/50 flex flex-col">
+              <div className="p-3 rounded-2xl bg-white/50 border border-blue-100/50 flex flex-col">
                  <div className="flex items-center gap-2 mb-1 text-slate-700">
-                    <SearchIcon className="w-4 h-4 text-indigo-500" />
+                    <SearchIcon className="w-4 h-4 text-blue-500" />
                     <span className="text-xs font-tajawal font-bold">الأقسام (Teams & Department Views)</span>
                  </div>
                  <p className="text-[10px] text-slate-400 font-tajawal">تصنيف الفرق داخلياً في مساحات مرئية منفصلة بحسب المهام وتخصص القسم (تسويق، تصميم، دعم).</p>

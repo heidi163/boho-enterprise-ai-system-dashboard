@@ -57,7 +57,7 @@ export default function WorkspaceIntegrationCard() {
             <div className="flex justify-between items-start mb-4">
                <div>
                   <h4 className="font-bold text-slate-800 font-tajawal flex items-center gap-2 mb-1">
-                     <Calendar className="w-4 h-4 text-violet-500"/> تقويم Google Calendar
+                     <Calendar className="w-4 h-4 text-sky-500"/> تقويم Google Calendar
                   </h4>
                   <p className="text-[11px] text-slate-500 font-tajawal">إدارة المواعيد والاجتماعات</p>
                </div>
@@ -67,15 +67,15 @@ export default function WorkspaceIntegrationCard() {
             </div>
 
             <div className="space-y-3 mt-2">
-              <div className="p-3 rounded-2xl bg-white/50 border border-violet-100/50">
+              <div className="p-3 rounded-2xl bg-white/50 border border-sky-100/50">
                  <div className="flex items-center gap-2 mb-1.5 text-slate-700">
-                    <RefreshCw className="w-4 h-4 text-violet-400" />
+                    <RefreshCw className="w-4 h-4 text-sky-400" />
                     <span className="text-xs font-tajawal font-bold">الوصول الآني للتقويم</span>
                  </div>
                  <p className="text-[10px] text-slate-400 font-tajawal">معرفة أوقات الفراغ والمواعيد المجدولة (Calendar Access) لليوم وللأسبوع القادم.</p>
               </div>
 
-               <div className="p-3 rounded-2xl bg-white/50 border border-violet-100/50">
+               <div className="p-3 rounded-2xl bg-white/50 border border-sky-100/50">
                  <div className="flex items-center gap-2 mb-1.5 text-slate-700">
                     <CalendarDays className="w-4 h-4 text-amber-400" />
                     <span className="text-xs font-tajawal font-bold">إدارة المواعيد (Schedule Management)</span>

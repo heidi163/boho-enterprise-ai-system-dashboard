@@ -24,7 +24,7 @@ export default function AutonomousModeCard() {
 
       <div className="bg-white/40 backdrop-blur-xl border border-white/60 rounded-[32px] p-6 shadow-[0_20px_40px_rgba(0,0,0,0.03)] flex flex-col h-full text-right dir-rtl shrink-0">
           <h4 className="font-bold text-slate-800 font-tajawal flex items-center gap-2 mb-6 text-base">
-            <Brain className="w-5 h-5 text-indigo-500"/> مسار العملية المستقلة (Autonomous Workflow)
+            <Brain className="w-5 h-5 text-blue-500"/> مسار العملية المستقلة (Autonomous Workflow)
           </h4>
 
           <div className="flex flex-col gap-0 relative">

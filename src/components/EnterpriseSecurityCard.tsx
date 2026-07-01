@@ -68,7 +68,7 @@ export default function EnterpriseSecurityCard() {
             <div className="space-y-3 mt-2">
               <div className="p-3 rounded-2xl bg-white/50 border border-slate-200/50 flex flex-col">
                  <div className="flex items-center gap-2 mb-1 text-slate-700">
-                    <FileText className="w-4 h-4 text-indigo-500" />
+                    <FileText className="w-4 h-4 text-blue-500" />
                     <span className="text-xs font-tajawal font-bold">سجلات التدقيق (Audit Logs)</span>
                  </div>
                  <p className="text-[10px] text-slate-400 font-tajawal">تسجيل جميع تحركات النظام والتغييرات بدقة لتوفير تقارير محاسبة (Accountability).</p>

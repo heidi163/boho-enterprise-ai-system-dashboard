@@ -17,7 +17,7 @@ export default function KnowledgeBasePage() {
       {/* HEADER SECTION */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 glass-panel rounded-[24px] p-6">
         <div className="flex items-center gap-3">
-          <div className="bg-indigo-100 text-indigo-600 p-3 rounded-2xl">
+          <div className="bg-blue-100 text-blue-600 p-3 rounded-2xl">
             <BookOpen className="w-6 h-6" />
           </div>
           <div>
@@ -26,7 +26,7 @@ export default function KnowledgeBasePage() {
           </div>
         </div>
         
-        <button className="bg-gradient-to-l from-indigo-500 to-blue-600 text-white px-5 py-2.5 rounded-xl font-bold font-tajawal text-sm hover:opacity-90 transition-all flex items-center justify-center gap-2 shadow-md">
+        <button className="bg-gradient-to-l from-blue-500 to-blue-600 text-white px-5 py-2.5 rounded-xl font-bold font-tajawal text-sm hover:opacity-90 transition-all flex items-center justify-center gap-2 shadow-md">
           <UploadCloud className="w-4 h-4" />
           رفع مستند جديد
         </button>
@@ -35,17 +35,17 @@ export default function KnowledgeBasePage() {
       {/* SEMANTIC SEARCH BAR */}
       <div className="relative w-full">
         <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none">
-          <Search className="h-5 w-5 text-indigo-400" />
+          <Search className="h-5 w-5 text-blue-400" />
         </div>
         <input 
           type="text" 
           placeholder="اسأل بوهو في المعرفة: 'إيه شروط إلغاء عقد Sealy؟' أو ابحث عن اسم ملف..." 
-          className="w-full bg-white/60 backdrop-blur-md border-2 border-indigo-100 rounded-2xl py-4 pr-12 pl-4 text-sm font-tajawal text-slate-700 focus:outline-none focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100 transition-all shadow-sm"
+          className="w-full bg-white/60 backdrop-blur-md border-2 border-blue-100 rounded-2xl py-4 pr-12 pl-4 text-sm font-tajawal text-slate-700 focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all shadow-sm"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
         <div className="absolute inset-y-0 left-4 flex items-center">
-          <span className="text-[10px] bg-indigo-50 text-indigo-600 px-2 py-1 rounded font-mono font-bold uppercase border border-indigo-200">Semantic Search</span>
+          <span className="text-[10px] bg-blue-50 text-blue-600 px-2 py-1 rounded font-mono font-bold uppercase border border-blue-200">Semantic Search</span>
         </div>
       </div>
 
@@ -54,7 +54,7 @@ export default function KnowledgeBasePage() {
         {[
           { label: "SOPs", count: 12, icon: FileText, color: "text-blue-500", bg: "bg-blue-50" },
           { label: "Contracts", count: 8, icon: FileBadge, color: "text-emerald-500", bg: "bg-emerald-50" },
-          { label: "Company Policies", count: 5, icon: BookOpen, color: "text-purple-500", bg: "bg-purple-50" },
+          { label: "Company Policies", count: 5, icon: BookOpen, color: "text-sky-500", bg: "bg-sky-50" },
           { label: "Tags", count: 24, icon: Hash, color: "text-rose-500", bg: "bg-rose-50" },
         ].map((cat, idx) => (
           <div key={idx} className="glass-panel rounded-[20px] p-4 flex items-center justify-between cursor-pointer hover:scale-[1.02] transition-transform">
@@ -86,7 +86,7 @@ export default function KnowledgeBasePage() {
                   <FileText className="w-4 h-4" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-slate-800 text-sm font-tajawal group-hover:text-indigo-600 transition-colors">{doc.title}</h4>
+                  <h4 className="font-bold text-slate-800 text-sm font-tajawal group-hover:text-blue-600 transition-colors">{doc.title}</h4>
                   <div className="flex items-center gap-2 mt-1">
                     <span className="text-[10px] font-mono bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded">{doc.type}</span>
                     <span className="text-[11px] text-gray-400 font-tajawal">{doc.category}</span>

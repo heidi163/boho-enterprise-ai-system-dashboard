@@ -63,7 +63,7 @@ export default function ClickUpCard({ refreshTrigger, onRefreshTrigger }: ClickU
         <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 font-medium font-mono">ClickUp V2</span>
 
         <div className="flex items-center gap-1.5 self-end">
-          <ListTodo className="w-4 h-4 text-purple-600" />
+          <ListTodo className="w-4 h-4 text-sky-600" />
           <h3 className="font-bold text-slate-800 text-sm font-tajawal text-right">مستودع مهام الوكالة</h3>
         </div>
       </div>
@@ -75,11 +75,11 @@ export default function ClickUpCard({ refreshTrigger, onRefreshTrigger }: ClickU
           value={newTaskName}
           onChange={(e) => setNewTaskName(e.target.value)}
           placeholder="أضف مهمة جديدة في ClickUp يا غالي..."
-          className="flex-1 px-3 py-1.5 rounded-xl border border-white bg-white/60 text-right text-xs dir-rtl focus:outline-none focus:ring-1 focus:ring-purple-300 font-tajawal text-slate-800 font-medium"
+          className="flex-1 px-3 py-1.5 rounded-xl border border-white bg-white/60 text-right text-xs dir-rtl focus:outline-none focus:ring-1 focus:ring-sky-300 font-tajawal text-slate-800 font-medium"
         />
         <button 
           type="submit"
-          className="p-1.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white hover:scale-105 active:scale-95 transition-all text-xs cursor-pointer shadow-md flex items-center justify-center"
+          className="p-1.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white hover:scale-105 active:scale-95 transition-all text-xs cursor-pointer shadow-md flex items-center justify-center"
         >
           <Plus className="w-4 h-4" />
         </button>
@@ -117,7 +117,7 @@ export default function ClickUpCard({ refreshTrigger, onRefreshTrigger }: ClickU
               </div>
 
               {/* Status action */}
-              <div className="text-purple-600">
+              <div className="text-sky-600">
                 <CheckCircle2 className={`w-4 h-4 ${t.status === "Done" ? "text-emerald-500 fill-emerald-100" : "text-slate-300 hover:text-emerald-400 cursor-pointer"}`} />
               </div>
             </div>

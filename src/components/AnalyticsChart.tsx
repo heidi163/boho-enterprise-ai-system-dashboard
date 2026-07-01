@@ -44,7 +44,7 @@ export default function AnalyticsChart() {
 
       {/* Description */}
       <div className="flex justify-between items-center text-[11px] font-tajawal text-gray-500 mb-2 text-right dir-rtl">
-        <p>التدفق الحالي للوكالة لمشروعي <span className="font-semibold text-blue-600">iFilter</span> و <span className="font-semibold text-purple-600">Sealy</span> (الربع الأول والثاني)</p>
+        <p>التدفق الحالي للوكالة لمشروعي <span className="font-semibold text-blue-600">iFilter</span> و <span className="font-semibold text-sky-600">Sealy</span> (الربع الأول والثاني)</p>
         <span className="text-emerald-600 font-bold font-mono">● LIVE SYNCED</span>
       </div>
 

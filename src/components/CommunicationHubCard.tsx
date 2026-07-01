@@ -61,7 +61,7 @@ export default function CommunicationHubCard() {
             <div className="flex justify-between items-start mb-4">
                <div>
                   <h4 className="font-bold text-slate-800 font-tajawal flex items-center gap-2 mb-1">
-                     <MonitorPlay className="w-4 h-4 text-indigo-500"/> إدارة الاجتماعات المرئية
+                     <MonitorPlay className="w-4 h-4 text-blue-500"/> إدارة الاجتماعات المرئية
                   </h4>
                   <p className="text-[11px] text-slate-500 font-tajawal">جدولة وتلخيص المكالمات تلقائياً</p>
                </div>

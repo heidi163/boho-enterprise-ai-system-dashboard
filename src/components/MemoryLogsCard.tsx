@@ -42,7 +42,7 @@ export default function MemoryLogsCard({ aiLogs }: Props) {
       {/* RIGHT: Memory Core Storage */}
       <div className="bg-white/40 backdrop-blur-xl border border-white/60 rounded-[32px] p-6 shadow-[0_20px_40px_rgba(0,0,0,0.03)] flex flex-col h-full text-right dir-rtl">
         <div className="flex items-center justify-between mb-6 border-b border-white/40 pb-3">
-          <span className="text-[10px] bg-purple-100 text-purple-800 font-mono font-bold px-2 py-0.5 rounded uppercase tracking-wider">Deep Brain Storage</span>
+          <span className="text-[10px] bg-sky-100 text-sky-800 font-mono font-bold px-2 py-0.5 rounded uppercase tracking-wider">Deep Brain Storage</span>
           <h3 className="font-bold text-slate-800 text-base font-tajawal flex items-center gap-2">
             محرك الذاكرة الطويلة
             <HardDrive className="w-4 h-4 text-slate-500" />
@@ -52,7 +52,7 @@ export default function MemoryLogsCard({ aiLogs }: Props) {
         <div className="flex flex-col gap-3 flex-1 overflow-y-auto">
           <div className="p-4 rounded-2xl border border-white/80 bg-white/40 shadow-sm flex flex-col gap-2">
             <h4 className="font-bold text-sm text-slate-800 flex items-center gap-2 font-tajawal">
-              <BrainCircuit className="w-4 h-4 text-purple-500"/> User Preferences
+              <BrainCircuit className="w-4 h-4 text-sky-500"/> User Preferences
             </h4>
             <p className="text-xs text-slate-500 leading-relaxed font-tajawal">
               يفضل أحمد النقاشات المباشرة دون قوائم (No Markdown). يُفضل استلام التحديثات المالية صباحاً وتفعيل التنبيهات إذا قل ROAS عن 2.0. لهجة المحادثة: مصري سريع وعملي.

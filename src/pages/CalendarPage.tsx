@@ -8,7 +8,7 @@ export default function CalendarPage() {
 
   const meetings = [
     { id: 1, title: "اجتماع فريق O2Nation", time: "10:00 ص - 11:00 ص", type: "Google Meet", attendees: 4, hasNotes: true, color: "bg-blue-500", status: "past" },
-    { id: 2, title: "مراجعة حملات Sealy ربع السنوية", time: "02:30 م - 03:30 م", type: "Zoom", attendees: 3, hasNotes: false, color: "bg-indigo-500", status: "upcoming" },
+    { id: 2, title: "مراجعة حملات Sealy ربع السنوية", time: "02:30 م - 03:30 م", type: "Zoom", attendees: 3, hasNotes: false, color: "bg-blue-500", status: "upcoming" },
     { id: 3, title: "مكالمة مع عميل محتمل (Real Estate)", time: "05:00 م - 06:00 م", type: "Phone", attendees: 2, hasNotes: false, color: "bg-emerald-500", status: "upcoming" },
   ];
 
@@ -73,12 +73,12 @@ export default function CalendarPage() {
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-[24px] p-6 border border-indigo-100 shadow-sm mt-6">
-            <h3 className="font-bold text-indigo-900 font-tajawal mb-2 flex items-center gap-2">
-              <BrainCircuit className="w-4 h-4 text-indigo-500" />
+          <div className="bg-gradient-to-br from-blue-50 to-blue-50 rounded-[24px] p-6 border border-blue-100 shadow-sm mt-6">
+            <h3 className="font-bold text-blue-900 font-tajawal mb-2 flex items-center gap-2">
+              <BrainCircuit className="w-4 h-4 text-blue-500" />
               مساعد الاجتماعات (AI Assistant)
             </h3>
-            <p className="text-[11px] text-indigo-700/80 font-tajawal mb-4 leading-relaxed">
+            <p className="text-[11px] text-blue-700/80 font-tajawal mb-4 leading-relaxed">
               ارفع تفريغ اجتماع (Zoom / Teams) وبوهو هيستخرج الـ Action Items ويضيفها في الـ Tasks تلقائياً.
             </p>
             
@@ -88,7 +88,7 @@ export default function CalendarPage() {
                 value={transcriptName}
                 onChange={e => setTranscriptName(e.target.value)}
                 placeholder="اسم الاجتماع..." 
-                className="w-full bg-white/80 border border-indigo-100 rounded-xl px-3 py-2 text-xs font-tajawal text-slate-700 focus:outline-none focus:border-indigo-400" 
+                className="w-full bg-white/80 border border-blue-100 rounded-xl px-3 py-2 text-xs font-tajawal text-slate-700 focus:outline-none focus:border-blue-400" 
               />
               <button 
                 onClick={() => {
@@ -99,7 +99,7 @@ export default function CalendarPage() {
                   }, 2000);
                 }}
                 disabled={!transcriptName.trim() || isExtracting}
-                className="w-full bg-white/80 border border-dashed border-indigo-300 text-indigo-600 px-4 py-2.5 rounded-xl font-bold font-tajawal text-xs hover:bg-white transition-all shadow-sm flex justify-center items-center gap-2 disabled:opacity-50"
+                className="w-full bg-white/80 border border-dashed border-blue-300 text-blue-600 px-4 py-2.5 rounded-xl font-bold font-tajawal text-xs hover:bg-white transition-all shadow-sm flex justify-center items-center gap-2 disabled:opacity-50"
               >
                 <UploadCloud className="w-4 h-4" />
                 {isExtracting ? "جارٍ التحليل واستخراج المهام..." : "ارفع تفريغ الاجتماع (TXT/VTT)"}
@@ -145,7 +145,7 @@ export default function CalendarPage() {
                         </span>
                         <span className="flex items-center gap-1 text-[11px] text-gray-500 font-tajawal">
                           {meeting.type === "Google Meet" ? <Video className="w-3 h-3 text-blue-500" /> : 
-                           meeting.type === "Zoom" ? <Video className="w-3 h-3 text-indigo-500" /> : 
+                           meeting.type === "Zoom" ? <Video className="w-3 h-3 text-blue-500" /> : 
                            <MapPin className="w-3 h-3 text-emerald-500" />}
                           {meeting.type}
                         </span>
@@ -159,7 +159,7 @@ export default function CalendarPage() {
 
                   <div className="flex items-center gap-2 mt-4 pt-3 border-t border-gray-100">
                     {meeting.hasNotes ? (
-                      <button className="flex items-center gap-1.5 text-[11px] font-bold text-indigo-600 bg-indigo-50 px-3 py-1.5 rounded-lg hover:bg-indigo-100 transition-colors">
+                      <button className="flex items-center gap-1.5 text-[11px] font-bold text-blue-600 bg-blue-50 px-3 py-1.5 rounded-lg hover:bg-blue-100 transition-colors">
                         <FileText className="w-3 h-3" />
                         عرض ملخص بوهو
                       </button>

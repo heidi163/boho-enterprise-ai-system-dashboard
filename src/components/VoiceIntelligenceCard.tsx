@@ -44,7 +44,7 @@ export default function VoiceIntelligenceCard() {
 
               <div className="p-3 rounded-2xl bg-white/50 border border-emerald-100/50">
                  <div className="flex items-center gap-2 mb-1.5 text-slate-700">
-                    <Radio className="w-4 h-4 text-indigo-400" />
+                    <Radio className="w-4 h-4 text-blue-400" />
                     <span className="text-xs font-tajawal font-bold">تحسين وتوليد المنطوق</span>
                  </div>
                  <p className="text-[10px] text-slate-400 font-tajawal">معالجة وتكوين الردود لتلائم الاستماع (Spoken Response Optimization) من خلال توليد (Natural Read-Aloud Responses).</p>

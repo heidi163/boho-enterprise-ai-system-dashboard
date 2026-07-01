@@ -68,7 +68,7 @@ export default function SystemHealthPage() {
   const getStatusIcon = (status: PhaseStatus) => {
     if (status === "done") return <CheckCircle className="w-4 h-4 text-emerald-500" />;
     if (status === "in_progress") return <Clock className="w-4 h-4 text-amber-500" />;
-    if (status === "deploying") return <div className="w-4 h-4 rounded-full border-2 border-indigo-500 border-t-transparent animate-spin" />;
+    if (status === "deploying") return <div className="w-4 h-4 rounded-full border-2 border-blue-500 border-t-transparent animate-spin" />;
     if (status === "error") return <AlertCircle className="w-4 h-4 text-rose-500" />;
     return <div className="w-4 h-4 rounded-full border-2 border-slate-300" />;
   };
@@ -85,7 +85,7 @@ export default function SystemHealthPage() {
           </div>
           <span className="text-[10px] font-mono text-gray-400">وقت التشغيل: {uptime} ثانية</span>
         </div>
-        <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">صحة النظام والمعمارية <Server className="w-4 h-4 text-indigo-500" /></h3>
+        <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">صحة النظام والمعمارية <Server className="w-4 h-4 text-blue-500" /></h3>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
@@ -95,7 +95,7 @@ export default function SystemHealthPage() {
           <div className="glass-panel rounded-[24px] p-5 flex-1 flex flex-col">
             <div className="flex items-center justify-between mb-4">
               <span className="text-[10px] font-mono text-gray-400 uppercase">Section 13</span>
-              <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">مركز النشر (One-Click Deploy) <Layers className="w-4 h-4 text-indigo-500" /></h3>
+              <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">مركز النشر (One-Click Deploy) <Layers className="w-4 h-4 text-blue-500" /></h3>
             </div>
             
             <div className="flex flex-col gap-3">
@@ -103,7 +103,7 @@ export default function SystemHealthPage() {
                 <div key={p.phase} className={`rounded-2xl px-4 py-3 border flex items-center justify-between transition-all relative overflow-hidden group ${
                   p.status === "done" ? "bg-emerald-50/50 border-emerald-200" :
                   p.status === "in_progress" ? "bg-blue-50/50 border-blue-200" :
-                  p.status === "deploying" ? "bg-indigo-50 border-indigo-300 ring-2 ring-indigo-500/20" :
+                  p.status === "deploying" ? "bg-blue-50 border-blue-300 ring-2 ring-blue-500/20" :
                   p.status === "error" ? "bg-rose-50 border-rose-300 ring-1 ring-rose-500/50" :
                   "bg-slate-50 border-slate-200 opacity-80 hover:opacity-100"
                 }`}>
@@ -111,7 +111,7 @@ export default function SystemHealthPage() {
                   <div className={`absolute top-0 right-0 bottom-0 w-1 ${
                     p.status === "done" ? "bg-emerald-500" :
                     p.status === "in_progress" ? "bg-blue-500" :
-                    p.status === "deploying" ? "bg-indigo-500" :
+                    p.status === "deploying" ? "bg-blue-500" :
                     p.status === "error" ? "bg-rose-500" :
                     "bg-slate-300"
                   }`} />
@@ -130,9 +130,9 @@ export default function SystemHealthPage() {
                       disabled={p.status === "deploying" || p.status === "done"}
                       className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all shadow-sm ${
                         p.status === "done" ? "bg-emerald-100 text-emerald-700 cursor-default opacity-60" :
-                        p.status === "deploying" ? "bg-indigo-500 text-white" :
+                        p.status === "deploying" ? "bg-blue-500 text-white" :
                         p.status === "error" ? "bg-rose-500 text-white hover:bg-rose-600" :
-                        "bg-white border border-slate-300 text-slate-700 hover:border-indigo-500 hover:text-indigo-600"
+                        "bg-white border border-slate-300 text-slate-700 hover:border-blue-500 hover:text-blue-600"
                       }`}
                     >
                       {getStatusIcon(p.status)}
@@ -166,7 +166,7 @@ export default function SystemHealthPage() {
           <div className="glass-panel rounded-[24px] p-5">
             <div className="flex items-center justify-between mb-4">
               <span className="text-[10px] font-mono text-gray-400 uppercase">Config</span>
-              <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">الروابط والأمان <Lock className="w-4 h-4 text-indigo-500" /></h3>
+              <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">الروابط والأمان <Lock className="w-4 h-4 text-blue-500" /></h3>
             </div>
 
             <div className="flex flex-col gap-4">
@@ -188,7 +188,7 @@ export default function SystemHealthPage() {
                           {s.status === "online" ? (
                             <button className="text-[9px] font-tajawal text-rose-500 hover:bg-rose-50 px-1.5 py-0.5 rounded transition-colors">إلغاء الربط</button>
                           ) : (
-                            <button className="text-[9px] font-tajawal text-indigo-600 font-bold bg-indigo-50 hover:bg-indigo-100 px-1.5 py-0.5 rounded transition-colors">تفعيل (Connect)</button>
+                            <button className="text-[9px] font-tajawal text-blue-600 font-bold bg-blue-50 hover:bg-blue-100 px-1.5 py-0.5 rounded transition-colors">تفعيل (Connect)</button>
                           )}
                         </div>
                       </div>
@@ -220,12 +220,12 @@ export default function SystemHealthPage() {
               <span className="text-[10px] font-mono text-gray-400 uppercase">Arch C</span>
               <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">الهيكل الحالي <GitBranch className="w-4 h-4 text-slate-500" /></h3>
             </div>
-            <div className="bg-gradient-to-br from-indigo-50 to-white border border-indigo-100 rounded-xl p-4 flex flex-col items-center gap-1 font-mono text-[9px]">
+            <div className="bg-gradient-to-br from-blue-50 to-white border border-blue-100 rounded-xl p-4 flex flex-col items-center gap-1 font-mono text-[9px]">
               <div className="bg-slate-800 text-white rounded px-3 py-1 flex items-center gap-1"><Mic className="w-3 h-3" /> User Audio</div>
               <div className="w-0.5 h-3 bg-slate-300" />
               <div className="bg-blue-500 text-white rounded px-4 py-1.5 flex items-center gap-1"><Cpu className="w-3 h-3" /> Realtime Voice Layer</div>
               <div className="w-0.5 h-3 bg-slate-300" />
-              <div className="bg-violet-600 text-white rounded px-5 py-2 flex items-center gap-1 font-bold shadow-sm"><Database className="w-3 h-3" /> Deep Brain (Claude)</div>
+              <div className="bg-sky-600 text-white rounded px-5 py-2 flex items-center gap-1 font-bold shadow-sm"><Database className="w-3 h-3" /> Deep Brain (Claude)</div>
               <div className="w-0.5 h-3 bg-slate-300" />
               <div className="bg-slate-200 text-slate-700 rounded px-2 py-1 flex items-center gap-1"><Globe className="w-3 h-3" /> 5 MCP Servers</div>
             </div>

@@ -106,12 +106,12 @@ export default function VoicePersonalityLabPage() {
             الوكيل الصوتي: {voiceAgentStatus === "online" ? "متصل" : voiceAgentStatus === "connecting" ? "جارٍ الاتصال..." : "غير متصل"}
           </div>
           {voiceAgentStatus !== "online" && (
-            <button onClick={connectVoiceAgent} className="text-xs text-white bg-gradient-to-l from-indigo-500 to-blue-600 rounded-full px-4 py-1.5 font-bold hover:opacity-90">
+            <button onClick={connectVoiceAgent} className="text-xs text-white bg-gradient-to-l from-blue-500 to-blue-600 rounded-full px-4 py-1.5 font-bold hover:opacity-90">
               تشغيل Voice Agent
             </button>
           )}
         </div>
-        <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">معمل الصوت والشخصية <FlaskConical className="w-4 h-4 text-indigo-500" /></h3>
+        <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">معمل الصوت والشخصية <FlaskConical className="w-4 h-4 text-blue-500" /></h3>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
@@ -122,7 +122,7 @@ export default function VoicePersonalityLabPage() {
           <div className="glass-panel rounded-[24px] p-5">
             <div className="flex items-center justify-between mb-4">
               <span className="text-[10px] font-mono text-gray-400 uppercase">Section 7.3</span>
-              <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">موفر الصوت <Volume2 className="w-4 h-4 text-indigo-500" /></h3>
+              <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">موفر الصوت <Volume2 className="w-4 h-4 text-blue-500" /></h3>
             </div>
             <div className="grid grid-cols-2 gap-3">
               {TTS_PROVIDERS.map(p => (
@@ -132,7 +132,7 @@ export default function VoicePersonalityLabPage() {
                   className={`rounded-2xl p-3 border text-right transition-all ${
                     activeProvider.id === p.id
                       ? "border-transparent shadow-lg text-white"
-                      : "bg-white/50 border-white/80 text-slate-700 hover:border-indigo-200"
+                      : "bg-white/50 border-white/80 text-slate-700 hover:border-blue-200"
                   }`}
                   style={activeProvider.id === p.id ? { background: `linear-gradient(135deg, ${p.color}dd, ${p.color}99)` } : {}}
                 >
@@ -165,10 +165,10 @@ export default function VoicePersonalityLabPage() {
 
               <div>
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-[10px] font-mono text-indigo-600 font-bold">{endpointing}ms</span>
+                  <span className="text-[10px] font-mono text-blue-600 font-bold">{endpointing}ms</span>
                   <span className="text-xs text-slate-700 font-tajawal font-bold">وقت السكوت (Endpointing)</span>
                 </div>
-                <input type="range" min={200} max={1500} step={50} value={endpointing} onChange={e => setEndpointing(Number(e.target.value))} className="w-full accent-indigo-500 h-1.5" />
+                <input type="range" min={200} max={1500} step={50} value={endpointing} onChange={e => setEndpointing(Number(e.target.value))} className="w-full accent-blue-500 h-1.5" />
                 <div className="flex justify-between text-[8px] text-gray-400 font-mono mt-1"><span>200ms</span><span>500ms</span><span>1500ms</span></div>
               </div>
             </div>
@@ -183,15 +183,15 @@ export default function VoicePersonalityLabPage() {
             <div className="flex flex-col gap-4">
               <div>
                 <label className="block text-xs font-bold text-slate-700 font-tajawal mb-1.5 text-right">مسار الكلمة المفتاحية (Wake Word)</label>
-                <input type="text" value={keywordPath} onChange={e => setKeywordPath(e.target.value)} className="w-full bg-white/60 border border-gray-200 rounded-xl px-4 py-2.5 text-xs font-mono text-slate-600 focus:outline-none focus:border-indigo-400" />
+                <input type="text" value={keywordPath} onChange={e => setKeywordPath(e.target.value)} className="w-full bg-white/60 border border-gray-200 rounded-xl px-4 py-2.5 text-xs font-mono text-slate-600 focus:outline-none focus:border-blue-400" />
               </div>
 
               <div>
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-[10px] font-mono text-indigo-600 font-bold">{silenceRms}</span>
+                  <span className="text-[10px] font-mono text-blue-600 font-bold">{silenceRms}</span>
                   <span className="text-xs text-slate-700 font-tajawal font-bold">حساسية الصمت (Silence RMS)</span>
                 </div>
-                <input type="range" min={100} max={800} step={10} value={silenceRms} onChange={e => setSilenceRms(Number(e.target.value))} className="w-full accent-indigo-500 h-1.5" />
+                <input type="range" min={100} max={800} step={10} value={silenceRms} onChange={e => setSilenceRms(Number(e.target.value))} className="w-full accent-blue-500 h-1.5" />
                 <div className="flex justify-between text-[8px] text-gray-400 font-mono mt-1"><span>عالية (100)</span><span>متوسطة (350)</span><span>منخفضة (800)</span></div>
               </div>
             </div>
@@ -219,7 +219,7 @@ export default function VoicePersonalityLabPage() {
                     }}
                     className={`px-3 py-1.5 rounded-full text-xs font-tajawal font-bold flex items-center gap-1.5 transition-all ${
                       activeCategory === c.id
-                        ? "bg-indigo-500 text-white shadow-md"
+                        ? "bg-blue-500 text-white shadow-md"
                         : "bg-white/60 text-slate-600 hover:bg-white/90 border border-white/80"
                     }`}
                   >
@@ -236,11 +236,11 @@ export default function VoicePersonalityLabPage() {
                     onClick={() => setTestSentence(s)}
                     className={`p-3 rounded-xl cursor-pointer border text-right transition-all flex items-start gap-3 ${
                       testSentence === s 
-                        ? "bg-indigo-50 border-indigo-200" 
+                        ? "bg-blue-50 border-blue-200" 
                         : "bg-white/40 border-transparent hover:bg-white/60 hover:border-slate-200"
                     }`}
                   >
-                    <Quote className={`w-4 h-4 mt-0.5 shrink-0 ${testSentence === s ? "text-indigo-500" : "text-slate-300"}`} />
+                    <Quote className={`w-4 h-4 mt-0.5 shrink-0 ${testSentence === s ? "text-blue-500" : "text-slate-300"}`} />
                     <p className={`text-sm font-tajawal leading-relaxed ${testSentence === s ? "text-slate-800 font-bold" : "text-slate-600"}`}>
                       {s}
                     </p>
@@ -255,7 +255,7 @@ export default function VoicePersonalityLabPage() {
                   onChange={e => setTestSentence(e.target.value)}
                   placeholder="أو اكتب جملة من عندك..."
                   rows={2}
-                  className="w-full bg-white/70 border border-slate-200 rounded-xl px-4 py-3 text-sm font-tajawal text-slate-800 resize-none outline-none focus:border-indigo-300 transition-colors text-right shadow-inner"
+                  className="w-full bg-white/70 border border-slate-200 rounded-xl px-4 py-3 text-sm font-tajawal text-slate-800 resize-none outline-none focus:border-blue-300 transition-colors text-right shadow-inner"
                 />
               </div>
 
@@ -264,7 +264,7 @@ export default function VoicePersonalityLabPage() {
                 <button onClick={stopPreview} className="flex items-center gap-1.5 text-xs text-rose-500 border border-rose-200 bg-rose-50 rounded-xl px-4 py-3 hover:bg-rose-100 font-bold transition-colors">
                   <StopCircle className="w-5 h-5" />
                 </button>
-                <button onClick={handlePreview} disabled={isPlaying} className="flex-1 flex items-center justify-center gap-2 text-sm font-bold text-white bg-gradient-to-l from-indigo-500 to-blue-600 rounded-xl py-3 hover:opacity-90 disabled:opacity-50 transition-all shadow-md">
+                <button onClick={handlePreview} disabled={isPlaying} className="flex-1 flex items-center justify-center gap-2 text-sm font-bold text-white bg-gradient-to-l from-blue-500 to-blue-600 rounded-xl py-3 hover:opacity-90 disabled:opacity-50 transition-all shadow-md">
                   <PlayCircle className="w-5 h-5" />
                   {isPlaying ? "جارٍ التشغيل..." : `اختبار بصوت ${activeProvider.name}`}
                 </button>
@@ -277,13 +277,13 @@ export default function VoicePersonalityLabPage() {
           <div className="glass-panel rounded-[24px] p-5">
             <div className="flex items-center justify-between mb-4">
               <span className="text-[10px] font-mono text-gray-400 uppercase">ElevenLabs API</span>
-              <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">استنساخ الصوت (Voice Cloning) <UploadCloud className="w-4 h-4 text-indigo-500" /></h3>
+              <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">استنساخ الصوت (Voice Cloning) <UploadCloud className="w-4 h-4 text-blue-500" /></h3>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-bold text-slate-700 font-tajawal mb-1.5 text-right">اسم الصوت الجديد</label>
-                <input type="text" value={cloneName} onChange={e => setCloneName(e.target.value)} placeholder="مثال: صوت أحمد صلاح" className="w-full bg-white/60 border border-gray-200 rounded-xl px-4 py-2.5 text-xs font-tajawal text-slate-600 focus:outline-none focus:border-indigo-400 text-right" />
+                <input type="text" value={cloneName} onChange={e => setCloneName(e.target.value)} placeholder="مثال: صوت أحمد صلاح" className="w-full bg-white/60 border border-gray-200 rounded-xl px-4 py-2.5 text-xs font-tajawal text-slate-600 focus:outline-none focus:border-blue-400 text-right" />
               </div>
               
               <div className="flex flex-col justify-end">
@@ -293,7 +293,7 @@ export default function VoicePersonalityLabPage() {
                     setTimeout(() => setIsCloning(false), 2000);
                   }}
                   disabled={!cloneName.trim() || isCloning}
-                  className="w-full flex items-center justify-center gap-2 text-xs font-bold text-slate-700 bg-white border border-dashed border-indigo-300 rounded-xl py-2.5 hover:bg-indigo-50 transition-all disabled:opacity-50"
+                  className="w-full flex items-center justify-center gap-2 text-xs font-bold text-slate-700 bg-white border border-dashed border-blue-300 rounded-xl py-2.5 hover:bg-blue-50 transition-all disabled:opacity-50"
                 >
                   <UploadCloud className="w-4 h-4" />
                   {isCloning ? "جارٍ الرفع..." : "ارفع عينة صوت (WAV/MP3)"}

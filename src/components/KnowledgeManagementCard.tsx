@@ -23,15 +23,15 @@ export default function KnowledgeManagementCard() {
             <div className="flex justify-between items-start mb-4">
                <div>
                   <h4 className="font-bold text-slate-800 font-tajawal flex items-center gap-2 mb-1">
-                     <Library className="w-4 h-4 text-indigo-500"/> تنظيم الوثائق والأدلة
+                     <Library className="w-4 h-4 text-blue-500"/> تنظيم الوثائق والأدلة
                   </h4>
                </div>
             </div>
 
             <div className="space-y-3 mt-2">
-              <div className="p-3 rounded-2xl bg-white/50 border border-indigo-100/50 flex flex-col">
+              <div className="p-3 rounded-2xl bg-white/50 border border-blue-100/50 flex flex-col">
                  <div className="flex items-center gap-2 mb-1 text-slate-700">
-                    <AlignLeft className="w-4 h-4 text-indigo-500" />
+                    <AlignLeft className="w-4 h-4 text-blue-500" />
                     <span className="text-xs font-tajawal font-bold">أدلة التشغيل (SOP Management)</span>
                  </div>
                  <p className="text-[10px] text-slate-400 font-tajawal">مكتبة للإجراءات القياسية (SOPs) ترشد الموظفين الجدد لتنفيذ مهامهم بدقة.</p>
@@ -84,7 +84,7 @@ export default function KnowledgeManagementCard() {
 
               <div className="p-3 rounded-2xl bg-slate-800 border border-slate-700 text-white flex flex-col">
                  <div className="flex items-center gap-2 mb-1">
-                    <Network className="w-4 h-4 text-purple-400" />
+                    <Network className="w-4 h-4 text-sky-400" />
                     <span className="text-xs font-tajawal font-bold">الرسم البياني المعرفي (Knowledge Graph)</span>
                  </div>
                  <p className="text-[10px] text-slate-300 font-tajawal">ربط المفاهيم والمستندات بطريقة هيكلية تساعد الوكالة على رؤية العلاقات المعقدة بين المشاريع.</p>

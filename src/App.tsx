@@ -80,13 +80,13 @@ export default function App() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-[#F0F2F8] flex items-center justify-center p-4 selection:bg-indigo-100" dir="rtl" style={{
-        backgroundImage: `radial-gradient(ellipse at 20% 10%, rgba(99,102,241,0.06) 0%, transparent 60%), radial-gradient(ellipse at 80% 90%, rgba(139,92,246,0.05) 0%, transparent 60%)`
+      <div className="min-h-screen bg-[#F0F2F8] flex items-center justify-center p-4 selection:bg-blue-100" dir="rtl" style={{
+        backgroundImage: `radial-gradient(ellipse at 20% 10%, rgba(59,130,246,0.06) 0%, transparent 60%), radial-gradient(ellipse at 80% 90%, rgba(14,165,233,0.05) 0%, transparent 60%)`
       }}>
         <div className="glass-panel w-full max-w-md rounded-[32px] p-8 md:p-10 shadow-[0_20px_40px_rgba(0,0,0,0.08)] flex flex-col items-center animate-fade-in border border-white/60">
           <div className="relative mb-6">
-            <div className="absolute inset-0 bg-indigo-400 rounded-full blur-xl opacity-50 animate-pulse" />
-            <div className="relative w-20 h-20 rounded-full bg-gradient-to-br from-indigo-400 via-blue-500 to-violet-600 shadow-[0_0_30px_rgba(99,102,241,0.5)] border-4 border-white/60 flex items-center justify-center">
+            <div className="absolute inset-0 bg-blue-400 rounded-full blur-xl opacity-50 animate-pulse" />
+            <div className="relative w-20 h-20 rounded-full bg-gradient-to-br from-blue-400 via-blue-500 to-sky-600 shadow-[0_0_30px_rgba(59,130,246,0.5)] border-4 border-white/60 flex items-center justify-center">
               <span className="text-white text-3xl font-black font-mono">B</span>
             </div>
           </div>
@@ -104,7 +104,7 @@ export default function App() {
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 placeholder="كلمة المرور..."
-                className="w-full bg-white/60 border border-gray-200 rounded-2xl pr-12 pl-4 py-4 text-sm font-mono text-slate-800 focus:outline-none focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100 transition-all shadow-sm"
+                className="w-full bg-white/60 border border-gray-200 rounded-2xl pr-12 pl-4 py-4 text-sm font-mono text-slate-800 focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all shadow-sm"
               />
             </div>
             
@@ -113,7 +113,7 @@ export default function App() {
             <button 
               type="submit" 
               disabled={isLoggingIn || !password}
-              className="w-full mt-2 bg-gradient-to-l from-indigo-500 to-blue-600 text-white font-bold font-tajawal text-sm py-4 rounded-2xl shadow-[0_8px_20px_rgba(99,102,241,0.3)] hover:shadow-[0_8px_25px_rgba(99,102,241,0.4)] hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50"
+              className="w-full mt-2 bg-gradient-to-l from-blue-500 to-blue-600 text-white font-bold font-tajawal text-sm py-4 rounded-2xl shadow-[0_8px_20px_rgba(59,130,246,0.3)] hover:shadow-[0_8px_25px_rgba(59,130,246,0.4)] hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50"
             >
               {isLoggingIn ? "جارٍ التحقق..." : "تسجيل الدخول"}
             </button>
@@ -130,12 +130,12 @@ export default function App() {
   return (
     <div
       id="p-app-wrapper"
-      className="min-h-screen bg-[#F0F2F8] p-4 md:p-6 flex flex-col selection:bg-indigo-100"
+      className="min-h-screen bg-[#F0F2F8] p-4 md:p-6 flex flex-col selection:bg-blue-100"
       dir="rtl"
       style={{
         backgroundImage: `
-          radial-gradient(ellipse at 20% 10%, rgba(99,102,241,0.06) 0%, transparent 60%),
-          radial-gradient(ellipse at 80% 90%, rgba(139,92,246,0.05) 0%, transparent 60%)
+          radial-gradient(ellipse at 20% 10%, rgba(59,130,246,0.06) 0%, transparent 60%),
+          radial-gradient(ellipse at 80% 90%, rgba(14,165,233,0.05) 0%, transparent 60%)
         `
       }}
     >
@@ -147,7 +147,7 @@ export default function App() {
         {/* Title */}
         <div className="text-start order-2 md:order-1">
           <div className="flex items-center gap-2 justify-start">
-            <span className="text-[9px] uppercase font-mono tracking-wider font-bold bg-indigo-100 text-indigo-700 px-2.5 py-1 rounded-full border border-indigo-200">
+            <span className="text-[9px] uppercase font-mono tracking-wider font-bold bg-blue-100 text-blue-700 px-2.5 py-1 rounded-full border border-blue-200">
               معمارية هجينة C
             </span>
             <span className="text-[10px] text-gray-400 font-mono">Ahmed Salah • BGK / O2Nation</span>
@@ -216,7 +216,7 @@ export default function App() {
         className="max-w-[1400px] w-full mx-auto flex flex-col md:flex-row items-center justify-between py-4 border-t border-slate-200/50 text-xs text-gray-400 font-sans gap-2"
       >
         <div className="flex items-center gap-1.5">
-          <Activity className="w-3 h-3 text-indigo-400" />
+          <Activity className="w-3 h-3 text-blue-400" />
           <span>مساحة عمل BGK + O2Nation: <span className="font-semibold text-emerald-500">متصل الآن</span></span>
         </div>
         <div>
