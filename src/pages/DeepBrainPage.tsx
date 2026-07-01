@@ -270,7 +270,7 @@ export default function DeepBrainPage() {
         </div>
 
         {/* CHAT INTERFACE */}
-        <div className="xl:col-span-6 glass-panel rounded-[24px] p-5 flex flex-col h-[700px] relative">
+        <div className="xl:col-span-5 glass-panel rounded-[24px] p-5 flex flex-col h-[700px] relative">
           <div className="flex items-center justify-between mb-4 pb-3 border-b border-gray-100">
             <div className="flex items-center gap-2">
               <span className="text-[10px] font-mono text-white bg-blue-500 px-2 py-0.5 rounded-full font-bold">
@@ -349,7 +349,7 @@ export default function DeepBrainPage() {
         </div>
 
         {/* SIDE PANEL (Controls, Servers, Memory) */}
-        <div className="xl:col-span-3 flex flex-col gap-5 h-[700px] overflow-y-auto sidebar-scroll pr-1">
+        <div className="xl:col-span-4 flex flex-col gap-5 h-[700px] overflow-y-auto sidebar-scroll pr-1 pl-2 pb-2">
           
           {/* TOKEN METER */}
           <div className="glass-panel rounded-[24px] p-5 shrink-0">
@@ -393,11 +393,11 @@ export default function DeepBrainPage() {
             </div>
             <div className="flex flex-col gap-2">
               <button onClick={() => triggerProactive("/briefing")} className="text-right flex items-center justify-between p-3 rounded-xl bg-white/50 border border-gray-100 hover:border-emerald-200 transition-colors group">
-                <span className="text-[10px] font-mono text-gray-400 group-hover:text-emerald-500">POST /briefing</span>
+                <span className="text-[10px] font-mono text-gray-400 group-hover:text-emerald-500 whitespace-nowrap ml-2">POST /briefing</span>
                 <span className="text-xs font-bold text-slate-700 font-tajawal">أرسل بريفنج الصباح</span>
               </button>
               <button onClick={() => triggerProactive("/alert/roas")} className="text-right flex items-center justify-between p-3 rounded-xl bg-white/50 border border-gray-100 hover:border-emerald-200 transition-colors group">
-                <span className="text-[10px] font-mono text-gray-400 group-hover:text-emerald-500">POST /alert/roas</span>
+                <span className="text-[10px] font-mono text-gray-400 group-hover:text-emerald-500 whitespace-nowrap ml-2">POST /alert/roas</span>
                 <span className="text-xs font-bold text-slate-700 font-tajawal">Check ROAS</span>
               </button>
             </div>
