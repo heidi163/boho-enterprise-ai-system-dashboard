@@ -1,8 +1,27 @@
 import { useState } from "react";
+import { api } from "../lib/api";
 import { Settings, User, Shield, Key, Bell, CreditCard, Save, Globe, Lock } from "lucide-react";
 
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState("profile");
+  const [elevenLabsKey, setElevenLabsKey] = useState("");
+  const [savingKey, setSavingKey] = useState(false);
+
+  const handleSaveElevenLabs = async () => {
+    if (!elevenLabsKey) return;
+    setSavingKey(true);
+    try {
+      await api.post("/api/settings/keys", {
+        service_name: "elevenlabs",
+        api_key: elevenLabsKey
+      });
+      alert("تم حفظ المفتاح بنجاح");
+    } catch (e) {
+      console.error(e);
+      alert("تعذر حفظ المفتاح");
+    }
+    setSavingKey(false);
+  };
 
   const tabs = [
     { id: "profile", label: "الملف الشخصي", icon: User },
@@ -118,8 +137,8 @@ export default function SettingsPage() {
                     <span className="text-[10px] bg-amber-100 text-amber-700 px-2 py-0.5 rounded font-mono font-bold">Missing</span>
                   </div>
                   <div className="flex gap-2">
-                    <input type="text" placeholder="أدخل مفتاح ElevenLabs لتفعيل الصوت الاحترافي" className="flex-1 bg-white border border-gray-200 rounded-xl px-4 py-2 text-sm font-mono text-slate-800 focus:outline-none focus:border-indigo-400" />
-                    <button className="bg-indigo-50 border border-indigo-100 text-indigo-700 px-4 py-2 rounded-xl font-bold font-tajawal text-xs hover:bg-indigo-100 transition-all">حفظ</button>
+                    <input type="text" value={elevenLabsKey} onChange={e => setElevenLabsKey(e.target.value)} placeholder="أدخل مفتاح ElevenLabs لتفعيل الصوت الاحترافي" className="flex-1 bg-white border border-gray-200 rounded-xl px-4 py-2 text-sm font-mono text-slate-800 focus:outline-none focus:border-indigo-400" />
+                    <button onClick={handleSaveElevenLabs} disabled={savingKey} className="bg-indigo-50 border border-indigo-100 text-indigo-700 px-4 py-2 rounded-xl font-bold font-tajawal text-xs hover:bg-indigo-100 transition-all">{savingKey ? "جاري الحفظ..." : "حفظ"}</button>
                   </div>
                 </div>
                 <div className="bg-slate-50 border border-slate-100 rounded-2xl p-5">

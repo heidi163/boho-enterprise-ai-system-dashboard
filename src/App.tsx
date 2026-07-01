@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { api } from "./lib/api";
 import { AlertCircle, Activity, Clock, Wifi, Lock } from "lucide-react";
 import Sidebar from "./components/Sidebar";
 import VoiceOrbCard from "./components/VoiceOrbCard";
@@ -86,21 +87,15 @@ export default function App() {
     }
     
     try {
-      const res = await fetch("http://localhost:8090/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password })
-      });
-      
-      const data = await res.json();
-      if (res.ok && data.token) {
+      const data = await api.post("/api/login", { password }, false);
+      if (data.token) {
         localStorage.setItem("boho_token", data.token);
         setIsAuthenticated(true);
       } else {
         setLoginError(data.error || "كلمة المرور غير صحيحة");
       }
-    } catch (err) {
-      setLoginError("تعذر الاتصال بالسيرفر. تأكد من تشغيل الباك إند.");
+    } catch (err: any) {
+      setLoginError(err.message || "تعذر الاتصال بالسيرفر. تأكد من تشغيل الباك إند.");
     } finally {
       setIsLoggingIn(false);
     }

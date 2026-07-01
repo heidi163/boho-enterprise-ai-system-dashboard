@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { api } from "../lib/api";
 import { Server, GitBranch, Activity, CheckCircle, AlertCircle, Clock, DollarSign, Cpu, Database, Globe, Lock, Layers, PlayCircle, TerminalSquare, Mic } from "lucide-react";
 
 type PhaseStatus = "done" | "in_progress" | "planned" | "deploying" | "error";
@@ -33,7 +34,7 @@ export default function SystemHealthPage() {
   const [deployLogs, setDeployLogs] = useState<string[]>(["[SYSTEM] جاهز لأوامر النشر..."]);
 
   useEffect(() => {
-    fetch("/api/health").then(r => r.json()).then(setHealth).catch(() => {});
+    api.get("/api/health", false).then(setHealth).catch(() => {});
     const start = Date.now();
     const id = setInterval(() => setUptime(Math.floor((Date.now() - start) / 1000)), 1000);
     return () => clearInterval(id);

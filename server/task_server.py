@@ -112,6 +112,32 @@ def create_task():
     memory.add_task(title, priority, user_id, company_id)
     return jsonify({"status": "success"})
 
+@app.put("/api/tasks/<int:task_id>")
+@require_auth
+def update_task_status(task_id):
+    data = request.get_json(force=True)
+    status = data.get("status", "pending")
+    memory.update_task(task_id, status)
+    return jsonify({"status": "success"})
+
+@app.delete("/api/tasks/<int:task_id>")
+@require_auth
+def delete_task(task_id):
+    memory.delete_task(task_id)
+    return jsonify({"status": "success"})
+
+@app.post("/api/briefing")
+@require_auth
+def generate_briefing():
+    # Fetch some tasks, sales, etc to generate briefing
+    user_id = request.args.get("user_id", "admin")
+    company_id = request.args.get("company_id", "BGK")
+    tasks = memory.get_tasks(user_id=user_id, company_id=company_id)
+    
+    prompt = f"قم بإنشاء تقرير صباحي (Briefing) صوتي لمدير الشركة اسمه أحمد صلاح. إجمالي المهام المفتوحة: {len(tasks)}. اجعله مشجعاً واحترافياً. تكلم باللهجة المصرية الخفيفة في حدود 4 سطور."
+    answer = think(prompt, memory, user_id=user_id, company_id=company_id)
+    return jsonify({"briefing": answer})
+
 @app.get("/api/sales")
 @require_auth
 def get_sales():

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { api } from "../lib/api";
 import { Mic, MicOff, Send, Volume2, VolumeX, Sparkles, AlertCircle, Play, Info } from "lucide-react";
 import { VoiceState, Message } from "../types";
 
@@ -160,21 +161,7 @@ export default function VoiceOrbCard({ onAILog, onRefreshData, onAddTaskLocal }:
         { role: "user", content: messageToSend }
       ].slice(-10); // Keep last 10 for server payload context
 
-      const token = localStorage.getItem("boho_token");
-      const response = await fetch("http://localhost:8090/api/chat", {
-        method: "POST",
-        headers: { 
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
-        body: JSON.stringify({ messages: updatedHistory }),
-      });
-
-      if (!response.ok) {
-        throw new Error("عطل في الاتصال بخادم بوهو");
-      }
-
-      const data = await response.json();
+      const data = await api.post("/api/chat", { messages: updatedHistory });
       const reply = data.content;
 
       // Add Model Response to Chat Logs

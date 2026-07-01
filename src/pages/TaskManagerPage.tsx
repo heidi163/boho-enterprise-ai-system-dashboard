@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { api } from "../lib/api";
 import { CheckSquare, Plus, Trash2, Clock, CheckCircle2, Circle, RefreshCw, BrainCircuit, Zap, BarChart2, AlertTriangle, Check, X } from "lucide-react";
 
 type TaskStatus = "To Do" | "In Progress" | "Done";
@@ -58,21 +59,15 @@ export default function TaskManagerPage() {
   const fetchTasks = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem("boho_token");
-      const res = await fetch("http://localhost:8090/api/tasks", {
-        headers: { "Authorization": `Bearer ${token}` }
-      });
-      if (res.ok) {
-        const d = await res.json();
-        // Convert DB status to UI status
-        const mappedTasks = (d.tasks || []).map((t: any) => ({
-          ...t,
-          name: t.title,
-          status: t.status === "pending" ? "To Do" : t.status === "completed" ? "Done" : "In Progress",
-          priority: t.priority || "medium"
-        }));
-        setTasks(mappedTasks);
-      }
+      const data = await api.get("/api/tasks");
+      // Convert DB status to UI status
+      const mappedTasks = (data.tasks || []).map((t: any) => ({
+        ...t,
+        name: t.title,
+        status: t.status === "pending" ? "To Do" : t.status === "completed" ? "Done" : "In Progress",
+        priority: t.priority || "medium"
+      }));
+      setTasks(mappedTasks);
     } catch (e) {
       console.error(e);
     }
@@ -84,17 +79,9 @@ export default function TaskManagerPage() {
   const addTask = async () => {
     if (!newName.trim()) return;
     try {
-      const token = localStorage.getItem("boho_token");
-      await fetch("http://localhost:8090/api/tasks", {
-        method: "POST",
-        headers: { 
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json" 
-        },
-        body: JSON.stringify({
-          title: newName,
-          priority: newPriority
-        })
+      await api.post("/api/tasks", {
+        title: newName,
+        priority: newPriority
       });
       setNewName(""); setNewDesc(""); setShowForm(false);
       fetchTasks();
@@ -103,12 +90,23 @@ export default function TaskManagerPage() {
     }
   };
 
-  const updateStatus = (id: string, status: TaskStatus) => {
-    setTasks(prev => prev.map(t => t.id === id ? { ...t, status } : t));
+  const updateStatus = async (id: string, status: TaskStatus) => {
+    const dbStatus = status === "To Do" ? "pending" : status === "Done" ? "completed" : "in_progress";
+    try {
+      await api.put(`/api/tasks/${id}`, { status: dbStatus });
+      setTasks(prev => prev.map(t => t.id === id ? { ...t, status } : t));
+    } catch (e) {
+      console.error(e);
+    }
   };
 
-  const deleteTask = (id: string) => {
-    setTasks(prev => prev.filter(t => t.id !== id));
+  const deleteTask = async (id: string) => {
+    try {
+      await api.delete(`/api/tasks/${id}`);
+      setTasks(prev => prev.filter(t => t.id !== id));
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   // Advanced Auto-Priority Logic (Mocked Senior Feature)

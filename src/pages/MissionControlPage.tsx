@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { api } from "../lib/api";
 import { Activity, AlertCircle, CheckCircle, Clock, BrainCircuit, Mic, Zap, TrendingUp, MessageSquare, Bell, Radio, ChevronRight } from "lucide-react";
 
 export default function MissionControlPage() {
@@ -25,17 +26,16 @@ export default function MissionControlPage() {
   }, []);
 
   useEffect(() => {
-    fetch("/api/mock/metorik?store_id=149659").then(r => r.json()).then(setMetorikData).catch(() => {});
-    fetch("/api/mock/windsor").then(r => r.json()).then(setWindsorData).catch(() => {});
-    fetch("/api/mock/tasks").then(r => r.json()).then(d => setTasks(d.tasks || [])).catch(() => {});
+    api.get("/api/sales").then(d => setMetorikData({ totalRevenue: d.sales?.[0]?.value || 48320 })).catch(() => {});
+    api.get("/api/ads").then(d => setWindsorData({ campaigns: [{ roas: d.ads?.[0]?.roas || 3.4 }] })).catch(() => {});
+    api.get("/api/tasks").then(d => setTasks(d.tasks || [])).catch(() => {});
   }, []);
 
   const handleBriefing = async () => {
     setGeneratingBrief(true);
     setBriefing("");
     try {
-      const res = await fetch("/api/briefing", { method: "POST" });
-      const d = await res.json();
+      const d = await api.post("/api/briefing", {});
       setBriefing(d.briefing || "تم توليد البريفنج.");
       if ("speechSynthesis" in window) {
         window.speechSynthesis.cancel();

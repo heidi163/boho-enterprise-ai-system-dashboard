@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { api } from "../lib/api";
 import { TrendingUp, TrendingDown, ShoppingBag, Package, Search, Send, DollarSign, Activity, Percent, BarChart } from "lucide-react";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 
@@ -17,28 +18,22 @@ export default function SalesIntelligencePage() {
     const fetchSales = async () => {
       setLoading(true);
       try {
-        const token = localStorage.getItem("boho_token");
-        const res = await fetch("http://localhost:8090/api/sales?company_id=BGK", {
-          headers: { "Authorization": `Bearer ${token}` }
+        const d = await api.get("/api/sales?company_id=BGK");
+        const sales = d.sales || [];
+        
+        let rev = 0;
+        let ord = 0;
+        sales.forEach((s: any) => {
+          if (s.name === "Revenue") rev += s.value;
+          if (s.name === "Orders") ord += s.value;
         });
-        if (res.ok) {
-          const d = await res.json();
-          const sales = d.sales || [];
-          
-          let rev = 0;
-          let ord = 0;
-          sales.forEach((s: any) => {
-            if (s.name === "Revenue") rev += s.value;
-            if (s.name === "Orders") ord += s.value;
-          });
-          
-          setStoreData({
-            revenue: rev || 48320, 
-            orders: ord || 284, 
-            aov: ord > 0 ? Math.round(rev/ord) : 170, 
-            abandonRate: 12
-          });
-        }
+        
+        setStoreData({
+          revenue: rev || 48320, 
+          orders: ord || 284, 
+          aov: ord > 0 ? Math.round(rev/ord) : 170, 
+          abandonRate: 12
+        });
       } catch (e) {
         console.error(e);
       }

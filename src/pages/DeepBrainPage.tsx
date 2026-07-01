@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { api } from "../lib/api";
 import { BrainCircuit, Database, Zap, Send, Activity, Info, Coins, DollarSign, MessageSquare, Search, Star, History, Mic, ImagePlus, X } from "lucide-react";
 
 export default function DeepBrainPage() {
@@ -31,14 +32,8 @@ export default function DeepBrainPage() {
   const fetchMemory = async () => {
     setMemoryLoading(true);
     try {
-      const token = localStorage.getItem("boho_token");
-      const res = await fetch("http://localhost:8090/api/memory", {
-        headers: { "Authorization": `Bearer ${token}` }
-      });
-      if (res.ok) {
-        const d = await res.json();
-        setMemory(d.facts || []);
-      }
+      const data = await api.get("/api/memory");
+      setMemory(data.facts || []);
     } catch (e) {
       console.error(e);
     }
@@ -95,16 +90,7 @@ export default function DeepBrainPage() {
         payload.image_media_type = imageMediaType;
       }
 
-      const token = localStorage.getItem("boho_token");
-      const res = await fetch("http://localhost:8090/api/chat", {
-        method: "POST",
-        headers: { 
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
-        body: JSON.stringify(payload),
-      });
-      const data = await res.json();
+      const data = await api.post("/api/chat", payload);
       setMessages(prev => [...prev, { role: "model", content: data.content }]);
       removeImage(); // clear image after sending
     } catch {

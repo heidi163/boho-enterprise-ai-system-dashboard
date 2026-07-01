@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { api } from "../lib/api";
 import { Megaphone, TrendingUp, AlertCircle, CheckCircle, RefreshCw, Zap, Target, DollarSign, Clock, Flame } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 
@@ -18,9 +19,11 @@ export default function AdsCommandCenterPage() {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/mock/windsor");
-      setData(await res.json());
-    } catch {}
+      const data = await api.get("/api/ads");
+      setData(data);
+    } catch (e) {
+      console.error(e);
+    }
     setLoading(false);
   };
 

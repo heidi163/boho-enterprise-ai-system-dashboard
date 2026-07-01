@@ -111,6 +111,10 @@ class Memory:
         self.conn.execute("UPDATE tasks SET status = ? WHERE id = ?", (status, task_id))
         self.conn.commit()
 
+    def delete_task(self, task_id: int):
+        self.conn.execute("DELETE FROM tasks WHERE id = ?", (task_id,))
+        self.conn.commit()
+
     # --- Sales Methods ---
     def add_sales_record(self, metric_name: str, metric_value: float, date_recorded: str, company_id: str = 'BGK'):
         self.conn.execute(
