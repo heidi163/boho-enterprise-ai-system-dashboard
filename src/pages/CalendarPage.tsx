@@ -128,7 +128,7 @@ export default function CalendarPage() {
                 <div className={`absolute right-[11px] top-4 w-2.5 h-2.5 rounded-full ring-4 ring-[#F0F2F8] z-10 ${meeting.color}`} />
 
                 {/* Content Card */}
-                <div className={`flex-1 rounded-2xl p-4 ml-2 border transition-all ${
+                <div className={`flex-1 rounded-2xl p-4 mr-10 border transition-all ${
                   meeting.status === "past" 
                     ? "bg-gray-50/50 border-transparent opacity-60" 
                     : "bg-white border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.04)]"
