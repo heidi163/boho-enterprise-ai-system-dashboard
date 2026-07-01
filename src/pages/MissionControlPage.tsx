@@ -12,6 +12,7 @@ export default function MissionControlPage() {
   const [metorikData, setMetorikData] = useState<any>(null);
   const [windsorData, setWindsorData] = useState<any>(null);
   const [tasks, setTasks] = useState<any[]>([]);
+  const [weeklySales, setWeeklySales] = useState<number[]>([32000, 35000, 28000, 42000, 45000, 39000, 48320]);
   const [lastRefresh, setLastRefresh] = useState<Date>(new Date());
   const [isRefreshing, setIsRefreshing] = useState(false);
   
@@ -21,8 +22,7 @@ export default function MissionControlPage() {
   ]);
 
   // Mock data for new UI sections
-  const weeklySales = [32000, 35000, 28000, 42000, 45000, 39000, 48320];
-  const maxSale = Math.max(...weeklySales);
+  const maxSale = Math.max(...weeklySales, 1);
   
   const campaigns = [
     { name: "iFilter - Search (KW)", platform: "Google", spend: "3,200", roas: 4.2, status: "excellent" },
@@ -30,10 +30,10 @@ export default function MissionControlPage() {
     { name: "O2Nation - Awareness", platform: "Snapchat", spend: "4,000", roas: 1.8, status: "danger" },
   ];
 
-  const clients = [
-    { name: "iFilter Water", mrr: "120K", health: "98%", status: "success", nextMeeting: "Today 2:00 PM" },
-    { name: "Sealy E-commerce", mrr: "85K", health: "82%", status: "warning", nextMeeting: "Tomorrow" },
-    { name: "O2Nation App", mrr: "45K", health: "95%", status: "success", nextMeeting: "Thu 10:00 AM" },
+  const aiInsights = [
+    { icon: TrendingUp, title: "فرصة نمو في iFilter", desc: "المبيعات زادت 18% هذا الأسبوع. أنصح بزيادة ميزانية إعلانات جوجل بـ 20%.", color: "text-emerald-500", bg: "bg-emerald-50", border: "border-emerald-100" },
+    { icon: Zap, title: "تحذير: تكلفة Sealy", desc: "تكلفة النقرة (CPC) ارتفعت. راجع الكريتيفز الجديدة لتقليل التكلفة.", color: "text-amber-500", bg: "bg-amber-50", border: "border-amber-100" },
+    { icon: BrainCircuit, title: "توقع بوهو للشهر", desc: "بناءً على الأرقام الحالية، متوقع نضرب تارجت الشهر قبل نهايته بـ 4 أيام.", color: "text-blue-500", bg: "bg-blue-50", border: "border-blue-100" },
   ];
 
   const todayMeetings = [
@@ -50,7 +50,14 @@ export default function MissionControlPage() {
         api.get("/api/tasks")
       ]);
       
-      if (salesRes.status === "fulfilled") setMetorikData({ totalRevenue: salesRes.value.sales?.[0]?.value || 48320 });
+      if (salesRes.status === "fulfilled") {
+        const salesData = salesRes.value.sales || [];
+        setMetorikData({ totalRevenue: salesData[0]?.value || 48320 });
+        if (salesData.length > 0) {
+          const values = salesData.map((s: any) => s.value).reverse();
+          setWeeklySales(values);
+        }
+      }
       if (adsRes.status === "fulfilled") setWindsorData({ campaigns: [{ roas: adsRes.value.ads?.[0]?.roas || 3.4 }] });
       if (tasksRes.status === "fulfilled") setTasks(tasksRes.value.tasks || [
         { id: "1", name: "مراجعة تصميمات الأسبوع القادم", status: "To Do" },
@@ -154,8 +161,11 @@ export default function MissionControlPage() {
       <div className="glass-panel rounded-[24px] p-5 w-full flex flex-col md:flex-row items-center gap-6">
         <div className="shrink-0 flex flex-col justify-center">
           <h3 className="text-sm font-bold text-slate-800 font-tajawal mb-1">أداء الأسبوع الحالي</h3>
-          <p className="text-[10px] text-gray-400 font-tajawal">إجمالي المبيعات آخر 7 أيام</p>
-          <p className="text-2xl font-black font-mono text-blue-600 mt-2">268,320<span className="text-sm text-blue-400 ml-1">EGP</span></p>
+          <p className="text-[10px] text-gray-400 font-tajawal">إجمالي المبيعات آخر {weeklySales.length} أيام</p>
+          <p className="text-2xl font-black font-mono text-blue-600 mt-2">
+            {weeklySales.reduce((a, b) => a + b, 0).toLocaleString()}
+            <span className="text-sm text-blue-400 ml-1">EGP</span>
+          </p>
           <div className="flex items-center gap-1 mt-1">
             <ArrowUpRight className="w-3 h-3 text-emerald-500" />
             <span className="text-[11px] font-bold text-emerald-600 font-mono">+18.4%</span>
@@ -234,31 +244,21 @@ export default function MissionControlPage() {
           </div>
         </div>
 
-        {/* Client Health */}
+        {/* AI Insights */}
         <div className="glass-panel rounded-[24px] p-5">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">صحة العملاء <Users className="w-4 h-4 text-blue-500" /></h3>
-            <span className="text-[9px] text-gray-400 font-mono uppercase">Client Health</span>
+            <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">رؤى بوهو التحليلية <BrainCircuit className="w-4 h-4 text-blue-500" /></h3>
+            <span className="text-[9px] px-2 py-0.5 bg-indigo-50 text-indigo-600 rounded-full font-bold uppercase tracking-wider">AI Insights</span>
           </div>
           <div className="flex flex-col gap-3">
-            {clients.map((client, i) => (
-              <div key={i} className="flex items-center justify-between bg-white/50 p-3 rounded-xl border border-gray-100 hover:shadow-sm transition-all">
-                <div className="flex items-center gap-3">
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-white text-xs ${
-                    client.status === "success" ? "bg-emerald-400" : "bg-amber-400"
-                  }`}>
-                    {client.name.charAt(0)}
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold text-slate-800">{client.name}</p>
-                    <p className="text-[9px] text-gray-400 font-mono mt-0.5">{client.nextMeeting}</p>
-                  </div>
+            {aiInsights.map((insight, i) => (
+              <div key={i} className={`flex items-start gap-3 p-3 rounded-xl border ${insight.bg} ${insight.border} hover:shadow-sm transition-all`}>
+                <div className={`p-2 rounded-lg bg-white shadow-sm shrink-0`}>
+                  <insight.icon className={`w-4 h-4 ${insight.color}`} />
                 </div>
-                <div className="text-left">
-                  <p className="text-xs font-mono font-black text-slate-700">{client.mrr}</p>
-                  <p className={`text-[9px] font-bold ${client.status === "success" ? "text-emerald-500" : "text-amber-500"}`}>
-                    Health: {client.health}
-                  </p>
+                <div className="flex-1 text-right mt-0.5">
+                  <p className="text-xs font-bold text-slate-800 font-tajawal">{insight.title}</p>
+                  <p className="text-[10px] text-slate-600 font-tajawal mt-1 leading-relaxed">{insight.desc}</p>
                 </div>
               </div>
             ))}
