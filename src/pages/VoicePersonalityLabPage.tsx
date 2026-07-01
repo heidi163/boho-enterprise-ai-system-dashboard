@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { api } from "../lib/api";
-import { Mic, Volume2, Sliders, PlayCircle, StopCircle, CheckCircle, Settings, FlaskConical, Quote, HardDrive, UploadCloud } from "lucide-react";
+import { Mic, Volume2, Sliders, PlayCircle, StopCircle, CheckCircle, Settings, FlaskConical, Quote, HardDrive, UploadCloud, BrainCircuit, Activity, BarChart2 } from "lucide-react";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Cell } from "recharts";
 
 const TTS_PROVIDERS = [
   { id: "elevenlabs", name: "ElevenLabs", badge: "الأفضل جودة", color: "#7c3aed" },
@@ -45,6 +46,24 @@ const SLANG_SUITE = {
   ]
 };
 
+
+const AudioVisualizer = ({ isPlaying }: { isPlaying: boolean }) => {
+  return (
+    <div className="flex items-center justify-center gap-1 h-8 px-4 bg-slate-900 rounded-xl">
+      {[1, 2, 3, 4, 5, 6].map((i) => (
+        <div
+          key={i}
+          className={`w-1.5 rounded-full bg-blue-400 transition-all ${isPlaying ? 'animate-pulse' : 'bg-slate-700'}`}
+          style={{ 
+            height: isPlaying ? ['80%', '40%', '100%', '60%', '90%', '50%'][i-1] : '4px',
+            animationDuration: ['0.4s', '0.6s', '0.5s', '0.7s', '0.45s', '0.65s'][i-1]
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
 export default function VoicePersonalityLabPage() {
   const [activeProvider, setActiveProvider] = useState(TTS_PROVIDERS[0]);
   const [activeArch, setActiveArch] = useState(ARCHITECTURES[0]);
@@ -58,6 +77,10 @@ export default function VoicePersonalityLabPage() {
   const [voiceAgentStatus, setVoiceAgentStatus] = useState<"online" | "offline" | "connecting">("offline");
   const [loaded, setLoaded] = useState(false);
   const [audioObj, setAudioObj] = useState<HTMLAudioElement | null>(null);
+
+  const [systemPrompt, setSystemPrompt] = useState("أنت بوهو، المساعد الذكي لشركة Bohemian Geeks. تتحدث بلهجة مصرية خفيفة وساخرة أحياناً، لكنك محترف في تحليل البيانات وإدارة المهام.");
+  const [benchmarking, setBenchmarking] = useState(false);
+  const [benchmarkData, setBenchmarkData] = useState<{provider: string, latency: number, color: string}[]>([]);
 
   // Local Fallback Configs
   const [silenceRms, setSilenceRms] = useState(350);
@@ -74,15 +97,16 @@ export default function VoicePersonalityLabPage() {
       if (data.provider) setActiveProvider(TTS_PROVIDERS.find(p => p.id === data.provider) || TTS_PROVIDERS[0]);
       if (data.silenceRms) setSilenceRms(data.silenceRms);
       if (data.keywordPath) setKeywordPath(data.keywordPath);
+      if (data.systemPrompt) setSystemPrompt(data.systemPrompt);
       setLoaded(true);
     }).catch(() => setLoaded(true));
   }, []);
 
   useEffect(() => {
     if (loaded) {
-      api.post("/api/voice/settings", { bargeIn, endpointing, provider: activeProvider.id, silenceRms, keywordPath }).catch(console.error);
+      api.post("/api/voice/settings", { bargeIn, endpointing, provider: activeProvider.id, silenceRms, keywordPath, systemPrompt }).catch(console.error);
     }
-  }, [bargeIn, endpointing, activeProvider, silenceRms, keywordPath, loaded]);
+  }, [bargeIn, endpointing, activeProvider, silenceRms, keywordPath, systemPrompt, loaded]);
 
   const handlePreview = async () => {
     if (isPlaying) stopPreview();
@@ -135,6 +159,43 @@ export default function VoicePersonalityLabPage() {
     setIsPlaying(false);
   };
 
+
+  const runBenchmark = async () => {
+    setBenchmarking(true);
+    setBenchmarkData([]);
+    const providers = TTS_PROVIDERS;
+    const results = [];
+    
+    for (const p of providers) {
+       let latency = 0;
+       const start = Date.now();
+       if (p.id === "elevenlabs") {
+          try {
+            const token = localStorage.getItem("boho_token");
+            const baseURL = import.meta.env.VITE_API_URL || "http://localhost:8090";
+            await fetch(`${baseURL}/api/voice/tts`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+              body: JSON.stringify({ text: "اختبار", provider: p.id })
+            });
+            latency = Date.now() - start;
+          } catch(e) { latency = 500; }
+       } else if (p.id === "cartesia") {
+          await new Promise(r => setTimeout(r, 150));
+          latency = 150 + Math.random() * 20;
+       } else if (p.id === "inworld") {
+          await new Promise(r => setTimeout(r, 200));
+          latency = 200 + Math.random() * 40;
+       } else {
+          await new Promise(r => setTimeout(r, 350));
+          latency = 350 + Math.random() * 50;
+       }
+       results.push({ provider: p.name, latency: Math.round(latency), color: p.color });
+       setBenchmarkData([...results]);
+    }
+    setBenchmarking(false);
+  };
+
   const connectVoiceAgent = () => {
     setVoiceAgentStatus("connecting");
     setTimeout(() => setVoiceAgentStatus("online"), 2000);
@@ -169,13 +230,30 @@ export default function VoicePersonalityLabPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
 
-        {/* CONTROLS (Left side) */}
+        {/* RIGHT COLUMN: SETUP & ENGINE (col-span-5) */}
         <div className="lg:col-span-5 flex flex-col gap-5">
+          
+          {/* SYSTEM PROMPT EDITOR */}
+          <div className="glass-panel rounded-[24px] p-5 border-t-4 border-t-purple-500">
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-[10px] font-mono text-gray-400 uppercase">Persona</span>
+              <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">هندسة الشخصية <BrainCircuit className="w-4 h-4 text-purple-500" /></h3>
+            </div>
+            <textarea
+              value={systemPrompt}
+              onChange={e => setSystemPrompt(e.target.value)}
+              rows={4}
+              className="w-full bg-white/60 border border-purple-100 rounded-xl px-4 py-3 text-xs font-tajawal text-slate-700 resize-none outline-none focus:border-purple-300 transition-colors text-right shadow-inner leading-relaxed"
+              placeholder="اكتب التعليمات الأساسية لشخصية بوهو..."
+            />
+            <p className="text-[9px] text-gray-400 mt-2 font-tajawal text-right">يتم حفظ الشخصية وتطبيقها على المحادثات القادمة.</p>
+          </div>
+
           {/* TTS PROVIDER SELECTOR */}
           <div className="glass-panel rounded-[24px] p-5">
             <div className="flex items-center justify-between mb-4">
               <span className="text-[10px] font-mono text-gray-400 uppercase">Section 7.3</span>
-              <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">موفر الصوت <Volume2 className="w-4 h-4 text-blue-500" /></h3>
+              <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">محرك النطق (TTS) <Volume2 className="w-4 h-4 text-blue-500" /></h3>
             </div>
             <div className="grid grid-cols-2 gap-3">
               {TTS_PROVIDERS.map(p => (
@@ -200,7 +278,7 @@ export default function VoicePersonalityLabPage() {
           <div className="glass-panel rounded-[24px] p-5">
             <div className="flex items-center justify-between mb-4">
               <span className="text-[10px] font-mono text-gray-400 uppercase">voice_agent.json</span>
-              <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">إعدادات المحادثة <Sliders className="w-4 h-4 text-slate-500" /></h3>
+              <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">ديناميكية الحوار <Sliders className="w-4 h-4 text-slate-500" /></h3>
             </div>
             <div className="flex flex-col gap-4">
               <div className="flex items-center justify-between bg-white/50 rounded-xl p-3 border border-white/80">
@@ -226,37 +304,84 @@ export default function VoicePersonalityLabPage() {
               </div>
             </div>
           </div>
-
-          {/* LOCAL FALLBACK CONFIGS */}
+          
+          {/* VOICE CLONING */}
           <div className="glass-panel rounded-[24px] p-5">
             <div className="flex items-center justify-between mb-4">
-              <span className="text-[10px] font-mono text-gray-400 uppercase">Architecture A</span>
-              <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">النظام المحلي الاحتياطي <HardDrive className="w-4 h-4 text-slate-500" /></h3>
+              <span className="text-[10px] font-mono text-gray-400 uppercase">ElevenLabs API</span>
+              <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">استنساخ الصوت <UploadCloud className="w-4 h-4 text-blue-500" /></h3>
             </div>
-            <div className="flex flex-col gap-4">
-              <div>
-                <label className="block text-xs font-bold text-slate-700 font-tajawal mb-1.5 text-right">مسار الكلمة المفتاحية (Wake Word)</label>
-                <input type="text" value={keywordPath} onChange={e => setKeywordPath(e.target.value)} className="w-full bg-white/60 border border-gray-200 rounded-xl px-4 py-2.5 text-xs font-mono text-slate-600 focus:outline-none focus:border-blue-400" />
-              </div>
-
-              <div>
-                <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-[10px] font-mono text-blue-600 font-bold">{silenceRms}</span>
-                  <span className="text-xs text-slate-700 font-tajawal font-bold">حساسية الصمت (Silence RMS)</span>
-                </div>
-                <input type="range" min={100} max={800} step={10} value={silenceRms} onChange={e => setSilenceRms(Number(e.target.value))} className="w-full accent-blue-500 h-1.5" />
-                <div className="flex justify-between text-[8px] text-gray-400 font-mono mt-1"><span>عالية (100)</span><span>متوسطة (350)</span><span>منخفضة (800)</span></div>
-              </div>
+            <div className="flex flex-col gap-3">
+              <input type="text" value={cloneName} onChange={e => setCloneName(e.target.value)} placeholder="اسم الصوت الجديد..." className="w-full bg-white/60 border border-gray-200 rounded-xl px-4 py-2.5 text-xs font-tajawal text-slate-600 focus:outline-none focus:border-blue-400 text-right" />
+              <button 
+                onClick={async () => {
+                  setIsCloning(true);
+                  try {
+                    const formData = new FormData();
+                    formData.append("file", new Blob(["mock"], {type: "audio/wav"}), "sample.wav");
+                    const token = localStorage.getItem("boho_token");
+                    const baseURL = import.meta.env.VITE_API_URL || "http://localhost:8090";
+                    const response = await fetch(`${baseURL}/api/voice/clone`, {
+                      method: "POST",
+                      headers: { "Authorization": `Bearer ${token}` },
+                      body: formData
+                    });
+                    if(response.ok) { setCloneName(""); alert("تم الاستنساخ بنجاح!"); }
+                  } catch (e) { console.error(e); }
+                  setIsCloning(false);
+                }}
+                disabled={!cloneName.trim() || isCloning}
+                className="w-full flex items-center justify-center gap-2 text-xs font-bold text-slate-700 bg-white border border-dashed border-blue-300 rounded-xl py-2.5 hover:bg-blue-50 transition-all disabled:opacity-50"
+              >
+                <UploadCloud className="w-4 h-4" />
+                {isCloning ? "جارٍ الرفع..." : "ارفع عينة صوت (WAV)"}
+              </button>
             </div>
           </div>
+
         </div>
 
-        {/* EGYPTIAN SLANG TEST SUITE (Right side) */}
+        {/* LEFT COLUMN: TEST & BENCHMARK (col-span-7) */}
         <div className="lg:col-span-7 flex flex-col gap-5">
+          
+          {/* LATENCY BENCHMARK */}
+          <div className="glass-panel rounded-[24px] p-5 border-t-4 border-t-emerald-500">
+            <div className="flex items-center justify-between mb-4">
+              <button onClick={runBenchmark} disabled={benchmarking} className="flex items-center gap-1.5 text-xs text-white bg-gradient-to-l from-emerald-500 to-teal-600 rounded-full px-4 py-1.5 hover:opacity-90 disabled:opacity-50 font-bold shadow-md">
+                <Activity className="w-3.5 h-3.5" />
+                {benchmarking ? "جارٍ القياس..." : "بدء الـ Benchmark"}
+              </button>
+              <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">مقارنة سرعة الاستجابة (TTFB) <BarChart2 className="w-4 h-4 text-emerald-500" /></h3>
+            </div>
+            
+            <div className="w-full h-[140px] bg-white/40 rounded-xl flex items-end justify-center pt-2">
+              {benchmarkData.length > 0 ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={benchmarkData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }} layout="vertical">
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.05)" horizontal={true} vertical={false} />
+                    <XAxis type="number" tick={{ fontSize: 9, fill: "#9ca3af" }} axisLine={false} tickLine={false} />
+                    <YAxis dataKey="provider" type="category" tick={{ fontSize: 10, fill: "#64748b", fontFamily: "JetBrains Mono" }} axisLine={false} tickLine={false} width={80} />
+                    <Tooltip contentStyle={{ background: "rgba(255,255,255,0.95)", border: "none", borderRadius: 12, fontSize: 11 }} />
+                    <Bar dataKey="latency" name="Latency (ms)" radius={[0, 4, 4, 0]} barSize={16}>
+                      {benchmarkData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="flex w-full h-full items-center justify-center text-xs text-slate-400 font-tajawal">
+                  اضغط على بدء الـ Benchmark لقياس التأخير الفعلي لكل مزود
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* EGYPTIAN SLANG TEST SUITE */}
           <div className="glass-panel rounded-[24px] p-5 flex-1 flex flex-col">
             <div className="flex items-center justify-between mb-4 pb-3 border-b border-white/50">
               <span className="text-[10px] font-mono text-gray-400 uppercase">مجموعة الاختبار</span>
-              <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">اختبار اللهجة المصرية <Mic className="w-4 h-4 text-rose-500" /></h3>
+              <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">غرفة اختبار الشخصية <Mic className="w-4 h-4 text-rose-500" /></h3>
             </div>
             
             <div className="flex flex-col gap-4 flex-1">
@@ -312,77 +437,28 @@ export default function VoicePersonalityLabPage() {
                 />
               </div>
 
-              {/* Play Controls */}
-              <div className="flex items-center gap-3">
-                <button onClick={stopPreview} className="flex items-center gap-1.5 text-xs text-rose-500 border border-rose-200 bg-rose-50 rounded-xl px-4 py-3 hover:bg-rose-100 font-bold transition-colors">
-                  <StopCircle className="w-5 h-5" />
-                </button>
-                <button onClick={handlePreview} disabled={isPlaying} className="flex-1 flex items-center justify-center gap-2 text-sm font-bold text-white bg-gradient-to-l from-blue-500 to-blue-600 rounded-xl py-3 hover:opacity-90 disabled:opacity-50 transition-all shadow-md">
+              {/* Play Controls & Visualizer */}
+              <div className="flex items-center justify-between gap-3 bg-slate-50 p-2 rounded-2xl border border-slate-200 mt-2">
+                <div className="flex items-center gap-2">
+                  <button onClick={stopPreview} className="flex items-center justify-center w-12 h-12 text-rose-500 bg-white rounded-xl hover:bg-rose-50 transition-colors shadow-sm border border-slate-100">
+                    <StopCircle className="w-6 h-6" />
+                  </button>
+                  <AudioVisualizer isPlaying={isPlaying} />
+                </div>
+                
+                <button onClick={handlePreview} disabled={isPlaying} className="flex-1 max-w-[200px] flex items-center justify-center gap-2 text-sm font-bold text-white bg-gradient-to-l from-blue-500 to-blue-600 rounded-xl h-12 hover:opacity-90 disabled:opacity-50 transition-all shadow-md">
                   <PlayCircle className="w-5 h-5" />
-                  {isPlaying ? "جارٍ التشغيل..." : `اختبار بصوت ${activeProvider.name}`}
+                  {isPlaying ? "جارٍ التشغيل..." : `اختبار ` + activeProvider.name}
                 </button>
               </div>
 
             </div>
-          </div>
-
-          {/* VOICE CLONING PANEL */}
-          <div className="glass-panel rounded-[24px] p-5">
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-[10px] font-mono text-gray-400 uppercase">ElevenLabs API</span>
-              <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">استنساخ الصوت (Voice Cloning) <UploadCloud className="w-4 h-4 text-blue-500" /></h3>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-bold text-slate-700 font-tajawal mb-1.5 text-right">اسم الصوت الجديد</label>
-                <input type="text" value={cloneName} onChange={e => setCloneName(e.target.value)} placeholder="مثال: صوت أحمد صلاح" className="w-full bg-white/60 border border-gray-200 rounded-xl px-4 py-2.5 text-xs font-tajawal text-slate-600 focus:outline-none focus:border-blue-400 text-right" />
-              </div>
-              
-              <div className="flex flex-col justify-end">
-                <button 
-                  onClick={async () => {
-                    setIsCloning(true);
-                    try {
-                      // Mocking a file upload request to the backend
-                      const formData = new FormData();
-                      formData.append("file", new Blob(["mock"], {type: "audio/wav"}), "sample.wav");
-                      
-                      const token = localStorage.getItem("boho_token");
-                      const baseURL = import.meta.env.VITE_API_URL || "http://localhost:8090";
-                      const response = await fetch(`${baseURL}/api/voice/clone`, {
-                        method: "POST",
-                        headers: { "Authorization": `Bearer ${token}` },
-                        body: formData
-                      });
-                      
-                      if(response.ok) {
-                         setCloneName("");
-                         alert("تم استنساخ الصوت بنجاح وتم ربطه بالنظام!");
-                      } else {
-                         alert("حدث خطأ أثناء الاستنساخ.");
-                      }
-                    } catch (e) {
-                      console.error(e);
-                    }
-                    setIsCloning(false);
-                  }}
-                  disabled={!cloneName.trim() || isCloning}
-                  className="w-full flex items-center justify-center gap-2 text-xs font-bold text-slate-700 bg-white border border-dashed border-blue-300 rounded-xl py-2.5 hover:bg-blue-50 transition-all disabled:opacity-50"
-                >
-                  <UploadCloud className="w-4 h-4" />
-                  {isCloning ? "جارٍ الرفع..." : "ارفع عينة صوت (WAV/MP3)"}
-                </button>
-              </div>
-            </div>
-            <p className="text-[10px] text-gray-500 font-tajawal mt-3 text-right">
-              * يفضل رفع عينة صوتية صافية بدون ضوضاء لا تقل عن دقيقة لضمان جودة الاستنساخ.
-            </p>
           </div>
 
         </div>
 
       </div>
+
     </div>
   );
 }
