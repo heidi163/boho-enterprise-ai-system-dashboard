@@ -163,7 +163,7 @@ export default function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
       </div>
 
       {/* Menu */}
-      <div className="w-full flex-1 sidebar-scroll scroll-fade-y flex flex-col gap-1.5 overflow-y-auto pr-1 pl-1 pb-6">
+      <div className="w-full flex-1 sidebar-scroll flex flex-col gap-1.5 overflow-y-auto pr-1 pl-1 pb-6">
         {PAGES.map((page) => {
           const Icon = page.icon;
           const isActive = activeTab === page.id;
