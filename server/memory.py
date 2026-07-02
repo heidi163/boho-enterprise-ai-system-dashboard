@@ -55,6 +55,19 @@ CREATE TABLE IF NOT EXISTS api_keys (
     api_key TEXT NOT NULL,
     UNIQUE(service_name)
 );
+
+CREATE TABLE IF NOT EXISTS meetings (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    company_id TEXT DEFAULT 'BGK',
+    title TEXT NOT NULL,
+    time TEXT NOT NULL,
+    type TEXT NOT NULL,
+    attendees INTEGER DEFAULT 1,
+    has_notes BOOLEAN DEFAULT 0,
+    color TEXT DEFAULT 'bg-blue-500',
+    status TEXT DEFAULT 'upcoming',
+    date_recorded TEXT NOT NULL
+);
 """
 
 class Memory:
@@ -156,3 +169,18 @@ class Memory:
     def get_api_key(self, service_name: str) -> str:
         row = self.conn.execute("SELECT api_key FROM api_keys WHERE service_name = ?", (service_name,)).fetchone()
         return row[0] if row else None
+
+    # --- Meetings Methods ---
+    def add_meeting(self, title: str, time_str: str, meeting_type: str, attendees: int, has_notes: bool, color: str, status: str, date_recorded: str, company_id: str = 'BGK'):
+        self.conn.execute(
+            "INSERT INTO meetings (company_id, title, time, type, attendees, has_notes, color, status, date_recorded) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            (company_id, title, time_str, meeting_type, attendees, has_notes, color, status, date_recorded)
+        )
+        self.conn.commit()
+
+    def get_meetings(self, company_id: str = 'BGK', limit: int = 10) -> list[dict]:
+        rows = self.conn.execute(
+            "SELECT id, title, time, type, attendees, has_notes, color, status, date_recorded FROM meetings WHERE company_id = ? ORDER BY id DESC LIMIT ?",
+            (company_id, limit)
+        ).fetchall()
+        return [{"id": r[0], "title": r[1], "time": r[2], "type": r[3], "attendees": r[4], "hasNotes": bool(r[5]), "color": r[6], "status": r[7], "date": r[8]} for r in rows]

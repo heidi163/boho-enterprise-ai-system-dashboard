@@ -1,5 +1,4 @@
-import eventlet
-eventlet.monkey_patch()
+# Removed eventlet to avoid macOS kqueue crash
 
 import os
 import time
@@ -19,7 +18,7 @@ from auth import require_auth, generate_token, ADMIN_PASSWORD
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("JWT_SECRET", "super-secret-boho-key-123")
 CORS(app) # Allow React frontend to connect
-socketio = SocketIO(app, cors_allowed_origins="*", async_mode='eventlet')
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 memory = Memory()
 SHARED_SECRET = os.environ.get("TASK_SHARED_SECRET", "change-me")
