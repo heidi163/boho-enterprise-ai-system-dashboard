@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { api } from "../lib/api";
-import { Mic, MicOff, Send, Volume2, VolumeX, Sparkles, AlertCircle, Play, Info } from "lucide-react";
+import { Mic, MicOff, Send, Volume2, VolumeX, Sparkles, AlertCircle, Play, Info, X, MessageSquare } from "lucide-react";
 import { VoiceState, Message } from "../types";
 
 interface VoiceOrbCardProps {
@@ -10,6 +10,7 @@ interface VoiceOrbCardProps {
 }
 
 export default function VoiceOrbCard({ onAILog, onRefreshData, onAddTaskLocal }: VoiceOrbCardProps) {
+  const [isOpen, setIsOpen] = useState(false);
   const [voiceState, setVoiceState] = useState<VoiceState>("idle");
   const [transcript, setTranscript] = useState("");
   const [userInput, setUserInput] = useState("");
@@ -204,13 +205,35 @@ export default function VoiceOrbCard({ onAILog, onRefreshData, onAddTaskLocal }:
   ];
 
   return (
-    <div 
-      id="voice-ai-orb-card" 
-      className="bg-white/30 backdrop-blur-3xl border border-white/60 rounded-[40px] shadow-[0_25px_50px_rgba(0,0,0,0.04)] p-8 flex flex-col justify-between h-full relative overflow-hidden"
-    >
-      {/* Visual Ambient glowing background blob */}
-      <div className="absolute right-[-100px] top-[-100px] w-64 h-64 rounded-full bg-blue-100/30 blur-3xl pointer-events-none" />
-      <div className="absolute left-[-100px] bottom-[-100px] w-80 h-80 rounded-full bg-[#f4d4f0]/20 blur-3xl pointer-events-none" />
+    <>
+      {/* Floating Toggle Button */}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className={`fixed bottom-6 left-6 z-50 w-16 h-16 rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95 ${
+          isOpen ? "bg-rose-500 rotate-90" : "bg-gradient-to-tr from-blue-600 to-sky-400"
+        }`}
+      >
+        {isOpen ? (
+          <X className="w-7 h-7 text-white" />
+        ) : (
+          <div className="relative">
+            <div className="absolute inset-0 bg-white/20 rounded-full blur animate-ping" />
+            <MessageSquare className="w-7 h-7 text-white relative z-10" />
+          </div>
+        )}
+      </button>
+
+      {/* Floating Widget Container */}
+      <div 
+        id="voice-ai-orb-card" 
+        className={`fixed bottom-28 left-6 z-50 w-[380px] h-[600px] max-h-[80vh] transition-all duration-500 origin-bottom-left ${
+          isOpen ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-50 translate-y-10 pointer-events-none"
+        }`}
+      >
+        <div className="bg-white/80 backdrop-blur-3xl border border-white/60 rounded-[32px] shadow-[0_25px_50px_rgba(0,0,0,0.15)] p-6 flex flex-col justify-between h-full relative overflow-hidden">
+          {/* Visual Ambient glowing background blob */}
+          <div className="absolute right-[-100px] top-[-100px] w-64 h-64 rounded-full bg-blue-100/30 blur-3xl pointer-events-none" />
+          <div className="absolute left-[-100px] bottom-[-100px] w-80 h-80 rounded-full bg-[#DCE8FA]/40 blur-3xl pointer-events-none" />
 
       {/* Header and Mute Controls */}
       <div className="flex items-center justify-between z-10">
@@ -398,6 +421,8 @@ export default function VoiceOrbCard({ onAILog, onRefreshData, onAddTaskLocal }:
           <Send className="w-4.5 h-4.5 rotate-180" />
         </button>
       </div>
-    </div>
+      </div>
+      </div>
+    </>
   );
 }

@@ -42,29 +42,6 @@ export default function SystemHealthPage() {
 
   const addLog = (msg: string) => setDeployLogs(prev => [...prev.slice(-4), msg]);
 
-  const handleDeploy = (phaseId: number) => {
-    // Prevent multiple deploys at once
-    if (phases.some(p => p.status === "deploying")) return;
-
-    setPhases(prev => prev.map(p => p.phase === phaseId ? { ...p, status: "deploying" } : p));
-    addLog(`[مرحلة ${phaseId}] بدء تسلسل النشر...`);
-
-    // Simulate Deployment Process
-    setTimeout(() => addLog(`[مرحلة ${phaseId}] فحص الاعتماديات... تم`), 800);
-    setTimeout(() => addLog(`[مرحلة ${phaseId}] التحقق من متغيرات البيئة... تم`), 1600);
-    setTimeout(() => {
-      // Simulate success for some, error for others to show dynamic UI
-      const success = Math.random() > 0.2; 
-      if (success) {
-        addLog(`[مرحلة ${phaseId}] ✅ تم النشر بنجاح. تحديث الحالة.`);
-        setPhases(prev => prev.map(p => p.phase === phaseId ? { ...p, status: "done" } : p));
-      } else {
-        addLog(`[مرحلة ${phaseId}] ❌ خطأ: انتهت مهلة الاتصال على المنفذ 8080.`);
-        setPhases(prev => prev.map(p => p.phase === phaseId ? { ...p, status: "error" } : p));
-      }
-    }, 3000);
-  };
-
   const getStatusIcon = (status: PhaseStatus) => {
     if (status === "done") return <CheckCircle className="w-4 h-4 text-emerald-500" />;
     if (status === "in_progress") return <Clock className="w-4 h-4 text-amber-500" />;
@@ -88,14 +65,14 @@ export default function SystemHealthPage() {
         <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">صحة النظام والمعمارية <Server className="w-4 h-4 text-blue-500" /></h3>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
-
-        {/* ONE-CLICK DEPLOY (Left Side) */}
-        <div className="lg:col-span-7 flex flex-col gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        
+        {/* PROGRESS (Left Side) */}
+        <div className="flex flex-col gap-5">
           <div className="glass-panel rounded-[24px] p-5 flex-1 flex flex-col">
             <div className="flex items-center justify-between mb-4">
-              <span className="text-[10px] font-mono text-gray-400 uppercase">Section 13</span>
-              <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">مركز النشر (One-Click Deploy) <Layers className="w-4 h-4 text-blue-500" /></h3>
+              <span className="text-[10px] font-mono text-gray-400 uppercase">Roadmap</span>
+              <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">خريطة تطوير النظام <Layers className="w-4 h-4 text-blue-500" /></h3>
             </div>
             
             <div className="flex flex-col gap-3">
@@ -103,16 +80,12 @@ export default function SystemHealthPage() {
                 <div key={p.phase} className={`rounded-2xl px-4 py-3 border flex items-center justify-between transition-all relative overflow-hidden group ${
                   p.status === "done" ? "bg-emerald-50/50 border-emerald-200" :
                   p.status === "in_progress" ? "bg-blue-50/50 border-blue-200" :
-                  p.status === "deploying" ? "bg-blue-50 border-blue-300 ring-2 ring-blue-500/20" :
-                  p.status === "error" ? "bg-rose-50 border-rose-300 ring-1 ring-rose-500/50" :
-                  "bg-slate-50 border-slate-200 opacity-80 hover:opacity-100"
+                  "bg-slate-50 border-slate-200 opacity-80"
                 }`}>
                   {/* Status Indicator Bar */}
                   <div className={`absolute top-0 right-0 bottom-0 w-1 ${
                     p.status === "done" ? "bg-emerald-500" :
                     p.status === "in_progress" ? "bg-blue-500" :
-                    p.status === "deploying" ? "bg-blue-500" :
-                    p.status === "error" ? "bg-rose-500" :
                     "bg-slate-300"
                   }`} />
 
@@ -124,43 +97,27 @@ export default function SystemHealthPage() {
                   <div className="flex items-center gap-4">
                     <span className="text-[10px] font-mono text-gray-400 bg-white/50 px-2 py-0.5 rounded">{p.effort}</span>
                     
-                    {/* Action Button */}
-                    <button 
-                      onClick={() => handleDeploy(p.phase)}
-                      disabled={p.status === "deploying" || p.status === "done"}
-                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all shadow-sm ${
-                        p.status === "done" ? "bg-emerald-100 text-emerald-700 cursor-default opacity-60" :
-                        p.status === "deploying" ? "bg-blue-500 text-white" :
-                        p.status === "error" ? "bg-rose-500 text-white hover:bg-rose-600" :
-                        "bg-white border border-slate-300 text-slate-700 hover:border-blue-500 hover:text-blue-600"
+                    {/* Status Badge */}
+                    <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all shadow-sm ${
+                        p.status === "done" ? "bg-emerald-100 text-emerald-700" :
+                        p.status === "in_progress" ? "bg-blue-100 text-blue-700" :
+                        "bg-white border border-slate-300 text-slate-500"
                       }`}
                     >
                       {getStatusIcon(p.status)}
-                      {p.status === "done" ? "تم التوثيق" : 
-                       p.status === "deploying" ? "جارٍ النشر..." : 
-                       p.status === "error" ? "إعادة المحاولة" : "انشر"}
-                    </button>
+                      {p.status === "done" ? "مكتمل" : 
+                       p.status === "in_progress" ? "جاري العمل" : "مخطط"}
+                    </div>
                   </div>
                 </div>
               ))}
-            </div>
-
-            {/* Terminal Output */}
-            <div className="mt-4 bg-slate-900 rounded-xl p-3 border border-slate-700 font-mono text-[9px] text-emerald-400 flex flex-col gap-1 min-h-[90px] shadow-inner relative overflow-hidden">
-              <div className="absolute top-1 right-2"><TerminalSquare className="w-3 h-3 text-slate-600" /></div>
-              {deployLogs.map((log, i) => (
-                <div key={i} className={log.includes("Error") || log.includes("❌") ? "text-rose-400" : log.includes("✅") ? "text-emerald-300" : ""}>
-                  {log}
-                </div>
-              ))}
-              <div className="animate-pulse w-1.5 h-3 bg-emerald-400 mt-1" />
             </div>
 
           </div>
         </div>
 
         {/* HEALTH & DIAGRAM (Right Side) */}
-        <div className="lg:col-span-5 flex flex-col gap-5">
+        <div className="flex flex-col gap-5">
           
           {/* SECURITY & MCP */}
           <div className="glass-panel rounded-[24px] p-5">

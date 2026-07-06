@@ -161,18 +161,11 @@ export default function App() {
         <div className="flex flex-wrap items-center gap-3 justify-end order-1 md:order-2">
 
 
-          {/* ROAS Alert Siren */}
-          <div className="px-4 py-2 bg-red-500/10 border border-red-500/25 rounded-full flex items-center gap-2.5 shadow-sm">
-            <div>
-              <span className="text-[8px] text-red-400 uppercase font-mono tracking-widest block font-bold">تنبيه Windsor</span>
-              <span className="text-[11px] font-bold text-red-600 font-tajawal">Sealy Snap ROAS تحت 2.0!</span>
-            </div>
-            <div className="relative flex h-5 w-5 shrink-0">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-5 w-5 bg-red-500 items-center justify-center">
-                <AlertCircle className="w-3 h-3 text-white" />
-              </span>
-            </div>
+          {/* Quick Actions (Future) */}
+          <div className="flex items-center gap-2">
+            <button className="px-4 py-2 bg-white/50 border border-slate-200 rounded-full text-[11px] font-bold text-slate-600 hover:bg-white hover:shadow-sm transition-all shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
+              إعدادات
+            </button>
           </div>
         </div>
       </header>
@@ -186,29 +179,24 @@ export default function App() {
         </section>
 
         {/* CONTENT AREA */}
-        <section className="flex-1 w-full grid grid-cols-1 lg:grid-cols-12 gap-5">
-          
-          {/* VOICE ORB */}
-          <div className="lg:col-span-4 xl:col-span-3 sticky top-4 self-start" style={{ height: "calc(100vh - 2rem)" }}>
-            <VoiceOrbCard
-              onAILog={handleAILog}
-              onRefreshData={handleRefreshAll}
-              onAddTaskLocal={handleRefreshAll}
-            />
-          </div>
-
+        <section className="flex-1 w-full grid grid-cols-1 gap-5">
           {/* PAGE CONTENT */}
-          <div className="lg:col-span-8 xl:col-span-9 flex flex-col gap-5">
+          <div className="flex flex-col gap-5">
             {PAGE_MAP[activeTab] ?? (
               <div className="glass-panel rounded-[24px] p-8 flex items-center justify-center min-h-[300px]">
                 <p className="text-slate-400 font-tajawal text-sm">اختر صفحة من القائمة الجانبية</p>
               </div>
             )}
           </div>
-
         </section>
-
       </main>
+
+      {/* FLOATING VOICE ORB */}
+      <VoiceOrbCard
+        onAILog={handleAILog}
+        onRefreshData={handleRefreshAll}
+        onAddTaskLocal={handleRefreshAll}
+      />
 
       {/* FOOTER */}
       <footer
