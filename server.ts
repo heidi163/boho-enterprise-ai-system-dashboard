@@ -266,61 +266,31 @@ try {
 // ==========================================
 
 async function think(userText: string): Promise<string> {
-  if (!ai) return "AI not connected.";
-  memory.add("user", userText);
-  
-  const recentContext = memory.recentMessages(20).map(m => ({
-    role: m.role === "assistant" || m.role === "model" ? "model" : "user",
-    parts: [{ text: m.content }]
-  }));
-
   try {
-    let currentResponse = await ai.models.generateContent({
-      model: "gemini-3.5-flash",
-      contents: recentContext,
-      config: {
-        systemInstruction: BOHO_SYSTEM_PROMPT,
-        temperature: 0.7,
-        tools: [{ functionDeclarations: toolsDeclarations }],
-      }
+    const response = await fetch("http://localhost:8090/task", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Boho-Secret": process.env.TASK_SHARED_SECRET || "change-me"
+      },
+      body: JSON.stringify({
+        request: userText,
+        user_id: "admin",
+        company_id: "BGK"
+      })
     });
-
-    let loopSafety = 0;
-    let formattedContents = [...recentContext];
-    if (currentResponse?.candidates?.[0]?.content) {
-      formattedContents.push(currentResponse.candidates[0].content);
+    
+    if (!response.ok) {
+      console.error(`Task server returned status ${response.status}`);
+      return `حدث خطأ في الاتصال بالـ Deep Brain (Status: ${response.status}). هل سيرفر البايثون شغال؟`;
     }
 
-    while (currentResponse?.functionCalls && currentResponse.functionCalls.length > 0 && loopSafety < 4) {
-      loopSafety++;
-      const fc = currentResponse.functionCalls[0];
-      const toolResult = executeFunctionCall(fc.name, fc.args);
-      
-      formattedContents.push({
-        role: "user",
-        parts: [{ text: `[TOOL_OUT] Result of ${fc.name}: ${JSON.stringify(toolResult)}` }]
-      });
-
-      currentResponse = await ai.models.generateContent({
-        model: "gemini-3.5-flash",
-        contents: formattedContents,
-        config: {
-          systemInstruction: BOHO_SYSTEM_PROMPT,
-          temperature: 0.7,
-          tools: [{ functionDeclarations: toolsDeclarations }],
-        }
-      });
-      if (currentResponse?.candidates?.[0]?.content) {
-        formattedContents.push(currentResponse.candidates[0].content);
-      }
-    }
-
-    const reply = currentResponse?.text || "حدث خطأ أثناء التفكير العميق.";
-    memory.add("assistant", reply);
+    const data = await response.json();
+    const reply = data.answer || "سماح يا أحمد باشا، في عطل فني في العقل العميق.";
     return reply;
   } catch (error: any) {
-    console.error("Think error:", error);
-    return "سماح يا أحمد باشا، في عطل فني في العقل العميق.";
+    console.error("Think error (Python Backend):", error);
+    return "سماح يا أحمد باشا، في مشكلة في الاتصال بالـ Deep Brain. اتأكد إن سيرفر البايثون شغال على بورت 8090.";
   }
 }
 
