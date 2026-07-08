@@ -4,13 +4,18 @@ import { AlertCircle, Activity, Clock, Wifi, Lock } from "lucide-react";
 import Sidebar from "./components/Sidebar";
 import VoiceOrbCard from "./components/VoiceOrbCard";
 
-// 6 Pages
+// 8 Pages
 import MissionControlPage from "./pages/MissionControlPage";
 import DeepBrainPage from "./pages/DeepBrainPage";
 import SalesIntelligencePage from "./pages/SalesIntelligencePage";
 import AdsCommandCenterPage from "./pages/AdsCommandCenterPage";
+import VoicePersonalityLabPage from "./pages/VoicePersonalityLabPage";
 import TaskManagerPage from "./pages/TaskManagerPage";
 import ProactiveCenterPage from "./pages/ProactiveCenterPage";
+import SystemHealthPage from "./pages/SystemHealthPage";
+import KnowledgeBasePage from "./pages/KnowledgeBasePage";
+import CalendarPage from "./pages/CalendarPage";
+import SettingsPage from "./pages/SettingsPage";
 
 import { Message } from "./types";
 
@@ -36,14 +41,27 @@ export default function App() {
     deepbrain: <DeepBrainPage />,
     sales: <SalesIntelligencePage />,
     ads: <AdsCommandCenterPage />,
+    voice: <VoicePersonalityLabPage />,
     tasks: <TaskManagerPage />,
     proactive: <ProactiveCenterPage />,
+    health: <SystemHealthPage />,
+    knowledge: <KnowledgeBasePage />,
+    calendar: <CalendarPage />,
+    settings: <SettingsPage />,
   };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoggingIn(true);
     setLoginError("");
+    
+    // Temporary bypass for Vercel deployment
+    if (password === "boho2026") {
+      localStorage.setItem("boho_token", "temp-boho-token");
+      setIsAuthenticated(true);
+      setIsLoggingIn(false);
+      return;
+    }
     
     try {
       const data = await api.post("/api/login", { password }, false);
@@ -190,7 +208,7 @@ export default function App() {
           <span>مساحة عمل BGK + O2Nation: <span className="font-semibold text-emerald-500">متصل الآن</span></span>
         </div>
         <div>
-          <span>صُمم بالكامل للباشا أحمد صلاح • Boho Enterprise OS v2 • 6 Pages</span>
+          <span>صُمم بالكامل للباشا أحمد صلاح • Boho Enterprise OS v2 • 11 Pages</span>
         </div>
       </footer>
     </div>

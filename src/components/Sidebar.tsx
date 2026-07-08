@@ -25,6 +25,14 @@ const PAGES = [
     gradient: "from-blue-500 to-blue-600",
   },
   {
+    id: "deepbrain",
+    icon: BrainCircuit,
+    label: "العقل العميق",
+    sublabel: "العقل العميق + الذاكرة",
+    badge: "AI",
+    gradient: "from-sky-500 to-sky-600",
+  },
+  {
     id: "sales",
     icon: ShoppingBag,
     label: "ذكاء المبيعات",
@@ -41,12 +49,12 @@ const PAGES = [
     gradient: "from-rose-500 to-red-600",
   },
   {
-    id: "deepbrain",
-    icon: BrainCircuit,
-    label: "العقل العميق",
-    sublabel: "العقل العميق + الذاكرة",
-    badge: "AI",
-    gradient: "from-sky-500 to-sky-600",
+    id: "voice",
+    icon: FlaskConical,
+    label: "معمل الصوت والشخصية",
+    sublabel: "TTS • Barge-in • Architecture",
+    badge: null,
+    gradient: "from-amber-500 to-orange-600",
   },
   {
     id: "tasks",
@@ -63,7 +71,38 @@ const PAGES = [
     sublabel: "n8n • Telegram • بريفنجات",
     badge: "New",
     gradient: "from-blue-500 to-pink-600",
-  }
+  },
+  {
+    id: "health",
+    icon: Server,
+    label: "صحة النظام",
+    badge: null,
+    gradient: "from-slate-500 to-slate-700",
+  },
+  {
+    id: "knowledge",
+    icon: BookOpen,
+    label: "قاعدة المعرفة",
+    sublabel: "SOPs • عقود • Search",
+    badge: null,
+    gradient: "from-blue-500 to-blue-600",
+  },
+  {
+    id: "calendar",
+    icon: Calendar,
+    label: "التقويم والاجتماعات",
+    sublabel: "Google Sync • Notes",
+    badge: null,
+    gradient: "from-rose-500 to-red-600",
+  },
+  {
+    id: "settings",
+    icon: Settings,
+    label: "الإعدادات",
+    sublabel: "API • Profile • Team",
+    badge: null,
+    gradient: "from-gray-600 to-gray-800",
+  },
 ];
 
 export default function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
