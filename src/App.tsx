@@ -55,14 +55,6 @@ export default function App() {
     setIsLoggingIn(true);
     setLoginError("");
     
-    // Temporary bypass for Vercel deployment
-    if (password === "boho2026") {
-      localStorage.setItem("boho_token", "temp-boho-token");
-      setIsAuthenticated(true);
-      setIsLoggingIn(false);
-      return;
-    }
-    
     try {
       const data = await api.post("/api/login", { password }, false);
       if (data.token) {

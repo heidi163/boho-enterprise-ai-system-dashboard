@@ -5,7 +5,7 @@ export const api = {
     const headers: Record<string, string> = { "Content-Type": "application/json" };
     if (requireAuth) {
       const token = localStorage.getItem("boho_token");
-      if (token) headers["Authorization"] = `Bearer ${token}`;
+      if (token) headers["X-Boho-Secret"] = token;
     }
     const res = await fetch(`${BASE_URL}${path}`, { headers });
     if (!res.ok) throw new Error(await res.text());
@@ -15,7 +15,7 @@ export const api = {
     const headers: Record<string, string> = { "Content-Type": "application/json" };
     if (requireAuth) {
       const token = localStorage.getItem("boho_token");
-      if (token) headers["Authorization"] = `Bearer ${token}`;
+      if (token) headers["X-Boho-Secret"] = token;
     }
     const res = await fetch(`${BASE_URL}${path}`, {
       method: "POST",
@@ -29,7 +29,7 @@ export const api = {
     const headers: Record<string, string> = { "Content-Type": "application/json" };
     if (requireAuth) {
       const token = localStorage.getItem("boho_token");
-      if (token) headers["Authorization"] = `Bearer ${token}`;
+      if (token) headers["X-Boho-Secret"] = token;
     }
     const res = await fetch(`${BASE_URL}${path}`, {
       method: "PUT",
@@ -43,7 +43,7 @@ export const api = {
     const headers: Record<string, string> = { "Content-Type": "application/json" };
     if (requireAuth) {
       const token = localStorage.getItem("boho_token");
-      if (token) headers["Authorization"] = `Bearer ${token}`;
+      if (token) headers["X-Boho-Secret"] = token;
     }
     const res = await fetch(`${BASE_URL}${path}`, {
       method: "DELETE",

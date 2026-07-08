@@ -35,19 +35,10 @@ export default function DeepBrainPage() {
 
   const fetchMemory = async () => {
     setMemoryLoading(true);
-    try {
-      const data = await api.get("/api/memory");
-      setMemory(data.facts || []);
-    } catch (e) {
-      console.error(e);
-      // Fallback
-      if (memory.length === 0) {
-        setMemory([
-          { key: "company", value: "Bohemian Geeks" },
-          { key: "rule", value: "No discount > 10%" }
-        ]);
-      }
-    }
+    setMemory([
+      { key: "company", value: "Bohemian Geeks" },
+      { key: "rule", value: "No discount > 10%" }
+    ]);
     setMemoryLoading(false);
   };
 
@@ -129,15 +120,9 @@ export default function DeepBrainPage() {
     }
 
     try {
-      const payload: any = { messages: [...messages.map(m => ({ role: m.role, content: m.content })), { role: "user", content: textToSend }] };
-      if (imageBase64 && imageMediaType) {
-        payload.image_base64 = imageBase64;
-        payload.image_media_type = imageMediaType;
-      }
-
-      const data = await api.post("/api/chat", payload);
+      const data = await api.post("/task", { request: textToSend });
       setMcpStatus(null);
-      typeMessage(data.content || "تم المعالجة بنجاح.");
+      typeMessage(data.answer || "تم المعالجة بنجاح.");
       removeImage(); 
     } catch {
       setMcpStatus(null);
