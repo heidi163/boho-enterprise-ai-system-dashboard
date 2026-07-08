@@ -7,3 +7,4 @@ elevenlabs>=1.0.0
 pvporcupine>=3.0.0
 pvrecorder>=1.2.0
 numpy>=1.26.0
+flask-cors>=4.0.0

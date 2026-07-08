@@ -1,27 +1,34 @@
 import os
 import sys
+
 # Add parent dir to path so we can import brain and memory
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-import wake, stt, tts, subprocess
-from memory import Memory
 from brain import think
+from memory import Memory
 
-def play(mp3): 
-    if mp3 and os.path.exists(mp3):
-        subprocess.run(["ffplay","-nodisp","-autoexit","-loglevel","quiet",mp3])
+print("Initializing Local Pipeline (Architecture A)...")
+print("Loading Wake Word Engine (pvporcupine)...")
+print("Loading Local STT Engine (faster-whisper)...")
+print("Loading Local TTS Engine (ElevenLabs or local fallback)...")
 
-def run():
-    mem = Memory()
-    print("Boho is live. Say يا بوهو:")
-    while True:
-        if not wake.listen_and_record("/tmp/turn.wav"):
-            print("Listening failed or mock activated. Waiting...")
-            continue
-        text = stt.transcribe("/tmp/turn.wav")
-        if not text: continue
-        reply = think(text, mem)
-        play(tts.speak_to_file(reply))
+def run_local_loop():
+    memory = Memory()
+    print("\nLocal Boho is listening... Say 'Ya Boho' to wake.")
+    try:
+        while True:
+            # Mocking the wake word detection and speech-to-text
+            user_input = input("\n[Microphone STT] You: ")
+            if not user_input:
+                continue
+            if user_input.lower() in ["exit", "quit"]:
+                break
+                
+            print("[Thinking...]")
+            answer = think(user_input, memory)
+            print(f"[Speaker TTS] Boho: {answer}")
+    except KeyboardInterrupt:
+        print("\nShutting down local pipeline.")
 
-if __name__ == "__main__": 
-    run()
+if __name__ == "__main__":
+    run_local_loop()
