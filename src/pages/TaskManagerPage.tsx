@@ -9,7 +9,6 @@ interface Task {
   name: string;
   description?: string;
   status: TaskStatus;
-  status: TaskStatus | "pending";
   dueDate?: string;
   priority?: "high" | "medium" | "low";
   bohoReason?: string; // New field for Auto-Priority
@@ -33,12 +32,12 @@ const STATUS_AR: Record<TaskStatus, string> = {
   "Done": "مكتملة"
 };
 
-export default function TaskManagerPage() {
+export default function TaskManagerPage({ activeCompany }: { activeCompany: string }) {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(false);
   const [newName, setNewName] = useState("");
   const [newDesc, setNewDesc] = useState("");
-  const [newDue, setNewDue] = useState("Today");
+  const [newDue, setNewDue] = useState("اليوم");
   const [newPriority, setNewPriority] = useState<"high" | "medium" | "low">("medium");
   const [showForm, setShowForm] = useState(false);
   
@@ -47,10 +46,19 @@ export default function TaskManagerPage() {
   const [analysisStep, setAnalysisStep] = useState(0);
 
   // Pending Approvals (Destructive Actions Queue)
-  const [pendingActions, setPendingActions] = useState([
+  const initialPendingActions = activeCompany === "bgk" ? [
     { id: "a1", text: "بوهو يطلب الموافقة: إرسال تقرير المبيعات الأسبوعي لعميل iFilter؟", time: "منذ 5 دقائق" },
-    { id: "a2", text: "بوهو يطلب الموافقة: مسح المهمة 'تصميم لوجو' لأنها اتأجلت 3 مرات؟", time: "منذ 10 دقائق" }
-  ]);
+    { id: "a2", text: "بوهو يطلب الموافقة: مسح المهمة 'تصميم إعلان سناب' لأنها اتأجلت 3 مرات؟", time: "منذ 10 دقائق" }
+  ] : [
+    { id: "a1", text: "بوهو يطلب الموافقة: إعادة تشغيل سيرفرات ERP بعد التحديث؟", time: "منذ 5 دقائق" },
+    { id: "a2", text: "بوهو يطلب الموافقة: مسح المهمة 'تعديل لوجو العميل' لأنها اتأجلت كتير؟", time: "منذ 15 دقيقة" }
+  ];
+
+  const [pendingActions, setPendingActions] = useState(initialPendingActions);
+
+  useEffect(() => {
+    setPendingActions(initialPendingActions);
+  }, [activeCompany]);
 
   const handleAction = (id: string, approve: boolean) => {
     setPendingActions(prev => prev.filter(a => a.id !== id));
@@ -59,7 +67,7 @@ export default function TaskManagerPage() {
   const fetchTasks = async () => {
     setLoading(true);
     try {
-      const data = await api.get("/api/tasks");
+      const data = await api.get(`/api/tasks?company_id=${activeCompany}`);
       // Convert DB status to UI status
       const mappedTasks = (data.tasks || []).map((t: any) => ({
         ...t,
@@ -67,45 +75,74 @@ export default function TaskManagerPage() {
         status: t.status === "pending" ? "To Do" : t.status === "completed" ? "Done" : "In Progress",
         priority: t.priority || "medium"
       }));
-      setTasks(mappedTasks);
+      
+      // If API returns empty, use some defaults based on company
+      if (mappedTasks.length === 0) {
+        const defaults: Task[] = activeCompany === "bgk" ? [
+          { id: "1", name: "مراجعة حملات Sealy على سناب شات", status: "To Do", priority: "high", dueDate: "اليوم" },
+          { id: "2", name: "إرسال تقرير المبيعات الأسبوعي", status: "In Progress", priority: "medium", dueDate: "غداً" },
+          { id: "3", name: "تصميم بنرات iFilter الجديدة", status: "Done", priority: "low", dueDate: "الأمس" }
+        ] : [
+          { id: "1", name: "تحديث سيرفرات O2Nation للعملاء", status: "To Do", priority: "high", dueDate: "اليوم" },
+          { id: "2", name: "متابعة Leads نظام الـ ERP", status: "In Progress", priority: "medium", dueDate: "غداً" },
+          { id: "3", name: "اجتماع مع العميل لتطوير التطبيق", status: "Done", priority: "medium", dueDate: "الأمس" }
+        ];
+        setTasks(defaults);
+      } else {
+        setTasks(mappedTasks);
+      }
     } catch (e) {
       console.error(e);
     }
     setLoading(false);
   };
 
-  useEffect(() => { fetchTasks(); }, []);
+  useEffect(() => { fetchTasks(); }, [activeCompany]);
 
   const addTask = async () => {
     if (!newName.trim()) return;
     try {
       await api.post("/api/tasks", {
         title: newName,
-        priority: newPriority
+        priority: newPriority,
+        company_id: activeCompany
       });
       setNewName(""); setNewDesc(""); setShowForm(false);
       fetchTasks();
     } catch (e) {
       console.error(e);
+      // Optimistic update for UI if backend is offline
+      const newTask: Task = {
+        id: Math.random().toString(),
+        name: newName,
+        description: newDesc,
+        priority: newPriority,
+        status: "To Do",
+        dueDate: newDue
+      };
+      setTasks([newTask, ...tasks]);
+      setNewName(""); setNewDesc(""); setShowForm(false);
     }
   };
 
   const updateStatus = async (id: string, status: TaskStatus) => {
     const dbStatus = status === "To Do" ? "pending" : status === "Done" ? "completed" : "in_progress";
     try {
-      await api.put(`/api/tasks/${id}`, { status: dbStatus });
+      await api.put(`/api/tasks/${id}`, { status: dbStatus, company_id: activeCompany });
       setTasks(prev => prev.map(t => t.id === id ? { ...t, status } : t));
     } catch (e) {
       console.error(e);
+      setTasks(prev => prev.map(t => t.id === id ? { ...t, status } : t));
     }
   };
 
   const deleteTask = async (id: string) => {
     try {
-      await api.delete(`/api/tasks/${id}`);
+      await api.delete(`/api/tasks/${id}?company_id=${activeCompany}`);
       setTasks(prev => prev.filter(t => t.id !== id));
     } catch (e) {
       console.error(e);
+      setTasks(prev => prev.filter(t => t.id !== id));
     }
   };
 
@@ -125,18 +162,35 @@ export default function TaskManagerPage() {
         let reason = "";
 
         const name = t.name.toLowerCase();
-        if (name.includes("roas") || name.includes("ads") || name.includes("snapchat") || name.includes("sealy")) {
-          newPrio = "high";
-          reason = "Windsor Alert: ROAS وقع تحت 2.0، الخسارة بتزيد.";
-        } else if (name.includes("report") || name.includes("client") || name.includes("ifilter")) {
-          newPrio = "high";
-          reason = "Metorik Data: المبيعات عالية جداً، العميل محتاج الأرقام.";
-        } else if (name.includes("design") || name.includes("copy")) {
-          newPrio = "medium";
-          reason = "Creative tasks: ممكن تستنى لآخر اليوم.";
+        
+        if (activeCompany === "bgk") {
+          if (name.includes("roas") || name.includes("ads") || name.includes("snapchat") || name.includes("sealy") || name.includes("حملات")) {
+            newPrio = "high";
+            reason = "تنبيه Windsor: العائد (ROAS) وقع، الخسارة بتزيد.";
+          } else if (name.includes("report") || name.includes("client") || name.includes("ifilter") || name.includes("تقرير") || name.includes("مبيعات")) {
+            newPrio = "high";
+            reason = "داتا Metorik: المبيعات عالية جداً، العميل محتاج الأرقام.";
+          } else if (name.includes("design") || name.includes("copy") || name.includes("تصميم")) {
+            newPrio = "medium";
+            reason = "مهام إبداعية: ممكن تستنى لآخر اليوم.";
+          } else {
+            newPrio = "low";
+            reason = "مهمة عادية، مش مأثرة على المبيعات حالياً.";
+          }
         } else {
-          newPrio = "low";
-          reason = "Task عادية، مش مأثرة على المبيعات حالياً.";
+          if (name.includes("سيرفر") || name.includes("server") || name.includes("تحديث") || name.includes("erp") || name.includes("نظام")) {
+            newPrio = "high";
+            reason = "تنبيه النظام: العميل محتاج النظام شغال بدون توقف.";
+          } else if (name.includes("اجتماع") || name.includes("leads") || name.includes("متابعة")) {
+            newPrio = "high";
+            reason = "مبيعات O2Nation: الـ Leads بتبرد، لازم نتابع فوراً.";
+          } else if (name.includes("تصميم") || name.includes("لوجو") || name.includes("تطبيق")) {
+            newPrio = "medium";
+            reason = "تطوير مستمر: الأولوية بعد تأمين السيرفرات.";
+          } else {
+            newPrio = "low";
+            reason = "مهمة إدارية: مش حرجة حالياً.";
+          }
         }
 
         return { ...t, priority: newPrio, bohoReason: reason };
@@ -157,7 +211,7 @@ export default function TaskManagerPage() {
   }));
 
   return (
-    <div className="flex flex-col gap-6 w-full" dir="rtl">
+    <div className="flex flex-col gap-6 w-full pb-8" dir="rtl">
 
       {/* HEADER */}
       <div className="glass-panel rounded-[24px] p-4 flex items-center justify-between">
@@ -165,7 +219,7 @@ export default function TaskManagerPage() {
           <button onClick={fetchTasks} className="flex items-center gap-1.5 text-xs text-gray-500 border border-gray-200 rounded-full px-3 py-1.5 hover:text-blue-500 font-mono">
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} /> تحديث
           </button>
-          <button onClick={() => setShowForm(!showForm)} className="flex items-center gap-1.5 text-xs text-white bg-gradient-to-l from-blue-500 to-blue-600 rounded-full px-4 py-1.5 font-bold hover:opacity-90">
+          <button onClick={() => setShowForm(!showForm)} className="flex items-center gap-1.5 text-xs text-white bg-gradient-to-r from-blue-500 to-blue-600 rounded-full px-4 py-1.5 font-bold hover:opacity-90">
             <Plus className="w-3.5 h-3.5" /> مهمة جديدة
           </button>
         </div>
@@ -175,20 +229,20 @@ export default function TaskManagerPage() {
       {/* ADD FORM */}
       {showForm && (
         <div className="glass-panel rounded-[24px] p-5 animate-in slide-in-from-top-4">
-          <h4 className="text-sm font-bold text-slate-800 font-tajawal mb-4 text-right flex items-center justify-end gap-2"><Plus className="w-4 h-4 text-blue-500" /> إضافة مهمة جديدة</h4>
+          <h4 className="text-sm font-bold text-slate-800 font-tajawal mb-4 text-right flex items-center justify-start gap-2"><Plus className="w-4 h-4 text-blue-500" /> إضافة مهمة جديدة</h4>
           <div className="flex flex-col gap-3">
             <input value={newName} onChange={e => setNewName(e.target.value)} placeholder="اسم المهمة..." className="bg-white/70 border border-white/80 rounded-xl px-4 py-3 text-sm font-tajawal text-slate-800 outline-none text-right placeholder-gray-400 focus:border-blue-300" />
             <input value={newDesc} onChange={e => setNewDesc(e.target.value)} placeholder="تفاصيل (اختياري)..." className="bg-white/70 border border-white/80 rounded-xl px-4 py-3 text-sm font-tajawal text-slate-800 outline-none text-right placeholder-gray-400 focus:border-blue-300" />
-            <div className="flex items-center gap-3">
-              <select value={newPriority} onChange={e => setNewPriority(e.target.value as any)} className="flex-1 bg-white/70 border border-white/80 rounded-xl px-4 py-3 text-sm font-tajawal text-slate-800 outline-none">
-                <option value="high">🔴 أولوية عالية</option>
-                <option value="medium">🟡 أولوية متوسطة</option>
-                <option value="low">⚪ أولوية منخفضة</option>
-              </select>
-              <input value={newDue} onChange={e => setNewDue(e.target.value)} placeholder="الموعد النهائي..." className="flex-1 bg-white/70 border border-white/80 rounded-xl px-4 py-3 text-sm font-tajawal text-slate-800 outline-none text-right placeholder-gray-400 focus:border-blue-300" />
-              <button onClick={addTask} disabled={!newName.trim()} className="px-6 py-3 bg-gradient-to-l from-blue-500 to-blue-600 text-white text-sm font-bold rounded-xl hover:opacity-90 disabled:opacity-40 transition-opacity">
+            <div className="flex flex-col md:flex-row items-center gap-3">
+              <button onClick={addTask} disabled={!newName.trim()} className="w-full md:w-auto px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-sm font-bold rounded-xl hover:opacity-90 disabled:opacity-40 transition-opacity">
                 إضافة
               </button>
+              <input value={newDue} onChange={e => setNewDue(e.target.value)} placeholder="الموعد النهائي..." className="flex-1 w-full bg-white/70 border border-white/80 rounded-xl px-4 py-3 text-sm font-tajawal text-slate-800 outline-none text-right placeholder-gray-400 focus:border-blue-300" />
+              <select value={newPriority} onChange={e => setNewPriority(e.target.value as any)} className="flex-1 w-full bg-white/70 border border-white/80 rounded-xl px-4 py-3 text-sm font-tajawal text-slate-800 outline-none cursor-pointer">
+                <option value="high">أولوية عالية</option>
+                <option value="medium">أولوية متوسطة</option>
+                <option value="low">أولوية منخفضة</option>
+              </select>
             </div>
           </div>
         </div>
@@ -212,7 +266,7 @@ export default function TaskManagerPage() {
                     <Check className="w-4 h-4" />
                   </button>
                 </div>
-                <div className="text-right flex-1 pr-3">
+                <div className="text-right flex-1 pl-3">
                   <p className="text-sm font-bold text-slate-800 font-tajawal">{action.text}</p>
                   <p className="text-[10px] text-gray-500 font-tajawal mt-0.5">{action.time}</p>
                 </div>
@@ -225,13 +279,13 @@ export default function TaskManagerPage() {
       {/* BOHO AUTO-PRIORITY BANNER */}
       <div className={`glass-panel rounded-[24px] p-5 flex flex-col md:flex-row items-center gap-5 transition-all duration-500 ${isAnalyzing ? "bg-blue-50/50 border-blue-200 ring-2 ring-blue-500/20" : ""}`}>
         
-        <div className="flex-1 text-right flex flex-col items-end">
-          <div className="flex items-center gap-2 mb-1">
-            <h4 className="text-sm font-bold text-slate-800 font-tajawal">ترتيب بوهو التلقائي</h4>
+        <div className="flex-1 text-right flex flex-col items-start md:items-end w-full">
+          <div className="flex items-center justify-end gap-2 mb-1 w-full text-right">
             <BrainCircuit className={`w-5 h-5 ${isAnalyzing ? "text-blue-500 animate-pulse" : "text-sky-400"}`} />
+            <h4 className="text-sm font-bold text-slate-800 font-tajawal">ترتيب بوهو التلقائي</h4>
           </div>
-          <p className="text-xs text-gray-500 font-tajawal max-w-md">
-            بوهو بيسحب داتا المبيعات من Metorik وتكلفة الإعلانات من Windsor عشان يعيد ترتيب مهامك بناءً على اللي بيأثر على الفلوس بجد.
+          <p className="text-xs text-gray-500 font-tajawal max-w-md w-full text-right">
+            بوهو بيسحب داتا المبيعات وتكلفة الإعلانات عشان يعيد ترتيب مهامك بناءً على اللي بيأثر على الفلوس بجد لشركة {activeCompany === "bgk" ? "Bohemian Geeks" : "O2Nation"}.
           </p>
         </div>
 
@@ -239,7 +293,7 @@ export default function TaskManagerPage() {
           <button 
             onClick={runAutoPriority} 
             disabled={isAnalyzing || tasks.length === 0} 
-            className="w-full md:w-auto flex items-center justify-center gap-2 text-sm text-white bg-gradient-to-l from-sky-500 to-sky-600 rounded-xl px-6 py-3 font-bold hover:opacity-90 disabled:opacity-50 transition-all shadow-md hover:shadow-lg"
+            className="w-full md:w-auto flex items-center justify-center gap-2 text-sm text-white bg-gradient-to-r from-sky-500 to-sky-600 rounded-xl px-6 py-3 font-bold hover:opacity-90 disabled:opacity-50 transition-all shadow-md hover:shadow-lg"
           >
             {isAnalyzing ? (
               <><RefreshCw className="w-4 h-4 animate-spin" /> جاري التحليل...</>
@@ -250,12 +304,12 @@ export default function TaskManagerPage() {
           
           {/* Analysis Steps Indicator */}
           {isAnalyzing && (
-            <div className="flex items-center gap-2 text-[10px] font-mono text-blue-600 font-bold mt-1">
-              <span className={analysisStep >= 1 ? "opacity-100" : "opacity-30"}><CheckSquare className="w-3 h-3 inline mr-1" />مهام</span>
+            <div className="flex items-center justify-center gap-2 text-[10px] font-mono text-blue-600 font-bold mt-1 w-full" dir="ltr">
+              <span className={analysisStep >= 1 ? "opacity-100" : "opacity-30"}><CheckSquare className="w-3 h-3 inline mr-1" />Tasks</span>
               <span>→</span>
-              <span className={analysisStep >= 2 ? "opacity-100" : "opacity-30"}><BarChart2 className="w-3 h-3 inline mr-1" />إعلانات</span>
+              <span className={analysisStep >= 2 ? "opacity-100" : "opacity-30"}><BarChart2 className="w-3 h-3 inline mr-1" />Ads</span>
               <span>→</span>
-              <span className={analysisStep >= 3 ? "opacity-100" : "opacity-30"}><Zap className="w-3 h-3 inline mr-1" />مبيعات</span>
+              <span className={analysisStep >= 3 ? "opacity-100" : "opacity-30"}><Zap className="w-3 h-3 inline mr-1" />Sales</span>
             </div>
           )}
         </div>
@@ -266,14 +320,14 @@ export default function TaskManagerPage() {
         {grouped.map(g => {
           const Cfg = STATUS_CONFIG[g.status];
           return (
-            <div key={g.status} className="glass-panel rounded-[24px] p-4 flex flex-col h-[500px]">
+            <div key={g.status} className="glass-panel rounded-[24px] p-4 flex flex-col min-h-[500px]">
               
               <div className={`flex items-center justify-between mb-4 pb-3 border-b border-white/50 shrink-0`}>
-                <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full ${Cfg.bg} ${Cfg.color}`}>{g.tasks.length} مهام</span>
                 <div className="flex items-center gap-2">
-                  <h4 className={`text-sm font-bold font-tajawal ${Cfg.color}`}>{STATUS_AR[g.status]}</h4>
                   <Cfg.icon className={`w-4 h-4 ${Cfg.color}`} />
+                  <h4 className={`text-sm font-bold font-tajawal ${Cfg.color}`}>{STATUS_AR[g.status]}</h4>
                 </div>
+                <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full ${Cfg.bg} ${Cfg.color}`}>{g.tasks.length} مهام</span>
               </div>
               
               <div className="flex-1 overflow-y-auto sidebar-scroll pr-1 flex flex-col gap-3">
@@ -284,13 +338,13 @@ export default function TaskManagerPage() {
                     <div className={`absolute top-0 right-0 bottom-0 w-1 ${PRIORITY_COLORS[t.priority!].split(' ')[0]}`} />
                     
                     <div className="flex items-start justify-between gap-2 mb-2">
-                      <button onClick={() => deleteTask(t.id)} className="p-1 hover:text-rose-500 text-gray-300 transition-colors shrink-0 opacity-0 group-hover:opacity-100">
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
-                      <div className="text-right flex-1 pr-2">
+                      <div className="text-right flex-1 pl-2">
                         <p className="text-sm font-bold text-slate-800 font-tajawal leading-snug">{t.name}</p>
                         {t.description && <p className="text-[10px] text-gray-500 font-tajawal mt-1 leading-snug">{t.description}</p>}
                       </div>
+                      <button onClick={() => deleteTask(t.id)} className="p-1 hover:text-rose-500 text-gray-300 transition-colors shrink-0 opacity-0 group-hover:opacity-100">
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
                     </div>
                     
                     {/* Boho Reason Banner */}
@@ -302,19 +356,19 @@ export default function TaskManagerPage() {
                     )}
 
                     <div className="flex items-center justify-between mt-auto pt-2 border-t border-slate-100">
+                      <div className="flex items-center gap-2">
+                        {t.dueDate && <span className="text-[9px] text-gray-400 font-mono flex items-center gap-0.5"><Clock className="w-2.5 h-2.5" />{t.dueDate}</span>}
+                        {t.priority && <span className={`text-[8px] px-2 py-0.5 rounded-full font-mono font-bold border ${PRIORITY_COLORS[t.priority]}`}>{t.priority.toUpperCase()}</span>}
+                      </div>
                       <select
                         value={t.status}
                         onChange={e => updateStatus(t.id, e.target.value as TaskStatus)}
-                        className="text-[9px] font-mono bg-transparent text-slate-500 hover:text-slate-800 outline-none cursor-pointer"
+                        className="text-[9px] font-tajawal bg-transparent text-slate-500 hover:text-slate-800 outline-none cursor-pointer border rounded-md px-1"
                       >
                         <option value="To Do">مهام جديدة</option>
                         <option value="In Progress">قيد التنفيذ</option>
                         <option value="Done">مكتملة</option>
                       </select>
-                      <div className="flex items-center gap-2">
-                        {t.priority && <span className={`text-[8px] px-2 py-0.5 rounded-full font-mono font-bold border ${PRIORITY_COLORS[t.priority]}`}>{t.priority.toUpperCase()}</span>}
-                        {t.dueDate && <span className="text-[9px] text-gray-400 font-mono flex items-center gap-0.5"><Clock className="w-2.5 h-2.5" />{t.dueDate}</span>}
-                      </div>
                     </div>
                   </div>
                 ))}

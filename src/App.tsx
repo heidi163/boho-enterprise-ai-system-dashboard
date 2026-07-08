@@ -21,6 +21,7 @@ import { Message } from "./types";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<string>("mission");
+  const [activeCompany, setActiveCompany] = useState<string>("bgk");
   const [refreshTrigger, setRefreshTrigger] = useState<number>(0);
   const [aiLogs, setAiLogs] = useState<Message[]>([
     { role: "model", content: "يا غالي، بوهو هنا! جاهز للتحليلات اليومية وإدارة مشاريع BGK." }
@@ -36,18 +37,21 @@ export default function App() {
   const handleRefreshAll = () => setRefreshTrigger(prev => prev + 1);
   const handleAILog = (msg: Message) => setAiLogs(prev => [...prev, msg]);
 
-  const PAGE_MAP: Record<string, React.ReactNode> = {
-    mission: <MissionControlPage />,
-    deepbrain: <DeepBrainPage />,
-    sales: <SalesIntelligencePage />,
-    ads: <AdsCommandCenterPage />,
-    voice: <VoicePersonalityLabPage />,
-    tasks: <TaskManagerPage />,
-    proactive: <ProactiveCenterPage />,
-    health: <SystemHealthPage />,
-    knowledge: <KnowledgeBasePage />,
-    calendar: <CalendarPage />,
-    settings: <SettingsPage />,
+  const renderPage = () => {
+    switch (activeTab) {
+      case "mission": return <MissionControlPage activeCompany={activeCompany} />;
+      case "deepbrain": return <DeepBrainPage activeCompany={activeCompany} />;
+      case "sales": return <SalesIntelligencePage activeCompany={activeCompany} />;
+      case "ads": return <AdsCommandCenterPage activeCompany={activeCompany} />;
+      case "voice": return <VoicePersonalityLabPage activeCompany={activeCompany} />;
+      case "tasks": return <TaskManagerPage activeCompany={activeCompany} />;
+      case "proactive": return <ProactiveCenterPage activeCompany={activeCompany} />;
+      case "health": return <SystemHealthPage activeCompany={activeCompany} />;
+      case "knowledge": return <KnowledgeBasePage activeCompany={activeCompany} />;
+      case "calendar": return <CalendarPage activeCompany={activeCompany} />;
+      case "settings": return <SettingsPage activeCompany={activeCompany} />;
+      default: return null;
+    }
   };
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -175,14 +179,14 @@ export default function App() {
 
         {/* SIDEBAR */}
         <section className="w-full lg:w-[270px] shrink-0 self-stretch flex justify-center lg:justify-start">
-          <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+          <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} activeCompany={activeCompany} setActiveCompany={setActiveCompany} />
         </section>
 
         {/* CONTENT AREA */}
         <section className="flex-1 w-full grid grid-cols-1 gap-5">
           {/* PAGE CONTENT */}
           <div className="flex flex-col gap-5">
-            {PAGE_MAP[activeTab] ?? (
+            {renderPage() ?? (
               <div className="glass-panel rounded-[24px] p-8 flex items-center justify-center min-h-[300px]">
                 <p className="text-slate-400 font-tajawal text-sm">اختر صفحة من القائمة الجانبية</p>
               </div>

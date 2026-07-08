@@ -8,6 +8,8 @@ import {
 interface SidebarProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
+  activeCompany: string;
+  setActiveCompany: (company: string) => void;
 }
 
 const COMPANIES = [
@@ -105,9 +107,9 @@ const PAGES = [
   },
 ];
 
-export default function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
-  const [activeCompany, setActiveCompany] = useState(COMPANIES[0]);
+export default function Sidebar({ activeTab, setActiveTab, activeCompany, setActiveCompany }: SidebarProps) {
   const [showCompanies, setShowCompanies] = useState(false);
+  const activeCompanyObj = COMPANIES.find(c => c.id === activeCompany) || COMPANIES[0];
 
   return (
     <div
@@ -137,7 +139,7 @@ export default function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
         >
           <div className="flex items-center gap-2">
             <Building2 className="w-3.5 h-3.5 text-blue-500" />
-            <span className="text-[11px] font-bold text-slate-700 font-tajawal">{activeCompany.name}</span>
+            <span className="text-[11px] font-bold text-slate-700 font-tajawal">{activeCompanyObj.name}</span>
           </div>
           <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform ${showCompanies ? "rotate-180" : ""}`} />
         </button>
@@ -148,11 +150,11 @@ export default function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
               <button 
                 key={c.id}
                 onClick={() => {
-                  setActiveCompany(c);
+                  setActiveCompany(c.id);
                   setShowCompanies(false);
                 }}
                 className={`w-full text-right px-3 py-2 text-[11px] font-bold font-tajawal transition-colors ${
-                  activeCompany.id === c.id ? "bg-blue-50 text-blue-700" : "text-slate-600 hover:bg-slate-50"
+                  activeCompany === c.id ? "bg-blue-50 text-blue-700" : "text-slate-600 hover:bg-slate-50"
                 }`}
               >
                 {c.name}

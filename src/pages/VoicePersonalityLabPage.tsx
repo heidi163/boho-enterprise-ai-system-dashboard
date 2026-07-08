@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { api } from "../lib/api";
-import { Mic, Volume2, Sliders, PlayCircle, StopCircle, CheckCircle, Settings, FlaskConical, Quote, HardDrive, UploadCloud, BrainCircuit, Activity, BarChart2 } from "lucide-react";
+import { Briefcase, Smile, AlertTriangle, Hand, Mic, Volume2, Sliders, PlayCircle, StopCircle, CheckCircle, Settings, FlaskConical, Quote, HardDrive, UploadCloud, BrainCircuit, Activity, BarChart2 } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Cell } from "recharts";
 
 const TTS_PROVIDERS = [
@@ -17,33 +17,60 @@ const ARCHITECTURES = [
 ];
 
 const SLANG_CATEGORIES = [
-  { id: "business", label: "بزنس وتقارير", emoji: "💼" },
-  { id: "comedy", label: "هزار ومقاطعة", emoji: "😂" },
-  { id: "anger", label: "تحذير وانفعال", emoji: "⚠️" },
-  { id: "general", label: "ترحيب عام", emoji: "👋" }
+  { id: "business", label: "بزنس وتقارير", icon: Briefcase },
+  { id: "comedy", label: "هزار ومقاطعة", icon: Smile },
+  { id: "anger", label: "تحذير وانفعال", icon: AlertTriangle },
+  { id: "general", label: "ترحيب عام", icon: Hand }
 ];
 
-const SLANG_SUITE = {
-  business: [
-    "يا أحمد باشا، مبيعات iFilter امبارح كانت تمام ومتجاوزة الهدف بكتير.",
-    "خد بالك، الـ ROAS بتاع Sealy على سناب شات وقع تحت الاتنين، محتاج تبص عليه.",
-    "عملتلك التقرير اللي طلبته، الأرقام كلها مبشرة جداً الشهر ده."
-  ],
-  comedy: [
-    "يا عم أنت جننتني! هو أنا آلة حاسبة شغال عندك؟ بهزر معاك طبعاً.",
-    "استنى بس أخلص كلامي وبعدين قاطعني براحتك، إحنا فينا من كده؟",
-    "يا سيدي عيني ليك، بس هاتلي قهوة الأول."
-  ],
-  anger: [
-    "بقولك إيه، الفلوس بتتحرق في إعلانات جوجل من غير أي فايدة، وقف الحملة دي فوراً!",
-    "فيه مشكلة كبيرة في سيرفر Metorik، مش عارف أسحب الداتا بقالي ساعة.",
-    "الميزانية خلصت وإحنا لسه في نص اليوم، ده تهريج!"
-  ],
-  general: [
-    "صباح الفل يا غالي، يوم جديد وشغل جديد.",
-    "أهلاً بيك يا ريس، بوهو تحت أمرك في أي وقت.",
-    "إيه الأخبار؟ جاهز نكسر الدنيا النهارده؟"
-  ]
+const getSlangSuite = (company: string) => {
+  if (company === "bgk") {
+    return {
+      business: [
+        "يا أحمد باشا، مبيعات iFilter امبارح كانت تمام ومتجاوزة الهدف بكتير.",
+        "خد بالك، الـ ROAS بتاع Sealy على سناب شات وقع تحت الاتنين، محتاج تبص عليه.",
+        "عملتلك التقرير اللي طلبته، الأرقام كلها مبشرة جداً الشهر ده."
+      ],
+      comedy: [
+        "يا عم أنت جننتني! هو أنا آلة حاسبة شغال عندك؟ بهزر معاك طبعاً.",
+        "استنى بس أخلص كلامي وبعدين قاطعني براحتك، إحنا فينا من كده؟",
+        "يا سيدي عيني ليك، بس هاتلي قهوة الأول."
+      ],
+      anger: [
+        "بقولك إيه، الفلوس بتتحرق في إعلانات جوجل من غير أي فايدة، وقف الحملة دي فوراً!",
+        "فيه مشكلة كبيرة في سيرفر Metorik، مش عارف أسحب الداتا بقالي ساعة.",
+        "الميزانية خلصت وإحنا لسه في نص اليوم، ده تهريج!"
+      ],
+      general: [
+        "صباح الفل يا غالي، يوم جديد وشغل جديد.",
+        "أهلاً بيك يا ريس، بوهو تحت أمرك في أي وقت.",
+        "إيه الأخبار؟ جاهز نكسر الدنيا النهارده؟"
+      ]
+    };
+  } else {
+    return {
+      business: [
+        "يا أحمد باشا، مبيعات O2Nation لخدمات السوفتوير قفلت التارجت الشهر ده.",
+        "خد بالك، عملاء الـ B2B محتاجين متابعة أسرع، الـ Leads بتبرد.",
+        "جهزتلك عروض الأسعار اللي طلبتها لعملاء استضافة السيرفرات."
+      ],
+      comedy: [
+        "إيه يا هندسة، هو إحنا هنكتب الكود كله لوحدنا ولا إيه؟",
+        "استنى بس السيرفر يقوم وبعدين اطلب براحتك.",
+        "يا سيدي عيني ليك، بس هاتلي قهوة الأول، الكود مش هيتكتب لوحده."
+      ],
+      anger: [
+        "بقولك إيه، السيرفرات واقعة والعملاء بتشتكي، لازم نتحرك فوراً!",
+        "فيه مشكلة في الداتا بيز، مش عارف أسحب التقرير بقالي ساعة.",
+        "تكلفة الـ Cloud زادت جداً الشهر ده، لازم نراجع الاستهلاك!"
+      ],
+      general: [
+        "صباح الفل يا هندسة، يوم جديد ومشاريع جديدة.",
+        "أهلاً بيك يا ريس، بوهو جاهز يظبطلك الشغل.",
+        "إيه الأخبار؟ جاهزين نقفل الديل ده؟"
+      ]
+    };
+  }
 };
 
 
@@ -64,13 +91,15 @@ const AudioVisualizer = ({ isPlaying }: { isPlaying: boolean }) => {
   );
 };
 
-export default function VoicePersonalityLabPage() {
+export default function VoicePersonalityLabPage({ activeCompany }: { activeCompany: string }) {
+  const slangSuite = getSlangSuite(activeCompany);
+
   const [activeProvider, setActiveProvider] = useState(TTS_PROVIDERS[0]);
   const [activeArch, setActiveArch] = useState(ARCHITECTURES[0]);
   const [bargeIn, setBargeIn] = useState(true);
   const [endpointing, setEndpointing] = useState(500);
-  const [activeCategory, setActiveCategory] = useState<keyof typeof SLANG_SUITE>("business");
-  const [testSentence, setTestSentence] = useState(SLANG_SUITE["business"][0]);
+  const [activeCategory, setActiveCategory] = useState<keyof typeof slangSuite>("business");
+  const [testSentence, setTestSentence] = useState(slangSuite["business"][0]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [stability, setStability] = useState(0.4);
   const [similarity, setSimilarity] = useState(0.75);
@@ -78,7 +107,11 @@ export default function VoicePersonalityLabPage() {
   const [loaded, setLoaded] = useState(false);
   const [audioObj, setAudioObj] = useState<HTMLAudioElement | null>(null);
 
-  const [systemPrompt, setSystemPrompt] = useState("أنت بوهو، المساعد الذكي لشركة Bohemian Geeks. تتحدث بلهجة مصرية خفيفة وساخرة أحياناً، لكنك محترف في تحليل البيانات وإدارة المهام.");
+  const defaultPrompt = activeCompany === "bgk" 
+    ? "أنت بوهو، المساعد الذكي لشركة Bohemian Geeks. تتحدث بلهجة مصرية خفيفة وساخرة أحياناً، لكنك محترف في تحليل البيانات وإدارة المهام."
+    : "أنت بوهو، المساعد الذكي لشركة O2Nation. تتحدث بلهجة مصرية عملية ومحترفة، وتركز على إدارة المشاريع وخدمات البرمجيات للشركات.";
+
+  const [systemPrompt, setSystemPrompt] = useState(defaultPrompt);
   const [benchmarking, setBenchmarking] = useState(false);
   const [benchmarkData, setBenchmarkData] = useState<{provider: string, latency: number, color: string}[]>([]);
 
@@ -91,7 +124,13 @@ export default function VoicePersonalityLabPage() {
   const [isCloning, setIsCloning] = useState(false);
 
   useEffect(() => {
-    api.get("/api/voice/settings").then((data) => {
+    // Reset test sentence when company changes
+    setTestSentence(getSlangSuite(activeCompany)[activeCategory][0]);
+    setSystemPrompt(defaultPrompt);
+  }, [activeCompany, activeCategory]);
+
+  useEffect(() => {
+    api.get(`/api/voice/settings?company_id=${activeCompany}`).then((data) => {
       if (data.bargeIn !== undefined) setBargeIn(data.bargeIn);
       if (data.endpointing !== undefined) setEndpointing(data.endpointing);
       if (data.provider) setActiveProvider(TTS_PROVIDERS.find(p => p.id === data.provider) || TTS_PROVIDERS[0]);
@@ -100,13 +139,13 @@ export default function VoicePersonalityLabPage() {
       if (data.systemPrompt) setSystemPrompt(data.systemPrompt);
       setLoaded(true);
     }).catch(() => setLoaded(true));
-  }, []);
+  }, [activeCompany]);
 
   useEffect(() => {
     if (loaded) {
-      api.post("/api/voice/settings", { bargeIn, endpointing, provider: activeProvider.id, silenceRms, keywordPath, systemPrompt }).catch(console.error);
+      api.post("/api/voice/settings", { bargeIn, endpointing, provider: activeProvider.id, silenceRms, keywordPath, systemPrompt, company_id: activeCompany }).catch(console.error);
     }
-  }, [bargeIn, endpointing, activeProvider, silenceRms, keywordPath, systemPrompt, loaded]);
+  }, [bargeIn, endpointing, activeProvider, silenceRms, keywordPath, systemPrompt, loaded, activeCompany]);
 
   const handlePreview = async () => {
     if (isPlaying) stopPreview();
@@ -123,7 +162,7 @@ export default function VoicePersonalityLabPage() {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`
         },
-        body: JSON.stringify({ text: testSentence, provider: activeProvider.id })
+        body: JSON.stringify({ text: testSentence, provider: activeProvider.id, company_id: activeCompany })
       });
       
       if (!response.ok) {
@@ -159,7 +198,6 @@ export default function VoicePersonalityLabPage() {
     setIsPlaying(false);
   };
 
-
   const runBenchmark = async () => {
     setBenchmarking(true);
     setBenchmarkData([]);
@@ -176,7 +214,7 @@ export default function VoicePersonalityLabPage() {
             await fetch(`${baseURL}/api/voice/tts`, {
               method: "POST",
               headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
-              body: JSON.stringify({ text: "اختبار", provider: p.id })
+              body: JSON.stringify({ text: "اختبار", provider: p.id, company_id: activeCompany })
             });
             latency = Date.now() - start;
           } catch(e) { latency = 500; }
@@ -202,7 +240,7 @@ export default function VoicePersonalityLabPage() {
   };
 
   return (
-    <div className="flex flex-col gap-6 w-full" dir="rtl">
+    <div className="flex flex-col gap-6 w-full pb-8" dir="rtl">
 
       {/* HEADER */}
       <div className="glass-panel rounded-[24px] p-4 flex items-center justify-between">
@@ -220,8 +258,8 @@ export default function VoicePersonalityLabPage() {
             الوكيل الصوتي: {voiceAgentStatus === "online" ? "متصل" : voiceAgentStatus === "connecting" ? "جارٍ الاتصال..." : "غير متصل"}
           </div>
           {voiceAgentStatus !== "online" && (
-            <button onClick={connectVoiceAgent} className="text-xs text-white bg-gradient-to-l from-blue-500 to-blue-600 rounded-full px-4 py-1.5 font-bold hover:opacity-90">
-              تشغيل Voice Agent
+            <button onClick={connectVoiceAgent} className="text-xs text-white bg-gradient-to-r from-blue-500 to-blue-600 rounded-full px-4 py-1.5 font-bold hover:opacity-90">
+              تشغيل المساعد الصوتي
             </button>
           )}
         </div>
@@ -236,7 +274,7 @@ export default function VoicePersonalityLabPage() {
           {/* SYSTEM PROMPT EDITOR */}
           <div className="glass-panel rounded-[24px] p-5 border-t-4 border-t-purple-500">
             <div className="flex items-center justify-between mb-4">
-              <span className="text-[10px] font-mono text-gray-400 uppercase">Persona</span>
+              <span className="text-[10px] font-mono text-gray-400 uppercase">الشخصية (Persona)</span>
               <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">هندسة الشخصية <BrainCircuit className="w-4 h-4 text-purple-500" /></h3>
             </div>
             <textarea
@@ -246,13 +284,13 @@ export default function VoicePersonalityLabPage() {
               className="w-full bg-white/60 border border-purple-100 rounded-xl px-4 py-3 text-xs font-tajawal text-slate-700 resize-none outline-none focus:border-purple-300 transition-colors text-right shadow-inner leading-relaxed"
               placeholder="اكتب التعليمات الأساسية لشخصية بوهو..."
             />
-            <p className="text-[9px] text-gray-400 mt-2 font-tajawal text-right">يتم حفظ الشخصية وتطبيقها على المحادثات القادمة.</p>
+            <p className="text-[9px] text-gray-400 mt-2 font-tajawal text-right">يتم حفظ الشخصية وتطبيقها على المحادثات القادمة لشركة {activeCompany === "bgk" ? "Bohemian Geeks" : "O2Nation"}.</p>
           </div>
 
           {/* TTS PROVIDER SELECTOR */}
           <div className="glass-panel rounded-[24px] p-5">
             <div className="flex items-center justify-between mb-4">
-              <span className="text-[10px] font-mono text-gray-400 uppercase">Section 7.3</span>
+              <span className="text-[10px] font-mono text-gray-400 uppercase">محرك التوليد</span>
               <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">محرك النطق (TTS) <Volume2 className="w-4 h-4 text-blue-500" /></h3>
             </div>
             <div className="grid grid-cols-2 gap-3">
@@ -267,8 +305,8 @@ export default function VoicePersonalityLabPage() {
                   }`}
                   style={activeProvider.id === p.id ? { background: `linear-gradient(135deg, ${p.color}dd, ${p.color}99)` } : {}}
                 >
-                  <p className="font-bold text-sm font-sans">{p.name}</p>
-                  <p className={`text-[9px] mt-0.5 font-tajawal ${activeProvider.id === p.id ? "text-white/80" : "text-gray-400"}`}>{p.badge}</p>
+                  <p className="font-bold text-sm font-sans text-right block w-full">{p.name}</p>
+                  <p className={`text-[9px] mt-0.5 font-tajawal block text-right w-full ${activeProvider.id === p.id ? "text-white/80" : "text-gray-400"}`}>{p.badge}</p>
                 </button>
               ))}
             </div>
@@ -277,7 +315,7 @@ export default function VoicePersonalityLabPage() {
           {/* BARGE-IN + ENDPOINTING */}
           <div className="glass-panel rounded-[24px] p-5">
             <div className="flex items-center justify-between mb-4">
-              <span className="text-[10px] font-mono text-gray-400 uppercase">voice_agent.json</span>
+              <span className="text-[10px] font-mono text-gray-400 uppercase">إعدادات الحوار</span>
               <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">ديناميكية الحوار <Sliders className="w-4 h-4 text-slate-500" /></h3>
             </div>
             <div className="flex flex-col gap-4">
@@ -287,7 +325,7 @@ export default function VoicePersonalityLabPage() {
                   <p className="text-[9px] text-gray-500 font-tajawal">بتخليك تقاطع بوهو وهو بيتكلم</p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className={`text-[10px] font-mono ${bargeIn ? "text-emerald-600 font-bold" : "text-gray-400"}`}>{bargeIn ? "ON" : "OFF"}</span>
+                  <span className={`text-[10px] font-mono ${bargeIn ? "text-emerald-600 font-bold" : "text-gray-400"}`}>{bargeIn ? "مفعل" : "معطل"}</span>
                   <button onClick={() => setBargeIn(!bargeIn)} className={`w-10 h-5 rounded-full transition-colors relative ${bargeIn ? "bg-emerald-500" : "bg-slate-200"}`}>
                     <div className={`w-3.5 h-3.5 bg-white rounded-full absolute top-0.5 transition-all ${bargeIn ? "right-0.5" : "left-0.5"} shadow-sm`} />
                   </button>
@@ -295,12 +333,12 @@ export default function VoicePersonalityLabPage() {
               </div>
 
               <div>
-                <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-[10px] font-mono text-blue-600 font-bold">{endpointing}ms</span>
+                <div className="flex items-center justify-between mb-1.5 text-right flex-row-reverse">
                   <span className="text-xs text-slate-700 font-tajawal font-bold">وقت السكوت (Endpointing)</span>
+                  <span className="text-[10px] font-mono text-blue-600 font-bold" dir="ltr">{endpointing}ms</span>
                 </div>
-                <input type="range" min={200} max={1500} step={50} value={endpointing} onChange={e => setEndpointing(Number(e.target.value))} className="w-full accent-blue-500 h-1.5" />
-                <div className="flex justify-between text-[8px] text-gray-400 font-mono mt-1"><span>200ms</span><span>500ms</span><span>1500ms</span></div>
+                <input type="range" min={200} max={1500} step={50} value={endpointing} onChange={e => setEndpointing(Number(e.target.value))} className="w-full accent-blue-500 h-1.5" dir="ltr" />
+                <div className="flex justify-between text-[8px] text-gray-400 font-mono mt-1" dir="ltr"><span>200ms</span><span>500ms</span><span>1500ms</span></div>
               </div>
             </div>
           </div>
@@ -347,14 +385,14 @@ export default function VoicePersonalityLabPage() {
           {/* LATENCY BENCHMARK */}
           <div className="glass-panel rounded-[24px] p-5 border-t-4 border-t-emerald-500">
             <div className="flex items-center justify-between mb-4">
-              <button onClick={runBenchmark} disabled={benchmarking} className="flex items-center gap-1.5 text-xs text-white bg-gradient-to-l from-emerald-500 to-teal-600 rounded-full px-4 py-1.5 hover:opacity-90 disabled:opacity-50 font-bold shadow-md">
+              <button onClick={runBenchmark} disabled={benchmarking} className="flex items-center gap-1.5 text-xs text-white bg-gradient-to-r from-emerald-500 to-teal-600 rounded-full px-4 py-1.5 hover:opacity-90 disabled:opacity-50 font-bold shadow-md">
                 <Activity className="w-3.5 h-3.5" />
-                {benchmarking ? "جارٍ القياس..." : "بدء الـ Benchmark"}
+                {benchmarking ? "جارٍ القياس..." : "بدء اختبار السرعة"}
               </button>
               <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">مقارنة سرعة الاستجابة (TTFB) <BarChart2 className="w-4 h-4 text-emerald-500" /></h3>
             </div>
             
-            <div className="w-full h-[140px] bg-white/40 rounded-xl flex items-end justify-center pt-2">
+            <div className="w-full h-[140px] bg-white/40 rounded-xl flex items-end justify-center pt-2" dir="ltr">
               {benchmarkData.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={benchmarkData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }} layout="vertical">
@@ -371,7 +409,7 @@ export default function VoicePersonalityLabPage() {
                 </ResponsiveContainer>
               ) : (
                 <div className="flex w-full h-full items-center justify-center text-xs text-slate-400 font-tajawal">
-                  اضغط على بدء الـ Benchmark لقياس التأخير الفعلي لكل مزود
+                  اضغط على بدء اختبار السرعة لقياس التأخير الفعلي لكل مزود
                 </div>
               )}
             </div>
@@ -387,13 +425,13 @@ export default function VoicePersonalityLabPage() {
             <div className="flex flex-col gap-4 flex-1">
               
               {/* Category Selector */}
-              <div className="flex flex-wrap gap-2 justify-end">
+              <div className="flex flex-wrap gap-2 justify-start">
                 {SLANG_CATEGORIES.map(c => (
                   <button
                     key={c.id}
                     onClick={() => {
                       setActiveCategory(c.id as any);
-                      setTestSentence(SLANG_SUITE[c.id as keyof typeof SLANG_SUITE][0]);
+                      setTestSentence(slangSuite[c.id as keyof typeof slangSuite][0]);
                     }}
                     className={`px-3 py-1.5 rounded-full text-xs font-tajawal font-bold flex items-center gap-1.5 transition-all ${
                       activeCategory === c.id
@@ -401,14 +439,14 @@ export default function VoicePersonalityLabPage() {
                         : "bg-white/60 text-slate-600 hover:bg-white/90 border border-white/80"
                     }`}
                   >
-                    {c.emoji} {c.label}
+                    <c.icon className="w-3.5 h-3.5" /> {c.label}
                   </button>
                 ))}
               </div>
 
               {/* Sentences List */}
               <div className="flex flex-col gap-2">
-                {SLANG_SUITE[activeCategory].map((s, i) => (
+                {slangSuite[activeCategory].map((s, i) => (
                   <div 
                     key={i} 
                     onClick={() => setTestSentence(s)}
@@ -438,18 +476,17 @@ export default function VoicePersonalityLabPage() {
               </div>
 
               {/* Play Controls & Visualizer */}
-              <div className="flex items-center justify-between gap-3 bg-slate-50 p-2 rounded-2xl border border-slate-200 mt-2">
-                <div className="flex items-center gap-2">
+              <div className="flex items-center justify-between gap-3 bg-slate-50 p-2 rounded-2xl border border-slate-200 mt-2 flex-row-reverse">
+                <button onClick={handlePreview} disabled={isPlaying} className="flex-1 max-w-[200px] flex items-center justify-center gap-2 text-sm font-bold text-white bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl h-12 hover:opacity-90 disabled:opacity-50 transition-all shadow-md">
+                  <PlayCircle className="w-5 h-5" />
+                  {isPlaying ? "جارٍ التشغيل..." : `اختبار ` + activeProvider.name}
+                </button>
+                <div className="flex items-center gap-2 flex-row-reverse">
                   <button onClick={stopPreview} className="flex items-center justify-center w-12 h-12 text-rose-500 bg-white rounded-xl hover:bg-rose-50 transition-colors shadow-sm border border-slate-100">
                     <StopCircle className="w-6 h-6" />
                   </button>
                   <AudioVisualizer isPlaying={isPlaying} />
                 </div>
-                
-                <button onClick={handlePreview} disabled={isPlaying} className="flex-1 max-w-[200px] flex items-center justify-center gap-2 text-sm font-bold text-white bg-gradient-to-l from-blue-500 to-blue-600 rounded-xl h-12 hover:opacity-90 disabled:opacity-50 transition-all shadow-md">
-                  <PlayCircle className="w-5 h-5" />
-                  {isPlaying ? "جارٍ التشغيل..." : `اختبار ` + activeProvider.name}
-                </button>
               </div>
 
             </div>

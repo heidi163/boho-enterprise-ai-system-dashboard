@@ -18,7 +18,7 @@ def think(user_text: str, memory: Memory, user_id: str = 'admin', company_id: st
     Supports Vision AI via optional image_base64 parameter.
     """
     if not client:
-        return "⚠️ Error: Anthropic API Key is missing. Please configure it in the .env file."
+        return " Error: Anthropic API Key is missing. Please configure it in the .env file."
         
     memory.add("user", user_text, user_id, company_id)
     messages = memory.recent_messages(limit=20, user_id=user_id, company_id=company_id)
@@ -83,4 +83,4 @@ def think(user_text: str, memory: Memory, user_id: str = 'admin', company_id: st
         memory.add("assistant", reply, user_id, company_id)
         return reply
     except Exception as e:
-        return f"⚠️ Brain Error: {str(e)}"
+        return f" Brain Error: {str(e)}"

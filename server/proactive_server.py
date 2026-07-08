@@ -28,7 +28,7 @@ def daily_briefing():
     # Triggered every morning at 8 AM by n8n
     prompt = "أكتبلي الـ Daily Briefing بتاع النهاردة. راجع المبيعات وإعلانات الفيسبوك وقولي أهم الأرقام."
     answer = think(prompt, memory, model=config.BRAIN_MODEL)
-    send_telegram_message(f"🌅 Daily Briefing:\n\n{answer}")
+    send_telegram_message(f" Daily Briefing:\n\n{answer}")
     return jsonify({"status": "sent"})
 
 @app.post("/webhook/n8n/alert")
@@ -39,7 +39,7 @@ def alert():
     
     prompt = f"جالي تنبيه من السيستم: {issue}. اكتبلي رسالة قصيرة جداً (سطرين) تحذيرية لأحمد."
     answer = think(prompt, memory, model=config.FAST_MODEL)
-    send_telegram_message(f"⚠️ تنبيه عاجل:\n\n{answer}")
+    send_telegram_message(f" تنبيه عاجل:\n\n{answer}")
     return jsonify({"status": "sent"})
 
 if __name__ == "__main__":
