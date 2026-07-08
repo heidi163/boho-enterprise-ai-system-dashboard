@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { api } from "../lib/api";
-import { CheckSquare, Plus, Clock, CheckCircle2, Circle, BrainCircuit, Activity } from "lucide-react";
+import { CheckSquare, Plus, Clock, CheckCircle2, Circle, BrainCircuit, Activity, AlertTriangle, Loader2 } from "lucide-react";
 
 type TaskStatus = "To Do" | "In Progress" | "Done";
 
@@ -25,6 +25,30 @@ export default function TaskManagerPage() {
   const [newName, setNewName] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [bohoReply, setBohoReply] = useState("");
+
+  // Auto-fetch data
+  const [taskSummary, setTaskSummary] = useState("");
+  const [urgentTasks, setUrgentTasks] = useState("");
+  const [loadingStats, setLoadingStats] = useState(true);
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const [summaryRes, urgentRes] = await Promise.all([
+          api.post("/task", { request: "لخص لي عدد المهام المفتوحة حالياً في ClickUp في سطر واحد." }),
+          api.post("/task", { request: "ما هي المهام العاجلة (High Priority) الآن في ClickUp؟ اذكرها باختصار شديد." })
+        ]);
+        setTaskSummary(summaryRes.answer || "عذراً، لم أتمكن من جلب البيانات.");
+        setUrgentTasks(urgentRes.answer || "لا يوجد مهام عاجلة حالياً.");
+      } catch {
+        setTaskSummary("تعذر جلب بيانات المهام.");
+        setUrgentTasks("تعذر جلب المهام العاجلة.");
+      } finally {
+        setLoadingStats(false);
+      }
+    };
+    fetchTasks();
+  }, []);
 
   const addTask = async () => {
     if (!newName.trim()) return;
@@ -62,6 +86,47 @@ export default function TaskManagerPage() {
           </button>
         </div>
         <h3 className="text-sm font-bold text-slate-800 font-tajawal flex items-center gap-2">مدير المهام (ClickUp MCP) <CheckSquare className="w-4 h-4 text-blue-500" /></h3>
+      </div>
+
+      {/* Auto-Loaded Task Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="glass-panel rounded-[24px] p-6 flex flex-col gap-4 relative overflow-hidden group hover:border-sky-300 transition-colors">
+          <div className="absolute -top-10 -left-10 w-32 h-32 bg-sky-500/10 rounded-full blur-3xl" />
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-bold text-slate-700 font-tajawal flex items-center gap-2">
+              <CheckSquare className="w-4 h-4 text-sky-500" />
+              المهام المفتوحة
+            </h3>
+          </div>
+          <div className="flex-1 flex items-center justify-center min-h-[80px]">
+            {loadingStats ? (
+              <Loader2 className="w-6 h-6 text-sky-400 animate-spin" />
+            ) : (
+              <p className="text-sm font-bold text-sky-800 font-tajawal text-center leading-relaxed">
+                {taskSummary}
+              </p>
+            )}
+          </div>
+        </div>
+
+        <div className="glass-panel rounded-[24px] p-6 flex flex-col gap-4 relative overflow-hidden group hover:border-amber-300 transition-colors">
+          <div className="absolute -top-10 -left-10 w-32 h-32 bg-amber-500/10 rounded-full blur-3xl" />
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-bold text-slate-700 font-tajawal flex items-center gap-2">
+              <AlertTriangle className="w-4 h-4 text-amber-500" />
+              المهام العاجلة (High Priority)
+            </h3>
+          </div>
+          <div className="flex-1 flex items-center justify-center min-h-[80px]">
+            {loadingStats ? (
+              <Loader2 className="w-6 h-6 text-amber-400 animate-spin" />
+            ) : (
+              <p className="text-sm font-bold text-amber-800 font-tajawal text-center leading-relaxed">
+                {urgentTasks}
+              </p>
+            )}
+          </div>
+        </div>
       </div>
 
       {bohoReply && (
